@@ -46,7 +46,7 @@ SHA-1 fingerprints the Android key allows, and where each comes from (`keytool` 
 | Certificate | How to get its SHA-1 |
 |-------------|----------------------|
 | Debug (this PC) | `keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android` |
-| Upload | `keytool -list -v -keystore android/app/upload-keystore.jks -alias upload` (password is in `android/key.properties`) |
+| Upload | `keytool -list -v -keystore rallly_flutter/android/upload-keystore.jks -alias upload` (password is in `rallly_flutter/android/key.properties`). **Regenerated on the MacBook 2026-10-11** (the Windows keystore was lost); the new SHA-1 was added to the Android key the same day. Backed up in Google Drive. |
 | **Play app signing** | **⚠ NOT ADDED YET — required at first Play upload (below)** |
 
 A different PC has a different debug keystore, so its debug builds are blocked until that machine's SHA-1 is added too. The MacBook's (M1 Pro) debug SHA-1 was added on 2026-10-03 via Cloud Console. On macOS, `keytool` is at `/Applications/Android Studio.app/Contents/jbr/Contents/Home/bin/keytool`.
