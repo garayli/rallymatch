@@ -5,6 +5,7 @@ import 'package:share_plus/share_plus.dart';
 import 'dart:ui' as ui;
 import '../theme/app_theme.dart';
 import '../widgets/shared_widgets.dart';
+import '../widgets/rally_primitives.dart';
 import '../models/models.dart';
 import '../l10n/l10n.dart';
 
@@ -158,10 +159,8 @@ class _ResultCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Rallly',
-                style: TextStyle(fontFamily: 'InstrumentSerif', fontSize: 20, color: RallyColors.accent3, letterSpacing: -0.5),
-              ),
+              const RallyWordmark(
+                  size: 20, accent: RallyColors.accent3, ink: Colors.white),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
                 decoration: BoxDecoration(

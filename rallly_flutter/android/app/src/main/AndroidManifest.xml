@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
 
     <application
-        android:label="Rallly"
+        android:label="Maça gel!"
         android:localeConfig="@xml/locales_config"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"

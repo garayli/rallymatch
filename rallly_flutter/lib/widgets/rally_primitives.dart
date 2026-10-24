@@ -239,9 +239,17 @@ class RallyAppBar extends StatelessWidget {
 }
 
 // ─── RallyWordmark ───────────────────────────────────────────────────────────
+/// "Maça *gel!*" logo: upright accent-coloured "Maça", italic "gel!" in [ink].
 class RallyWordmark extends StatelessWidget {
   final double size;
-  const RallyWordmark({super.key, this.size = 24});
+  final Color accent;
+  final Color ink;
+  const RallyWordmark({
+    super.key,
+    this.size = 24,
+    this.accent = RallyColors.accent,
+    this.ink = RallyColors.textPrimary,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -249,20 +257,21 @@ class RallyWordmark extends StatelessWidget {
       fontFamily: 'InstrumentSerif',
       fontSize: size,
       height: 1,
+      letterSpacing: -0.5,
     );
-    return RichText(
-      text: TextSpan(
-        children: [
-          TextSpan(text: 'Rall', style: style.copyWith(color: RallyColors.accent)),
-          TextSpan(
-            text: 'l',
-            style: style.copyWith(
-              color: RallyColors.textPrimary,
-              fontStyle: FontStyle.italic,
+    return Semantics(
+      label: 'Maça gel!',
+      excludeSemantics: true,
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(text: 'Maça ', style: style.copyWith(color: accent)),
+            TextSpan(
+              text: 'gel!',
+              style: style.copyWith(color: ink, fontStyle: FontStyle.italic),
             ),
-          ),
-          TextSpan(text: 'y', style: style.copyWith(color: RallyColors.accent)),
-        ],
+          ],
+        ),
       ),
     );
   }

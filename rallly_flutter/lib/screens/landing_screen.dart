@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../theme/app_theme.dart';
 import '../widgets/shared_widgets.dart';
+import '../widgets/rally_primitives.dart';
 import '../l10n/l10n.dart';
 
 class LandingScreen extends StatelessWidget {
@@ -56,40 +57,10 @@ class LandingScreen extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(28, 20, 28, 0),
                   child: Row(
                     children: [
-                      RichText(
-                        text: const TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Rall',
-                              style: TextStyle(
-                                fontFamily: 'InstrumentSerif',
-                                fontSize: 28,
-                                color: Color(0xFF8DB600),
-                                letterSpacing: -0.5,
-                              ),
-                            ),
-                            TextSpan(
-                              text: 'l',
-                              style: TextStyle(
-                                fontFamily: 'InstrumentSerif',
-                                fontSize: 28,
-                                color: Colors.white,
-                                fontStyle: FontStyle.italic,
-                                letterSpacing: -0.5,
-                              ),
-                            ),
-                            TextSpan(
-                              text: 'y',
-                              style: TextStyle(
-                                fontFamily: 'InstrumentSerif',
-                                fontSize: 28,
-                                color: Color(0xFF8DB600),
-                                letterSpacing: -0.5,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      const RallyWordmark(
+                          size: 28,
+                          accent: Color(0xFF8DB600),
+                          ink: Colors.white),
                       const Spacer(),
                       TextButton(
                         onPressed: onSignIn,
