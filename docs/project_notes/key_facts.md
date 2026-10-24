@@ -29,14 +29,16 @@ Project configuration, credentials, and constants.
 
 ### Web hosting (PWA)
 
+Hosted on **Cloudflare Pages** (free plan, no bandwidth cap). Firebase Hosting was dropped on 2026-10-24: a second site (`macagel.web.app`) needs the Blaze plan, and opening a Blaze billing account from Turkey asked for a 1,500 TL prepayment. The project stays on Spark; Firebase is still used for Analytics and Android.
+
 | Item | Value |
 |------|-------|
-| Site | `macagel` → https://macagel.web.app (Spark/free plan; the default `rallymatch.web.app` site is left unused) |
-| Config | `rallly_flutter/firebase.json` → `hosting` (serves `build/web`, SPA rewrite to `index.html` for GoRouter, `no-cache` on `index.html` / service worker / bootstrap / manifest) + `rallly_flutter/.firebaserc` |
-| One-time setup | Create the site: `firebase hosting:sites:create macagel` (or Console → Hosting → Add another site) |
-| Deploy | `flutter build web --release && firebase deploy --only hosting` (from `rallly_flutter/`) |
+| Site | Pages project `macagel` → https://macagel.pages.dev (if the name was taken, Cloudflare adds a suffix — use the URL it prints) |
+| Config | None in the repo. Pages defaults already fit Flutter web: with no top-level `404.html` every unknown path serves `index.html` (GoRouter deep links work), and every file is sent with `Cache-Control: public, max-age=0, must-revalidate` (users get new builds without a hard refresh). Add `web/_headers` only to override that. |
+| One-time setup | Cloudflare account, then `npx wrangler login` and `npx wrangler pages project create macagel --production-branch main` |
+| Deploy | `flutter build web --release && npx wrangler pages deploy build/web --project-name macagel --branch main` (from `rallly_flutter/`). Build locally: Cloudflare's builders don't have Flutter. `--branch main` makes it a production deploy whatever git branch is checked out; another branch name gives a preview URL. |
 
-Before the web build works end to end: create a new **browser** API key restricted to `https://macagel.web.app/*` (see below), and add `https://macagel.web.app` to Supabase → Authentication → URL Configuration (Site URL / Redirect URLs).
+Before the web build works end to end: create a new **browser** API key restricted to `https://macagel.pages.dev/*` (see below), and add `https://macagel.pages.dev` to Supabase → Authentication → URL Configuration (Site URL / Redirect URLs).
 
 ### API key restrictions
 
