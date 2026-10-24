@@ -33,12 +33,15 @@ Hosted on **Cloudflare Pages** (free plan, no bandwidth cap). Firebase Hosting w
 
 | Item | Value |
 |------|-------|
-| Site | Pages project `macagel` → https://macagel.pages.dev (if the name was taken, Cloudflare adds a suffix — use the URL it prints) |
+| Site | Pages project `macagel` → **https://macagel.pages.dev** (production, first deployed 2026-10-24). Each deploy also gets its own `<hash>.macagel.pages.dev` URL; `--branch <name>` other than `main` gives a preview at `<name>.macagel.pages.dev`. All of them use the same Supabase project (there is no separate dev database). |
 | Config | None in the repo. Pages defaults already fit Flutter web: with no top-level `404.html` every unknown path serves `index.html` (GoRouter deep links work), and every file is sent with `Cache-Control: public, max-age=0, must-revalidate` (users get new builds without a hard refresh). Add `web/_headers` only to override that. |
-| One-time setup | Cloudflare account, then `npx wrangler login` and `npx wrangler pages project create macagel --production-branch main` |
+| One-time setup (done) | Cloudflare account, `npx wrangler login`, Pages project `macagel` with production branch `main`. On a new machine only `npx wrangler login` is needed — plus `lib/firebase_options.dart` (gitignored; `flutterfire configure --project=rallymatch --platforms=android,web`, or copy the `.example` — web then just runs without Analytics), or `flutter build web` fails with `Error when reading 'lib/firebase_options.dart'`. |
 | Deploy | `flutter build web --release && npx wrangler pages deploy build/web --project-name macagel --branch main` (from `rallly_flutter/`). Build locally: Cloudflare's builders don't have Flutter. `--branch main` makes it a production deploy whatever git branch is checked out; another branch name gives a preview URL. |
+| Custom domain | None yet (deferred 2026-10-24; `macagel.com` is taken). When bought — preferably via Cloudflare Registrar, so DNS + SSL are automatic — add it under Workers & Pages → `macagel` → Custom domains, then add it to Supabase and to the browser key's referrers as below. |
 
-Before the web build works end to end: create a new **browser** API key restricted to `https://macagel.pages.dev/*` (see below), and add `https://macagel.pages.dev` to Supabase → Authentication → URL Configuration (Site URL / Redirect URLs).
+Still to do for the web build to work end to end:
+- **Supabase** → Authentication → URL Configuration → Redirect URLs: `https://macagel.pages.dev/**` (production) and `https://*.macagel.pages.dev/**` (per-deploy and preview URLs). Without it, email login on web fails.
+- **Web Analytics** needs a new **browser** API key (the old one was deleted, see below): Cloud Console → Credentials → Create API key; Websites restriction `https://macagel.pages.dev/*` + `https://*.macagel.pages.dev/*`; API restriction Firebase Installations API + Firebase Management API. Put it in `web.apiKey` of the local `lib/firebase_options.dart`, then rebuild and deploy. Until then `main.dart` skips Firebase on web and Analytics no-ops; the app itself works.
 
 ### API key restrictions
 
