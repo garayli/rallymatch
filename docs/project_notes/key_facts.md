@@ -27,6 +27,17 @@ Project configuration, credentials, and constants.
 | Config files | `rallly_flutter/lib/firebase_options.dart`, `rallly_flutter/android/app/google-services.json` — **gitignored** (GitHub secret scanning flagged the keys in commit `489ab8f`). Regenerate with `flutterfire configure`; placeholder template at `lib/firebase_options.dart.example` |
 | Keys console | https://console.cloud.google.com/apis/credentials?project=rallymatch (sign in as the owner account) |
 
+### Web hosting (PWA)
+
+| Item | Value |
+|------|-------|
+| Site | `macagel` → https://macagel.web.app (Spark/free plan; the default `rallymatch.web.app` site is left unused) |
+| Config | `rallly_flutter/firebase.json` → `hosting` (serves `build/web`, SPA rewrite to `index.html` for GoRouter, `no-cache` on `index.html` / service worker / bootstrap / manifest) + `rallly_flutter/.firebaserc` |
+| One-time setup | Create the site: `firebase hosting:sites:create macagel` (or Console → Hosting → Add another site) |
+| Deploy | `flutter build web --release && firebase deploy --only hosting` (from `rallly_flutter/`) |
+
+Before the web build works end to end: create a new **browser** API key restricted to `https://macagel.web.app/*` (see below), and add `https://macagel.web.app` to Supabase → Authentication → URL Configuration (Site URL / Redirect URLs).
+
 ### API key restrictions
 
 Firebase client keys aren't real secrets, but they must be restricted so a key copied from git history is useless elsewhere. The project had three auto-created keys, all with a Firebase-only API allowlist. State as of 2026-09-21:

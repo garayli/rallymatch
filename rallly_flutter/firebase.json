@@ -1,1 +1,85 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"rallymatch","appId":"1:454097941276:android:304942847955b8dae580d9","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"rallymatch","configurations":{"android":"1:454097941276:android:304942847955b8dae580d9","ios":"1:454097941276:ios:1c5e42afb1519a80e580d9","web":"1:454097941276:web:d4bae53a081c7e02e580d9"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "rallymatch",
+          "appId": "1:454097941276:android:304942847955b8dae580d9",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "rallymatch",
+          "configurations": {
+            "android": "1:454097941276:android:304942847955b8dae580d9",
+            "ios": "1:454097941276:ios:1c5e42afb1519a80e580d9",
+            "web": "1:454097941276:web:d4bae53a081c7e02e580d9"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "site": "macagel",
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "/index.html",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      },
+      {
+        "source": "/flutter_service_worker.js",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      },
+      {
+        "source": "/flutter_bootstrap.js",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      },
+      {
+        "source": "/manifest.json",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      },
+      {
+        "source": "/version.json",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      }
+    ]
+  }
+}
