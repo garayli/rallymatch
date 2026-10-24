@@ -52,6 +52,7 @@ Firebase client keys aren't real secrets, but they must be restricted so a key c
 | Android | active — restricted to package `com.rallymatch.app` + the debug and upload SHA-1s |
 | iOS | **deleted 2026-09-21** (was unrestricted and exposed in commit `489ab8f`). No iOS Xcode project existed. |
 | Browser (old) | **deleted 2026-09-21** (same reason). |
+| `rally (web) (auto created by Firebase)` | **deleted 2026-10-24** — created by `flutterfire configure` with only an API allowlist (no website restriction) and never used by the deployed site. `flutterfire configure` will likely create another one: delete it again after putting the restricted key back into `web.apiKey`. |
 | Browser `Browser key (macagel.pages.dev)` | active since 2026-10-24 — Websites restriction `https://macagel.pages.dev/*` + `https://*.macagel.pages.dev/*`, APIs Firebase Installations + Firebase Management. Not valid from `localhost`, so `flutter run -d chrome` runs without Analytics unless `http://localhost/*` is added. |
 
 Deleted keys can be restored for ~30 days with `gcloud services api-keys undelete`. When iOS or web is set up, create a **new** key restricted from day one (iOS bundle ID / HTTP referrers), via `flutterfire configure` or the Console, and never reuse the deleted ones (they are in git history).
