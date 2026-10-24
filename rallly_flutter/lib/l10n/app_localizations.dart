@@ -101,7 +101,7 @@ abstract class AppLocalizations {
   /// No description provided for @appName.
   ///
   /// In tr, this message translates to:
-  /// **'RallyMatch'**
+  /// **'Maça gel!'**
   String get appName;
 
   /// No description provided for @sportTennis.
@@ -2765,7 +2765,7 @@ abstract class AppLocalizations {
   /// No description provided for @installBannerTitle.
   ///
   /// In tr, this message translates to:
-  /// **'RallyMatch\'i ana ekrana ekle'**
+  /// **'Maça gel! uygulamasını yükle'**
   String get installBannerTitle;
 
   /// No description provided for @installBannerBody.

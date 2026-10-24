@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appName": "RallyMatch",
+  "appName": "Maça gel!",
   "sportTennis": "Tennis",
   "sportTennisSub": "Singles & doubles",
   "sportPadel": "Padel",
@@ -677,7 +677,7 @@
   "signupNameNeedsSurname": "Enter your first and last name",
   "signupSaveFailed": "Couldn't save your profile, please try again",
   "emptyPastHint": "Completed matches will show up here",
-  "installBannerTitle": "Add RallyMatch to your home screen",
+  "installBannerTitle": "Install the Maça gel! app",
   "installBannerBody": "Open it in one tap, like an app.",
   "installBannerAction": "Add",
   "installBannerDismiss": "Close",

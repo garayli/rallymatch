@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appName => 'RallyMatch';
+  String get appName => 'Maça gel!';
 
   @override
   String get sportTennis => 'Tennis';
@@ -1466,7 +1466,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get emptyPastHint => 'Completed matches will show up here';
 
   @override
-  String get installBannerTitle => 'Add RallyMatch to your home screen';
+  String get installBannerTitle => 'Install the Maça gel! app';
 
   @override
   String get installBannerBody => 'Open it in one tap, like an app.';

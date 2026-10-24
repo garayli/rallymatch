@@ -9,7 +9,7 @@ class AppLocalizationsTr extends AppLocalizations {
   AppLocalizationsTr([String locale = 'tr']) : super(locale);
 
   @override
-  String get appName => 'RallyMatch';
+  String get appName => 'Maça gel!';
 
   @override
   String get sportTennis => 'Tenis';
@@ -1457,7 +1457,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get emptyPastHint => 'Tamamlanan maçların burada görünür';
 
   @override
-  String get installBannerTitle => 'RallyMatch\'i ana ekrana ekle';
+  String get installBannerTitle => 'Maça gel! uygulamasını yükle';
 
   @override
   String get installBannerBody => 'Uygulama gibi tek dokunuşla aç.';

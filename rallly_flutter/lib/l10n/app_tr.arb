@@ -1,6 +1,6 @@
 {
   "@@locale": "tr",
-  "appName": "RallyMatch",
+  "appName": "Maça gel!",
   "sportTennis": "Tenis",
   "sportTennisSub": "Tekler & çiftler",
   "sportPadel": "Padel",
@@ -677,7 +677,7 @@
   "signupNameNeedsSurname": "Adını ve soyadını birlikte yaz",
   "signupSaveFailed": "Profilin kaydedilemedi, tekrar dene",
   "emptyPastHint": "Tamamlanan maçların burada görünür",
-  "installBannerTitle": "RallyMatch'i ana ekrana ekle",
+  "installBannerTitle": "Maça gel! uygulamasını yükle",
   "installBannerBody": "Uygulama gibi tek dokunuşla aç.",
   "installBannerAction": "Ekle",
   "installBannerDismiss": "Kapat",
