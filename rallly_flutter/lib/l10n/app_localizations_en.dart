@@ -1309,7 +1309,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sendInviteButton => 'Send Invitation 🎾';
 
   @override
-  String get shareText => 'My match result on Rallly 🎾';
+  String get shareText => 'My match result — Maça gel! 🎾';
 
   @override
   String get shareFailed => 'Couldn\'t share. Please try again.';

@@ -2483,7 +2483,7 @@ abstract class AppLocalizations {
   /// No description provided for @shareText.
   ///
   /// In tr, this message translates to:
-  /// **'Rallly\'de maç sonucum 🎾'**
+  /// **'Maç sonucum — Maça gel! 🎾'**
   String get shareText;
 
   /// No description provided for @shareFailed.
