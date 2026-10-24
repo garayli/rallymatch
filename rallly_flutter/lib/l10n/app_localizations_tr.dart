@@ -1455,4 +1455,31 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get emptyPastHint => 'Tamamlanan maçların burada görünür';
+
+  @override
+  String get installBannerTitle => 'RallyMatch\'i ana ekrana ekle';
+
+  @override
+  String get installBannerBody => 'Uygulama gibi tek dokunuşla aç.';
+
+  @override
+  String get installBannerAction => 'Ekle';
+
+  @override
+  String get installBannerDismiss => 'Kapat';
+
+  @override
+  String get installIosTitle => 'Ana ekrana ekle';
+
+  @override
+  String get installIosStep1 => 'Tarayıcının Paylaş simgesine dokun.';
+
+  @override
+  String get installIosStep2 => 'Listeden “Ana Ekrana Ekle”yi seç.';
+
+  @override
+  String get installIosStep3 => 'Sağ üstteki “Ekle”ye dokun.';
+
+  @override
+  String get installIosDone => 'Tamam';
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -15,12 +16,18 @@ Future<void> main() async {
 
   // On Android the google-services plugin already creates [DEFAULT] natively
   // (google-services.json), so a second initializeApp throws duplicate-app.
+  // On web Firebase is analytics-only: with no valid config, or when its SDK
+  // can't load from gstatic (ad blockers), initializeApp throws or never
+  // completes — run without analytics instead of a stuck splash screen.
   try {
-    await Firebase.initializeApp(
+    final init = Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-  } on FirebaseException catch (e) {
-    if (e.code != 'duplicate-app') rethrow;
+    await (kIsWeb ? init.timeout(const Duration(seconds: 4)) : init);
+  } catch (e) {
+    final duplicate = e is FirebaseException && e.code == 'duplicate-app';
+    if (!duplicate && !kIsWeb) rethrow;
+    if (!duplicate) debugPrint('Firebase disabled on web: $e');
   }
 
   await Supabase.initialize(

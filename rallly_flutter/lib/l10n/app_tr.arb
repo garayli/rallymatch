@@ -676,5 +676,14 @@
   "matchDetailRespondHint": "Kabul veya Reddet için Bildirimler sekmesine bak.",
   "signupNameNeedsSurname": "Adını ve soyadını birlikte yaz",
   "signupSaveFailed": "Profilin kaydedilemedi, tekrar dene",
-  "emptyPastHint": "Tamamlanan maçların burada görünür"
+  "emptyPastHint": "Tamamlanan maçların burada görünür",
+  "installBannerTitle": "RallyMatch'i ana ekrana ekle",
+  "installBannerBody": "Uygulama gibi tek dokunuşla aç.",
+  "installBannerAction": "Ekle",
+  "installBannerDismiss": "Kapat",
+  "installIosTitle": "Ana ekrana ekle",
+  "installIosStep1": "Tarayıcının Paylaş simgesine dokun.",
+  "installIosStep2": "Listeden “Ana Ekrana Ekle”yi seç.",
+  "installIosStep3": "Sağ üstteki “Ekle”ye dokun.",
+  "installIosDone": "Tamam"
 }

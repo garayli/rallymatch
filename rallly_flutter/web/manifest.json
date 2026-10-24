@@ -1,12 +1,17 @@
 {
-    "name": "rallly",
-    "short_name": "rallly",
+    "id": "/",
+    "name": "RallyMatch — Tenis Partneri Bul",
+    "short_name": "RallyMatch",
     "start_url": ".",
+    "scope": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#F5F0E8",
+    "theme_color": "#5A8A00",
+    "description": "Seviyene uygun tenis partneri bul, maç ayarla, sonuçlarını takip et.",
+    "lang": "tr",
+    "dir": "ltr",
     "orientation": "portrait-primary",
+    "categories": ["sports", "social", "lifestyle"],
     "prefer_related_applications": false,
     "icons": [
         {

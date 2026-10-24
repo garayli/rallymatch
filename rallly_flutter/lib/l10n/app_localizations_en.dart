@@ -1464,4 +1464,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get emptyPastHint => 'Completed matches will show up here';
+
+  @override
+  String get installBannerTitle => 'Add RallyMatch to your home screen';
+
+  @override
+  String get installBannerBody => 'Open it in one tap, like an app.';
+
+  @override
+  String get installBannerAction => 'Add';
+
+  @override
+  String get installBannerDismiss => 'Close';
+
+  @override
+  String get installIosTitle => 'Add to Home Screen';
+
+  @override
+  String get installIosStep1 => 'Tap your browser\'s Share icon.';
+
+  @override
+  String get installIosStep2 => 'Choose “Add to Home Screen” from the list.';
+
+  @override
+  String get installIosStep3 => 'Tap “Add” in the top-right corner.';
+
+  @override
+  String get installIosDone => 'Got it';
 }
