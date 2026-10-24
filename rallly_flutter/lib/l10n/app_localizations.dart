@@ -2761,6 +2761,60 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Tamamlanan maçların burada görünür'**
   String get emptyPastHint;
+
+  /// No description provided for @installBannerTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'RallyMatch\'i ana ekrana ekle'**
+  String get installBannerTitle;
+
+  /// No description provided for @installBannerBody.
+  ///
+  /// In tr, this message translates to:
+  /// **'Uygulama gibi tek dokunuşla aç.'**
+  String get installBannerBody;
+
+  /// No description provided for @installBannerAction.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ekle'**
+  String get installBannerAction;
+
+  /// No description provided for @installBannerDismiss.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kapat'**
+  String get installBannerDismiss;
+
+  /// No description provided for @installIosTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ana ekrana ekle'**
+  String get installIosTitle;
+
+  /// No description provided for @installIosStep1.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tarayıcının Paylaş simgesine dokun.'**
+  String get installIosStep1;
+
+  /// No description provided for @installIosStep2.
+  ///
+  /// In tr, this message translates to:
+  /// **'Listeden “Ana Ekrana Ekle”yi seç.'**
+  String get installIosStep2;
+
+  /// No description provided for @installIosStep3.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sağ üstteki “Ekle”ye dokun.'**
+  String get installIosStep3;
+
+  /// No description provided for @installIosDone.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tamam'**
+  String get installIosDone;
 }
 
 class _AppLocalizationsDelegate

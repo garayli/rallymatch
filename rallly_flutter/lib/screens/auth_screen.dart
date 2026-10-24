@@ -7,6 +7,7 @@ import '../widgets/shared_widgets.dart';
 import '../main.dart' show supabase;
 import '../services/data_service.dart';
 import '../l10n/l10n.dart';
+import '../config/supabase_config.dart' show authRedirectUrl;
 
 // ─── Step 1: Enter email ──────────────────────────────────────────────────────
 class AuthEmailScreen extends StatefulWidget {
@@ -60,7 +61,7 @@ class _AuthEmailScreenState extends State<AuthEmailScreen> {
     try {
       await supabase.auth.signInWithOtp(
         email: email,
-        emailRedirectTo: 'io.supabase.rallly://login-callback/',
+        emailRedirectTo: authRedirectUrl,
         shouldCreateUser: widget.isSignUp,
       );
       if (mounted) widget.onOtpSent(email);
@@ -527,8 +528,7 @@ class _AuthOtpScreenState extends State<AuthOtpScreen>
                           try {
                             await supabase.auth.signInWithOtp(
                               email: widget.email,
-                              emailRedirectTo:
-                                  'io.supabase.rallly://login-callback/',
+                              emailRedirectTo: authRedirectUrl,
                               shouldCreateUser: widget.isSignUp,
                             );
                           } on AuthException catch (e) {

@@ -676,5 +676,14 @@
   "matchDetailRespondHint": "Accept or decline from the Notifications tab.",
   "signupNameNeedsSurname": "Enter your first and last name",
   "signupSaveFailed": "Couldn't save your profile, please try again",
-  "emptyPastHint": "Completed matches will show up here"
+  "emptyPastHint": "Completed matches will show up here",
+  "installBannerTitle": "Add RallyMatch to your home screen",
+  "installBannerBody": "Open it in one tap, like an app.",
+  "installBannerAction": "Add",
+  "installBannerDismiss": "Close",
+  "installIosTitle": "Add to Home Screen",
+  "installIosStep1": "Tap your browser's Share icon.",
+  "installIosStep2": "Choose “Add to Home Screen” from the list.",
+  "installIosStep3": "Tap “Add” in the top-right corner.",
+  "installIosDone": "Got it"
 }

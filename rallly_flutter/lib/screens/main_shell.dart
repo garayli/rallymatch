@@ -7,6 +7,7 @@ import '../theme/app_theme.dart';
 import '../theme/design_tokens.dart';
 import '../widgets/shared_widgets.dart';
 import '../widgets/onboarding_overlay.dart';
+import '../widgets/install_banner.dart';
 import '../main.dart' show CourtThemeProvider;
 import 'match_screen.dart';
 import 'messages_screen.dart';
@@ -152,64 +153,70 @@ class _MainShellState extends State<MainShell> with WidgetsBindingObserver {
             )
           : null,
 
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: cp.surface,
-          border: Border(top: BorderSide(color: cp.border)),
-          boxShadow: const [
-            BoxShadow(
-              color: Color(0x10000000),
-              blurRadius: 24,
-              offset: Offset(0, -4),
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const InstallBanner(),
+          Container(
+            decoration: BoxDecoration(
+              color: cp.surface,
+              border: Border(top: BorderSide(color: cp.border)),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color(0x10000000),
+                  blurRadius: 24,
+                  offset: Offset(0, -4),
+                ),
+              ],
             ),
-          ],
-        ),
-        child: SafeArea(
-          top: false,
-          child: SizedBox(
-            height: 64,
-            child: ValueListenableBuilder<int>(
-              valueListenable: dataService.unreadNotifier,
-              builder: (context, unreadCount, _) => Row(
-                children: [
-                  _NavItem(
-                    icon: Icons.sports_tennis_outlined,
-                    activeIcon: Icons.sports_tennis,
-                    label: context.l10n.navFindOpponent,
-                    active: _currentIndex == 0,
-                    cp: cp,
-                    onTap: () => setState(() => _currentIndex = 0),
+            child: SafeArea(
+              top: false,
+              child: SizedBox(
+                height: 64,
+                child: ValueListenableBuilder<int>(
+                  valueListenable: dataService.unreadNotifier,
+                  builder: (context, unreadCount, _) => Row(
+                    children: [
+                      _NavItem(
+                        icon: Icons.sports_tennis_outlined,
+                        activeIcon: Icons.sports_tennis,
+                        label: context.l10n.navFindOpponent,
+                        active: _currentIndex == 0,
+                        cp: cp,
+                        onTap: () => setState(() => _currentIndex = 0),
+                      ),
+                      _NavItem(
+                        icon: Icons.chat_bubble_outline,
+                        activeIcon: Icons.chat_bubble,
+                        label: context.l10n.navMessages,
+                        active: _currentIndex == 1,
+                        cp: cp,
+                        onTap: () => setState(() => _currentIndex = 1),
+                      ),
+                      _NavItem(
+                        icon: Icons.notifications_outlined,
+                        activeIcon: Icons.notifications,
+                        label: context.l10n.navNotifications,
+                        active: _currentIndex == 2,
+                        badge: unreadCount,
+                        cp: cp,
+                        onTap: () => setState(() => _currentIndex = 2),
+                      ),
+                      _NavItem(
+                        icon: Icons.person_outline,
+                        activeIcon: Icons.person,
+                        label: context.l10n.navProfile,
+                        active: _currentIndex == 3,
+                        cp: cp,
+                        onTap: () => setState(() => _currentIndex = 3),
+                      ),
+                    ],
                   ),
-                  _NavItem(
-                    icon: Icons.chat_bubble_outline,
-                    activeIcon: Icons.chat_bubble,
-                    label: context.l10n.navMessages,
-                    active: _currentIndex == 1,
-                    cp: cp,
-                    onTap: () => setState(() => _currentIndex = 1),
-                  ),
-                  _NavItem(
-                    icon: Icons.notifications_outlined,
-                    activeIcon: Icons.notifications,
-                    label: context.l10n.navNotifications,
-                    active: _currentIndex == 2,
-                    badge: unreadCount,
-                    cp: cp,
-                    onTap: () => setState(() => _currentIndex = 2),
-                  ),
-                  _NavItem(
-                    icon: Icons.person_outline,
-                    activeIcon: Icons.person,
-                    label: context.l10n.navProfile,
-                    active: _currentIndex == 3,
-                    cp: cp,
-                    onTap: () => setState(() => _currentIndex = 3),
-                  ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

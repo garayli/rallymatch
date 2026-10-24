@@ -1,4 +1,6 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/widgets.dart';
 
 /// Thin wrapper around FirebaseAnalytics so screens never import the
 /// Firebase package directly. Mirrors the DataService pattern in this repo.
@@ -6,16 +8,25 @@ class AnalyticsService {
   AnalyticsService._();
   static final AnalyticsService instance = AnalyticsService._();
 
-  final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
+  // False when Firebase failed to start (web without a valid config, see
+  // main.dart) — every call is then a no-op.
+  bool get _enabled => Firebase.apps.isNotEmpty;
 
-  FirebaseAnalyticsObserver get observer =>
-      FirebaseAnalyticsObserver(analytics: _analytics);
+  FirebaseAnalytics get _analytics => FirebaseAnalytics.instance;
 
-  Future<void> logEvent(String name, [Map<String, Object>? parameters]) {
-    return _analytics.logEvent(name: name, parameters: parameters);
+  NavigatorObserver get observer => _enabled
+      ? FirebaseAnalyticsObserver(analytics: _analytics)
+      : NavigatorObserver();
+
+  Future<void> logEvent(String name, [Map<String, Object>? parameters]) async {
+    if (!_enabled) return;
+    await _analytics.logEvent(name: name, parameters: parameters);
   }
 
-  Future<void> setUserId(String? id) => _analytics.setUserId(id: id);
+  Future<void> setUserId(String? id) async {
+    if (!_enabled) return;
+    await _analytics.setUserId(id: id);
+  }
 
   // ── Domain-specific events ───────────────────────────────────────────────
 

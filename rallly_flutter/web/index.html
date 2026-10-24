@@ -1,46 +1,111 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
   <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
+    Replaced by the `--base-href` argument of `flutter build web`.
+    Must start and end with a slash "/".
   -->
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>RallyMatch — Tenis Partneri Bul</title>
+  <meta name="description" content="Seviyene uygun tenis partneri bul, maç ayarla, sonuçlarını takip et. RallyMatch ücretsiz; telefonuna uygulama olarak da ekleyebilirsin.">
+  <meta name="theme-color" content="#5A8A00">
 
-  <!-- iOS meta tags & icons -->
+  <!-- Link previews (WhatsApp, X, Facebook…) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="RallyMatch">
+  <meta property="og:title" content="RallyMatch — Tenis Partneri Bul">
+  <meta property="og:description" content="Seviyene uygun tenis partneri bul, maç ayarla, sonuçlarını takip et.">
+  <meta property="og:image" content="icons/Icon-512.png">
+  <meta property="og:locale" content="tr_TR">
+  <meta name="twitter:card" content="summary">
+
+  <!-- iOS: "Ana Ekrana Ekle" -->
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="rallly">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="RallyMatch">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 
-  <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
-
-  <title>rallly</title>
   <link rel="manifest" href="manifest.json">
+
+  <style>
+    html, body { margin: 0; height: 100%; background: #F5F0E8; }
+    @media (prefers-color-scheme: dark) { html, body { background: #0F110D; } }
+    #splash {
+      position: fixed; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 20px;
+      transition: opacity .25s ease;
+    }
+    #splash img { width: 96px; height: 96px; }
+    #splash .bar {
+      width: 72px; height: 3px; border-radius: 2px; overflow: hidden;
+      background: rgba(90, 138, 0, .18);
+    }
+    #splash .bar::after {
+      content: ""; display: block; width: 40%; height: 100%;
+      background: #5A8A00; animation: slide 1s ease-in-out infinite;
+    }
+    @keyframes slide { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+  </style>
+
+  <!--
+    Install bridge for lib/services/pwa_install_web.dart. Chrome/Edge/Android
+    fire `beforeinstallprompt` early — often before Flutter has loaded — so it
+    is captured here and replayed when Dart asks for it.
+  -->
+  <script>
+    (function () {
+      var deferred = null;
+      function notify() { if (window.rallyOnInstallChange) window.rallyOnInstallChange(); }
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        deferred = e;
+        notify();
+      });
+      window.addEventListener('appinstalled', function () { deferred = null; notify(); });
+      window.rallyPwa = {
+        canPrompt: function () { return deferred !== null; },
+        isStandalone: function () {
+          return window.matchMedia('(display-mode: standalone)').matches ||
+                 window.navigator.standalone === true;
+        },
+        // iOS has no install prompt; users add via Safari's Share menu.
+        isIos: function () {
+          var ua = window.navigator.userAgent;
+          return /iPhone|iPad|iPod/.test(ua) ||
+                 (ua.indexOf('Macintosh') !== -1 && navigator.maxTouchPoints > 1);
+        },
+        // Resolves to true when the user accepts the browser's install dialog.
+        prompt: function () {
+          if (!deferred) return Promise.resolve(false);
+          var e = deferred;
+          deferred = null;
+          e.prompt();
+          return e.userChoice.then(function (c) { notify(); return c.outcome === 'accepted'; });
+        }
+      };
+    })();
+  </script>
 </head>
 <body>
-  <!--
-    You can customize the "flutter_bootstrap.js" script.
-    This is useful to provide a custom configuration to the Flutter loader
-    or to give the user feedback during the initialization process.
-
-    For more details:
-    * https://docs.flutter.dev/platform-integration/web/initialization
-  -->
+  <div id="splash" aria-label="RallyMatch yükleniyor">
+    <img src="icons/Icon-192.png" alt="RallyMatch">
+    <div class="bar"></div>
+  </div>
+  <noscript>RallyMatch'i kullanmak için JavaScript'i etkinleştir.</noscript>
+  <script>
+    window.addEventListener('flutter-first-frame', function () {
+      var s = document.getElementById('splash');
+      if (!s) return;
+      s.style.opacity = '0';
+      setTimeout(function () { s.remove(); }, 300);
+    });
+  </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
