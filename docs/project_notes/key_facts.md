@@ -37,11 +37,11 @@ Hosted on **Cloudflare Pages** (free plan, no bandwidth cap). Firebase Hosting w
 | Config | None in the repo. Pages defaults already fit Flutter web: with no top-level `404.html` every unknown path serves `index.html` (GoRouter deep links work), and every file is sent with `Cache-Control: public, max-age=0, must-revalidate` (users get new builds without a hard refresh). Add `web/_headers` only to override that. |
 | One-time setup (done) | Cloudflare account, `npx wrangler login`, Pages project `macagel` with production branch `main`. On a new machine only `npx wrangler login` is needed — plus `lib/firebase_options.dart` (gitignored; `flutterfire configure --project=rallymatch --platforms=android,web`, or copy the `.example` — web then just runs without Analytics), or `flutter build web` fails with `Error when reading 'lib/firebase_options.dart'`. |
 | Deploy | `flutter build web --release && npx wrangler pages deploy build/web --project-name macagel --branch main` (from `rallly_flutter/`). Build locally: Cloudflare's builders don't have Flutter. `--branch main` makes it a production deploy whatever git branch is checked out; another branch name gives a preview URL. |
-| Custom domain | None yet (deferred 2026-10-24; `macagel.com` is taken). When bought — preferably via Cloudflare Registrar, so DNS + SSL are automatic — add it under Workers & Pages → `macagel` → Custom domains, then add it to Supabase and to the browser key's referrers as below. |
+| Custom domain | None yet (deferred 2026-10-24; `macagel.com` is taken). When bought — preferably via Cloudflare Registrar, so DNS + SSL are automatic — add it under Workers & Pages → `macagel` → Custom domains, then add it to Supabase Redirect URLs and to the browser key's Websites restriction. |
 
-Still to do for the web build to work end to end:
-- **Supabase** → Authentication → URL Configuration → Redirect URLs: `https://macagel.pages.dev/**` (production) and `https://*.macagel.pages.dev/**` (per-deploy and preview URLs). Without it, email login on web fails.
-- **Web Analytics** needs a new **browser** API key (the old one was deleted, see below): Cloud Console → Credentials → Create API key; Websites restriction `https://macagel.pages.dev/*` + `https://*.macagel.pages.dev/*`; API restriction Firebase Installations API + Firebase Management API. Put it in `web.apiKey` of the local `lib/firebase_options.dart`, then rebuild and deploy. Until then `main.dart` skips Firebase on web and Analytics no-ops; the app itself works.
+Web setup state (2026-10-24, verified: Analytics Realtime showed the visit):
+- **Supabase** → Authentication → URL Configuration → Redirect URLs has `https://macagel.pages.dev/**` (production) and `https://*.macagel.pages.dev/**` (per-deploy and preview URLs). Without them, email login on web fails.
+- **Web Analytics** uses the browser key `Browser key (macagel.pages.dev)` (see below). It lives only in `web.apiKey` of the local, gitignored `lib/firebase_options.dart` — on a new machine `flutterfire configure` writes a different web key, so paste this one back from Cloud Console → Credentials → Show key before deploying. Check which key a build carries: `grep -o "AIza[0-9A-Za-z_-]\{35\}" build/web/main.dart.js` (only the web key is compiled in). With a missing or invalid key `main.dart` skips Firebase on web and Analytics no-ops; the app itself works.
 
 ### API key restrictions
 
@@ -51,7 +51,8 @@ Firebase client keys aren't real secrets, but they must be restricted so a key c
 |-----|-------|
 | Android | active — restricted to package `com.rallymatch.app` + the debug and upload SHA-1s |
 | iOS | **deleted 2026-09-21** (was unrestricted and exposed in commit `489ab8f`). No iOS Xcode project existed. |
-| Browser | **deleted 2026-09-21** (same reason). No web domain existed; `flutter run -d chrome` has no working Firebase key until a new one is created. |
+| Browser (old) | **deleted 2026-09-21** (same reason). |
+| Browser `Browser key (macagel.pages.dev)` | active since 2026-10-24 — Websites restriction `https://macagel.pages.dev/*` + `https://*.macagel.pages.dev/*`, APIs Firebase Installations + Firebase Management. Not valid from `localhost`, so `flutter run -d chrome` runs without Analytics unless `http://localhost/*` is added. |
 
 Deleted keys can be restored for ~30 days with `gcloud services api-keys undelete`. When iOS or web is set up, create a **new** key restricted from day one (iOS bundle ID / HTTP referrers), via `flutterfire configure` or the Console, and never reuse the deleted ones (they are in git history).
 
