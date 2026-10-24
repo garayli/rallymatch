@@ -31,12 +31,17 @@ Project configuration, credentials, and constants.
 
 | Item | Value |
 |------|-------|
-| Site | `macagel` → https://macagel.web.app (Spark/free plan; the default `rallymatch.web.app` site is left unused) |
-| Config | `rallly_flutter/firebase.json` → `hosting` (serves `build/web`, SPA rewrite to `index.html` for GoRouter, `no-cache` on `index.html` / service worker / bootstrap / manifest) + `rallly_flutter/.firebaserc` |
-| One-time setup | Create the site: `firebase hosting:sites:create macagel` (or Console → Hosting → Add another site) |
-| Deploy | `flutter build web --release && firebase deploy --only hosting` (from `rallly_flutter/`) |
+Hosted on **Cloudflare Pages**, not Firebase Hosting (Firebase asked for the Blaze plan).
 
-Before the web build works end to end: create a new **browser** API key restricted to `https://macagel.web.app/*` (see below), and add `https://macagel.web.app` to Supabase → Authentication → URL Configuration (Site URL / Redirect URLs).
+| Item | Value |
+|------|-------|
+| Project | `macagel` → https://macagel.pages.dev (free plan, Direct Upload) |
+| One-time setup | `npx wrangler login`, then `npx wrangler pages project create macagel --production-branch=main` |
+| Deploy | `flutter build web --release && npx wrangler pages deploy build/web --project-name=macagel` (from `rallly_flutter/`) |
+
+Built locally, not by Cloudflare's Git integration: its build image has no Flutter, and `lib/firebase_options.dart` is gitignored, so a CI build would fail. A Direct Upload project can't be switched to Git integration later. No config file needed: with no top-level `404.html`, Pages serves `index.html` for unknown paths (GoRouter deep links survive a refresh), and its default `Cache-Control: max-age=0, must-revalidate` keeps the service worker and `index.html` fresh.
+
+Before the web build works end to end: create a new **browser** API key restricted to `https://macagel.pages.dev/*` (see below), and add `https://macagel.pages.dev` to Supabase → Authentication → URL Configuration (Site URL / Redirect URLs).
 
 ### API key restrictions
 
