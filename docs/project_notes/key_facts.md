@@ -40,7 +40,7 @@ Before the web build works end to end: create a new **browser** API key restrict
 
 #### Connecting kortagel.com (one-time)
 
-Custom domains and their SSL certificates are free on the Spark plan — no Blaze upgrade needed.
+Custom domains and their SSL certificates are free on the Spark plan — no Blaze upgrade needed. Use **Hosting** (Build → Hosting), not **App Hosting**: App Hosting is for server-rendered apps and asks for Blaze; this static Flutter build doesn't need it.
 
 1. Firebase Console → Hosting → site `rallymatch` → **Add custom domain** → `kortagel.com`. Firebase shows a TXT record (ownership) and A record(s) — add them at the registrar's DNS panel, deleting any existing A/AAAA/parking records for `@`.
 2. Add custom domain again → `www.kortagel.com` → choose **Redirect to kortagel.com**; add the CNAME/A records it shows.
