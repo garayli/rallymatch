@@ -21,11 +21,12 @@
     }
   },
   "hosting": {
-    "target": "macagel",
+    "site": "macagel",
     "public": "build/web",
     "ignore": [
       "firebase.json",
-      "**/.*"
+      "**/.*",
+      "**/node_modules/**"
     ],
     "rewrites": [
       {
@@ -35,7 +36,43 @@
     ],
     "headers": [
       {
-        "source": "/@(index.html|flutter_bootstrap.js|main.dart.js|flutter_service_worker.js|manifest.json|version.json)",
+        "source": "/index.html",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      },
+      {
+        "source": "/flutter_service_worker.js",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      },
+      {
+        "source": "/flutter_bootstrap.js",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      },
+      {
+        "source": "/manifest.json",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      },
+      {
+        "source": "/version.json",
         "headers": [
           {
             "key": "Cache-Control",

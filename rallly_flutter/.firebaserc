@@ -1,14 +1,5 @@
 {
   "projects": {
     "default": "rallymatch"
-  },
-  "targets": {
-    "rallymatch": {
-      "hosting": {
-        "macagel": [
-          "macagel"
-        ]
-      }
-    }
   }
 }
