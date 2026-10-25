@@ -16,6 +16,7 @@ import 'open_lobby_screen.dart';
 import 'games_screen.dart';
 import '../widgets/match_detail_sheet.dart';
 import '../widgets/lobby_manage_sheet.dart';
+import '../widgets/rally_primitives.dart';
 import '../utils/lobby_state.dart';
 import '../l10n/data_error_message.dart';
 import '../l10n/l10n.dart';
@@ -316,25 +317,7 @@ class _Wordmark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(children: [
-        TextSpan(
-          text: 'Rall',
-          style: TextStyle(
-              fontFamily: 'InstrumentSerif', fontSize: 24, color: cp.accent)),
-        TextSpan(
-          text: 'l',
-          style: TextStyle(
-              fontFamily: 'InstrumentSerif',
-              fontSize: 24,
-              color: cp.text,
-              fontStyle: FontStyle.italic)),
-        TextSpan(
-          text: 'y',
-          style: TextStyle(
-              fontFamily: 'InstrumentSerif', fontSize: 24, color: cp.accent)),
-      ]),
-    );
+    return RallyWordmark(accent: cp.accent, ink: cp.highlight);
   }
 }
 

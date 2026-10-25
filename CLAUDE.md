@@ -26,7 +26,7 @@ flutter test test/widget_test.dart      # run a single test file
 
 **Lessons (non-obvious):** `Firebase.initializeApp` in `main.dart` must tolerate `duplicate-app` — with `google-services.json` present Android creates `[DEFAULT]` natively, and an uncaught throw there means a blank screen. Each dev machine needs its own debug SHA-1 on the Android API key (403 `API_KEY_ANDROID_APP_BLOCKED` otherwise). Flutter isn't on PATH by default (`~/development/flutter/bin`). Details in `docs/project_notes/bugs.md`.
 
-**Web / PWA:** `flutter build web` → `build/web` (add `--no-web-resources-cdn` to self-host CanvasKit). On web Firebase is analytics-only: `main.dart` gives `initializeApp` a 4s timeout because when the SDK can't load from gstatic (ad blockers) it never completes and the app sticks on the splash; `analyticsService` then no-ops. "Add to home screen" = `InstallBanner` (`lib/widgets/install_banner.dart`) above the bottom nav, bridged to `window.rallyPwa` in `web/index.html` via `lib/services/pwa_install.dart` (stub on native). Supabase redirect URLs must include the web origin (`authRedirectUrl` in `supabase_config.dart`).
+**Web / PWA:** `flutter build web` → `build/web` (add `--no-web-resources-cdn` to self-host CanvasKit). On web Firebase is analytics-only: `main.dart` gives `initializeApp` a 4s timeout because when the SDK can't load from gstatic (ad blockers) it never completes and the app sticks on the splash; `analyticsService` then no-ops. "Add to home screen" = `InstallBanner` (`lib/widgets/install_banner.dart`) above the bottom nav, bridged to `window.rallyPwa` in `web/index.html` via `lib/services/pwa_install.dart` (stub on native). Supabase redirect URLs must include the web origin (`authRedirectUrl` in `supabase_config.dart`). Hosted on Firebase Hosting as **macagel.web.app** (site `macagel` in `firebase.json`; visible name "Maça gel!"): `flutter build web --release && firebase deploy --only hosting` — setup steps in `docs/project_notes/key_facts.md` → Web hosting.
 
 ## Architecture
 
@@ -94,10 +94,13 @@ Plain `StatefulWidget` + `setState`. For cross-screen reactive state, use `Value
 
 All colours are in `RallyColors` (static consts). `RallyTheme.light` / `RallyTheme.dark` produce `ThemeData`.
 
-Colour palette key:
-- `accent` (#5A8A00) — tennis ball green, primary CTA
+Colour palette key (navy & gold, matching the club-crest app icon in `docs/brand/`):
+- `accent` (#1E3A5F) — club navy, primary CTA
+- `accent3` (#D9A441) / `gold` (#B8862B) — crest gold on dark / on light backgrounds
 - `accent2` (#C8431A) — clay red, destructive/secondary
-- Background: cream (`#F5F0E8` light) / near-black (`#0F110D` dark)
+- Background: cream (`#F5F0E8` light) / navy-black (`#0A1220` dark)
+
+Screens mostly read `CourtPalette.of(context)`: `club` (navy & gold) is the default; `clay` / `hard` / `grass` remain selectable under Profile → Kort Teması (saved in prefs key `court_theme`).
 
 Typography: **InstrumentSerif** (local font, `assets/fonts/`) for display/headline styles; **Plus Jakarta Sans** (Google Fonts) for body text. The font files must be downloaded from Google Fonts and placed in `assets/fonts/`.
 

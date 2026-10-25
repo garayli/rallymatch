@@ -9,7 +9,7 @@ class AppLocalizationsTr extends AppLocalizations {
   AppLocalizationsTr([String locale = 'tr']) : super(locale);
 
   @override
-  String get appName => 'RallyMatch';
+  String get appName => 'Maça gel!';
 
   @override
   String get sportTennis => 'Tenis';
@@ -90,6 +90,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get timeEvening => 'Akşam';
 
   @override
+  String get courtThemeClub => 'Kulüp';
+
+  @override
   String get courtThemeClay => 'Toprak';
 
   @override
@@ -155,6 +158,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get courtThemeSubtitle => 'Uygulamanın renk temasını seç';
+
+  @override
+  String get courtThemeClubSub => 'Lacivert & altın';
 
   @override
   String get courtThemeClaySub => 'Roland-Garros tarzı';
@@ -279,7 +285,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get notificationsSub => 'Maç istekleri, hatırlatmalar';
 
   @override
-  String get courtThemeOptions => 'Toprak / Sert Kort / Çim';
+  String get courtThemeOptions => 'Kulüp / Toprak / Sert Kort / Çim';
 
   @override
   String get privacySecurity => 'Gizlilik ve Güvenlik';
@@ -1306,7 +1312,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get sendInviteButton => 'Davetiye Gönder 🎾';
 
   @override
-  String get shareText => 'Rallly\'de maç sonucum 🎾';
+  String get shareText => 'Maç sonucum — Maça gel! 🎾';
 
   @override
   String get shareFailed => 'Paylaşılamadı. Tekrar deneyin.';
@@ -1457,7 +1463,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get emptyPastHint => 'Tamamlanan maçların burada görünür';
 
   @override
-  String get installBannerTitle => 'RallyMatch\'i ana ekrana ekle';
+  String get installBannerTitle => 'Maça gel! uygulamasını yükle';
 
   @override
   String get installBannerBody => 'Uygulama gibi tek dokunuşla aç.';

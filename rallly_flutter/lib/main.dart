@@ -55,11 +55,12 @@ final supabase = Supabase.instance.client;
 
 // ── Court palette notifier ────────────────────────────────────────────────────
 class CourtThemeNotifier extends ValueNotifier<CourtPalette> {
-  CourtThemeNotifier() : super(CourtPalette.grass);
+  CourtThemeNotifier() : super(CourtPalette.club);
 
   static const _prefsKey = 'court_theme';
 
   static const _byName = {
+    'club': CourtPalette.club,
     'clay': CourtPalette.clay,
     'hard': CourtPalette.hard,
     'grass': CourtPalette.grass,
@@ -69,7 +70,7 @@ class CourtThemeNotifier extends ValueNotifier<CourtPalette> {
   Future<void> load() async {
     final prefs = await SharedPreferences.getInstance();
     final saved = prefs.getString(_prefsKey);
-    super.value = _byName[saved] ?? CourtPalette.grass;
+    super.value = _byName[saved] ?? CourtPalette.club;
   }
 
   @override

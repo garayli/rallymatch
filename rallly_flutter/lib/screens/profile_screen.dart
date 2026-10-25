@@ -560,7 +560,7 @@ class _ProfileScreenState extends State<ProfileScreen>
             Text(context.l10n.courtThemeSubtitle,
               style: RallyType.bodySM.copyWith(color: current.text2)),
             const SizedBox(height: 20),
-            ...([CourtPalette.clay, CourtPalette.hard, CourtPalette.grass])
+            ...([CourtPalette.club, CourtPalette.clay, CourtPalette.hard, CourtPalette.grass])
               .map((palette) {
                 final isActive = courtThemeNotifier.value.theme == palette.theme;
                 return GestureDetector(
@@ -598,6 +598,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 color: palette.text)),
                             Text(
                               switch (palette.theme) {
+                                CourtTheme.club => context.l10n.courtThemeClubSub,
                                 CourtTheme.clay => context.l10n.courtThemeClaySub,
                                 CourtTheme.hard => context.l10n.courtThemeHardSub,
                                 CourtTheme.grass => context.l10n.courtThemeGrassSub,

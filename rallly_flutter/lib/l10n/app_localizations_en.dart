@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appName => 'RallyMatch';
+  String get appName => 'Maça gel!';
 
   @override
   String get sportTennis => 'Tennis';
@@ -90,6 +90,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get timeEvening => 'Evening';
 
   @override
+  String get courtThemeClub => 'Club';
+
+  @override
   String get courtThemeClay => 'Clay';
 
   @override
@@ -155,6 +158,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get courtThemeSubtitle => 'Choose the app\'s color theme';
+
+  @override
+  String get courtThemeClubSub => 'Navy & gold';
 
   @override
   String get courtThemeClaySub => 'Roland-Garros style';
@@ -279,7 +285,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notificationsSub => 'Match requests, reminders';
 
   @override
-  String get courtThemeOptions => 'Clay / Hard court / Grass';
+  String get courtThemeOptions => 'Club / Clay / Hard court / Grass';
 
   @override
   String get privacySecurity => 'Privacy & Security';
@@ -1309,7 +1315,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sendInviteButton => 'Send Invitation 🎾';
 
   @override
-  String get shareText => 'My match result on Rallly 🎾';
+  String get shareText => 'My match result — Maça gel! 🎾';
 
   @override
   String get shareFailed => 'Couldn\'t share. Please try again.';
@@ -1466,7 +1472,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get emptyPastHint => 'Completed matches will show up here';
 
   @override
-  String get installBannerTitle => 'Add RallyMatch to your home screen';
+  String get installBannerTitle => 'Install the Maça gel! app';
 
   @override
   String get installBannerBody => 'Open it in one tap, like an app.';

@@ -77,6 +77,7 @@ String timeLabel(AppLocalizations l, String v) => switch (v) {
     };
 
 String courtThemeLabel(AppLocalizations l, CourtTheme t) => switch (t) {
+      CourtTheme.club => l.courtThemeClub,
       CourtTheme.clay => l.courtThemeClay,
       CourtTheme.hard => l.courtThemeHard,
       CourtTheme.grass => l.courtThemeGrass,

@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../config/profile_options.dart';
 import '../theme/app_theme.dart';
 import '../widgets/shared_widgets.dart';
+import '../widgets/rally_primitives.dart';
 import '../main.dart' show supabase;
 import '../utils/initials.dart';
 import '../l10n/l10n.dart';
@@ -135,24 +136,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   else
                     const SizedBox(width: 48),
                   const Spacer(),
-                  RichText(
-                    text: const TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'Rall',
-                          style: TextStyle(fontFamily: 'InstrumentSerif', fontSize: 22, color: RallyColors.accent),
-                        ),
-                        TextSpan(
-                          text: 'l',
-                          style: TextStyle(fontFamily: 'InstrumentSerif', fontSize: 22, color: RallyColors.textPrimary, fontStyle: FontStyle.italic),
-                        ),
-                        TextSpan(
-                          text: 'y',
-                          style: TextStyle(fontFamily: 'InstrumentSerif', fontSize: 22, color: RallyColors.accent),
-                        ),
-                      ],
-                    ),
-                  ),
+                  const RallyWordmark(size: 22),
                   const Spacer(),
                   Text(
                     '${_step + 1}/4',

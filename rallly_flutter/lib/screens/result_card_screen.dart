@@ -5,6 +5,7 @@ import 'package:share_plus/share_plus.dart';
 import 'dart:ui' as ui;
 import '../theme/app_theme.dart';
 import '../widgets/shared_widgets.dart';
+import '../widgets/rally_primitives.dart';
 import '../models/models.dart';
 import '../l10n/l10n.dart';
 
@@ -60,7 +61,7 @@ class _ResultCardScreenState extends State<ResultCardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A1F14),
+      backgroundColor: const Color(0xFF0A1220),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: IconButton(
@@ -145,7 +146,7 @@ class _ResultCard extends StatelessWidget {
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFF1A2818), Color(0xFF0F1A0C), Color(0xFF0A1208)],
+          colors: [Color(0xFF1E3A5F), Color(0xFF12243D), Color(0xFF0A1628)],
         ),
         borderRadius: BorderRadius.circular(28),
         border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
@@ -158,10 +159,8 @@ class _ResultCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Rallly',
-                style: TextStyle(fontFamily: 'InstrumentSerif', fontSize: 20, color: RallyColors.accent3, letterSpacing: -0.5),
-              ),
+              const RallyWordmark(
+                  size: 20, accent: RallyColors.accent3, ink: Colors.white),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
                 decoration: BoxDecoration(
