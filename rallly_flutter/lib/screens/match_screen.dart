@@ -317,7 +317,7 @@ class _Wordmark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RallyWordmark(accent: cp.accent, ink: cp.text);
+    return RallyWordmark(accent: cp.accent, ink: cp.highlight);
   }
 }
 

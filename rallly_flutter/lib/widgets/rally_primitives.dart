@@ -239,7 +239,7 @@ class RallyAppBar extends StatelessWidget {
 }
 
 // ─── RallyWordmark ───────────────────────────────────────────────────────────
-/// "Maça *gel!*" logo: upright accent-coloured "Maça", italic "gel!" in [ink].
+/// "Maça *gel!*" logo: upright [accent] "Maça", italic "gel!" in [ink] (gold).
 class RallyWordmark extends StatelessWidget {
   final double size;
   final Color accent;
@@ -248,7 +248,7 @@ class RallyWordmark extends StatelessWidget {
     super.key,
     this.size = 24,
     this.accent = RallyColors.accent,
-    this.ink = RallyColors.textPrimary,
+    this.ink = RallyColors.gold,
   });
 
   @override

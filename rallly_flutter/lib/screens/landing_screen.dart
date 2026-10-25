@@ -31,9 +31,9 @@ class LandingScreen extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Color(0xFF2A1F14),
-                  Color(0xFF3D2B1A),
-                  Color(0xFF2A1F14),
+                  Color(0xFF0A1628),
+                  Color(0xFF1E3A5F),
+                  Color(0xFF0A1628),
                 ],
               ),
             ),
@@ -59,7 +59,7 @@ class LandingScreen extends StatelessWidget {
                     children: [
                       const RallyWordmark(
                           size: 28,
-                          accent: Color(0xFF8DB600),
+                          accent: RallyColors.accent3,
                           ink: Colors.white),
                       const Spacer(),
                       TextButton(

@@ -260,6 +260,12 @@ abstract class AppLocalizations {
   /// **'Akşam'**
   String get timeEvening;
 
+  /// No description provided for @courtThemeClub.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kulüp'**
+  String get courtThemeClub;
+
   /// No description provided for @courtThemeClay.
   ///
   /// In tr, this message translates to:
@@ -385,6 +391,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Uygulamanın renk temasını seç'**
   String get courtThemeSubtitle;
+
+  /// No description provided for @courtThemeClubSub.
+  ///
+  /// In tr, this message translates to:
+  /// **'Lacivert & altın'**
+  String get courtThemeClubSub;
 
   /// No description provided for @courtThemeClaySub.
   ///
@@ -617,7 +629,7 @@ abstract class AppLocalizations {
   /// No description provided for @courtThemeOptions.
   ///
   /// In tr, this message translates to:
-  /// **'Toprak / Sert Kort / Çim'**
+  /// **'Kulüp / Toprak / Sert Kort / Çim'**
   String get courtThemeOptions;
 
   /// No description provided for @privacySecurity.

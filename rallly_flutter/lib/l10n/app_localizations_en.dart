@@ -90,6 +90,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get timeEvening => 'Evening';
 
   @override
+  String get courtThemeClub => 'Club';
+
+  @override
   String get courtThemeClay => 'Clay';
 
   @override
@@ -155,6 +158,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get courtThemeSubtitle => 'Choose the app\'s color theme';
+
+  @override
+  String get courtThemeClubSub => 'Navy & gold';
 
   @override
   String get courtThemeClaySub => 'Roland-Garros style';
@@ -279,7 +285,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notificationsSub => 'Match requests, reminders';
 
   @override
-  String get courtThemeOptions => 'Clay / Hard court / Grass';
+  String get courtThemeOptions => 'Club / Clay / Hard court / Grass';
 
   @override
   String get privacySecurity => 'Privacy & Security';

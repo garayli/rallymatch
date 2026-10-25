@@ -94,10 +94,13 @@ Plain `StatefulWidget` + `setState`. For cross-screen reactive state, use `Value
 
 All colours are in `RallyColors` (static consts). `RallyTheme.light` / `RallyTheme.dark` produce `ThemeData`.
 
-Colour palette key:
-- `accent` (#5A8A00) — tennis ball green, primary CTA
+Colour palette key (navy & gold, matching the club-crest app icon in `docs/brand/`):
+- `accent` (#1E3A5F) — club navy, primary CTA
+- `accent3` (#D9A441) / `gold` (#B8862B) — crest gold on dark / on light backgrounds
 - `accent2` (#C8431A) — clay red, destructive/secondary
-- Background: cream (`#F5F0E8` light) / near-black (`#0F110D` dark)
+- Background: cream (`#F5F0E8` light) / navy-black (`#0A1220` dark)
+
+Screens mostly read `CourtPalette.of(context)`: `club` (navy & gold) is the default; `clay` / `hard` / `grass` remain selectable under Profile → Kort Teması (saved in prefs key `court_theme`).
 
 Typography: **InstrumentSerif** (local font, `assets/fonts/`) for display/headline styles; **Plus Jakarta Sans** (Google Fonts) for body text. The font files must be downloaded from Google Fonts and placed in `assets/fonts/`.
 

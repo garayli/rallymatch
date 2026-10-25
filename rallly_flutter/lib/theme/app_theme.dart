@@ -12,11 +12,12 @@ class RallyColors {
   static const border = Color(0xFFE0D8CC);
   static const border2 = Color(0xFFD4C8B8);
 
-  static const accent = Color(0xFF5A8A00);       // tennis ball green
-  static const accentLight = Color(0xFFF0EBE0);
+  static const accent = Color(0xFF1E3A5F);       // club navy
+  static const accentLight = Color(0xFFE6EBF2);
   static const accent2 = Color(0xFFC8431A);       // clay red
   static const accent2Light = Color(0xFFFEF2EE);
-  static const accent3 = Color(0xFF8DB600);       // bright yellow-green
+  static const accent3 = Color(0xFFD9A441);       // crest gold (on dark)
+  static const gold = Color(0xFFB8862B);          // crest gold (on light)
 
   static const textPrimary = Color(0xFF111827);
   static const textSecondary = Color(0xFF4B5563);
@@ -24,15 +25,15 @@ class RallyColors {
   static const muted2 = Color(0xFFD1D5DB);
 
   // Dark mode
-  static const darkBg = Color(0xFF0F110D);
-  static const darkSurface = Color(0xFF181C14);
-  static const darkSurface2 = Color(0xFF1F2418);
-  static const darkBorder = Color(0xFF2A3020);
-  static const darkBorder2 = Color(0xFF364030);
-  static const darkAccent = Color(0xFF8DB600);
-  static const darkText = Color(0xFFF1F5E8);
-  static const darkText2 = Color(0xFFA0AA88);
-  static const darkMuted = Color(0xFF5A6448);
+  static const darkBg = Color(0xFF0A1220);
+  static const darkSurface = Color(0xFF111B2C);
+  static const darkSurface2 = Color(0xFF172338);
+  static const darkBorder = Color(0xFF22304A);
+  static const darkBorder2 = Color(0xFF2E3E5C);
+  static const darkAccent = Color(0xFFD9A441);
+  static const darkText = Color(0xFFEEF1F6);
+  static const darkText2 = Color(0xFFA3AEC2);
+  static const darkMuted = Color(0xFF5E6B84);
 
   // Skill level pill colours
   static const skillAdvBg = Color(0xFFEAF5D3);
@@ -56,7 +57,7 @@ class RallyTheme {
     final colorScheme = ColorScheme(
       brightness: brightness,
       primary: isDark ? RallyColors.darkAccent : RallyColors.accent,
-      onPrimary: Colors.white,
+      onPrimary: isDark ? RallyColors.accent : Colors.white,
       secondary: RallyColors.accent2,
       onSecondary: Colors.white,
       error: RallyColors.accent2,
@@ -142,7 +143,7 @@ class RallyTheme {
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           backgroundColor: isDark ? RallyColors.darkAccent : RallyColors.accent,
-          foregroundColor: Colors.white,
+          foregroundColor: isDark ? RallyColors.accent : Colors.white,
           textStyle: GoogleFonts.plusJakartaSans(
             fontSize: 14, fontWeight: FontWeight.w600,
           ),
@@ -214,10 +215,10 @@ class RallyTheme {
 }
 
 // ─── Court Palette System ─────────────────────────────────────────────────────
-// Three court-type themes (Clay / Hard / Grass) translated from the V2
+// Club (default, navy & gold from the app icon) plus three court-type themes (Clay / Hard / Grass) translated from the V2
 // HTML prototype's CSS variables. Screens read these via CourtPalette.of(context).
 
-enum CourtTheme { clay, hard, grass }
+enum CourtTheme { club, clay, hard, grass }
 
 class CourtPalette {
   final CourtTheme theme;
@@ -263,6 +264,29 @@ class CourtPalette {
     required this.skillBg,
     required this.skillFg,
   });
+
+  static const CourtPalette club = CourtPalette._(
+    theme: CourtTheme.club,
+    bg:           Color(0xFFF6F2EA),
+    surface:      Color(0xFFFFFFFF),
+    surfaceSoft:  Color(0xFFEAE5DA),
+    border:       Color(0xFFDCD5C6),
+    border2:      Color(0xFFBFB6A2),
+    accent:       Color(0xFF1E3A5F),
+    accentStrong: Color(0xFF0F2440),
+    accentSoft:   Color(0xFFC9D3E3),
+    accentTint:   Color(0xFFE3E9F2),
+    highlight:    Color(0xFFB8862B),
+    highlightTint:Color(0xFFF5E7C6),
+    text:         Color(0xFF0E1A2B),
+    text2:        Color(0xFF3A4A60),
+    muted:        Color(0xFF7D8494),
+    muted2:       Color(0xFFBFB6A2),
+    gradA:        Color(0xFF24456F),
+    gradB:        Color(0xFF0A1628),
+    skillBg:      Color(0xFFF5E7C6),
+    skillFg:      Color(0xFF7A5512),
+  );
 
   static const CourtPalette clay = CourtPalette._(
     theme: CourtTheme.clay,

@@ -7,14 +7,14 @@ class AchievementsScreen extends StatelessWidget {
   const AchievementsScreen({super.key});
 
   static List<_Badge> _badges(AppLocalizations l) => [
-    _Badge(icon: '🎾', title: l.badgeFirstMatch, desc: l.badgeFirstMatchDesc, earned: true, color: const Color(0xFF5A8A00)),
+    _Badge(icon: '🎾', title: l.badgeFirstMatch, desc: l.badgeFirstMatchDesc, earned: true, color: RallyColors.accent),
     _Badge(icon: '🔥', title: l.badgeWinStreak, desc: l.badgeWinStreakDesc, earned: true, color: const Color(0xFFC8431A)),
     _Badge(icon: '⭐', title: l.badgeFiveStar, desc: l.badgeFiveStarDesc, earned: true, color: const Color(0xFFFFD700)),
     _Badge(icon: '🤝', title: l.badgeSocialButterfly, desc: l.badgeSocialButterflyDesc, earned: true, color: const Color(0xFF7B4FA6)),
     _Badge(icon: '📅', title: l.badgeRegularPlayer, desc: l.badgeRegularPlayerDesc, earned: true, color: const Color(0xFF1A7ABF)),
-    _Badge(icon: '🏆', title: l.badgeChampion, desc: l.badgeChampionDesc, earned: true, color: const Color(0xFF8DB600)),
+    _Badge(icon: '🏆', title: l.badgeChampion, desc: l.badgeChampionDesc, earned: true, color: RallyColors.gold),
     _Badge(icon: '⚡', title: l.badgeQuickReply, desc: l.badgeQuickReplyDesc, earned: true, color: const Color(0xFFC8431A)),
-    _Badge(icon: '🌍', title: l.badgeExplorer, desc: l.badgeExplorerDesc, earned: true, color: const Color(0xFF5A8A00)),
+    _Badge(icon: '🌍', title: l.badgeExplorer, desc: l.badgeExplorerDesc, earned: true, color: RallyColors.accent),
     _Badge(icon: '💬', title: l.badgeCommunicator, desc: l.badgeCommunicatorDesc, earned: true, color: const Color(0xFF7B4FA6)),
     _Badge(icon: '🎯', title: l.badgeSharpshooter, desc: l.badgeSharpshooterDesc, earned: true, color: const Color(0xFF1A7ABF)),
     _Badge(icon: '📸', title: l.badgeSharer, desc: l.badgeSharerDesc, earned: true, color: const Color(0xFFFFD700)),

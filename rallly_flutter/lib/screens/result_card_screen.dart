@@ -61,7 +61,7 @@ class _ResultCardScreenState extends State<ResultCardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A1F14),
+      backgroundColor: const Color(0xFF0A1220),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: IconButton(
@@ -146,7 +146,7 @@ class _ResultCard extends StatelessWidget {
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFF1A2818), Color(0xFF0F1A0C), Color(0xFF0A1208)],
+          colors: [Color(0xFF1E3A5F), Color(0xFF12243D), Color(0xFF0A1628)],
         ),
         borderRadius: BorderRadius.circular(28),
         border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
