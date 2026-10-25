@@ -21,7 +21,7 @@
     }
   },
   "hosting": {
-    "site": "macagel",
+    "site": "rallymatch",
     "public": "build/web",
     "ignore": [
       "firebase.json",
