@@ -101,7 +101,7 @@ abstract class AppLocalizations {
   /// No description provided for @appName.
   ///
   /// In tr, this message translates to:
-  /// **'Maça gel!'**
+  /// **'Korta gel!'**
   String get appName;
 
   /// No description provided for @sportTennis.
@@ -2495,7 +2495,7 @@ abstract class AppLocalizations {
   /// No description provided for @shareText.
   ///
   /// In tr, this message translates to:
-  /// **'Maç sonucum — Maça gel! 🎾 kortagel.com'**
+  /// **'Maç sonucum — Korta gel! 🎾 kortagel.com'**
   String get shareText;
 
   /// No description provided for @shareFailed.
@@ -2777,7 +2777,7 @@ abstract class AppLocalizations {
   /// No description provided for @installBannerTitle.
   ///
   /// In tr, this message translates to:
-  /// **'Maça gel! uygulamasını yükle'**
+  /// **'Korta gel! uygulamasını yükle'**
   String get installBannerTitle;
 
   /// No description provided for @installBannerBody.

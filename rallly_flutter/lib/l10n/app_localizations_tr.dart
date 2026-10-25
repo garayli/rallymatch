@@ -9,7 +9,7 @@ class AppLocalizationsTr extends AppLocalizations {
   AppLocalizationsTr([String locale = 'tr']) : super(locale);
 
   @override
-  String get appName => 'Maça gel!';
+  String get appName => 'Korta gel!';
 
   @override
   String get sportTennis => 'Tenis';
@@ -1312,7 +1312,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get sendInviteButton => 'Davetiye Gönder 🎾';
 
   @override
-  String get shareText => 'Maç sonucum — Maça gel! 🎾 kortagel.com';
+  String get shareText => 'Maç sonucum — Korta gel! 🎾 kortagel.com';
 
   @override
   String get shareFailed => 'Paylaşılamadı. Tekrar deneyin.';
@@ -1463,7 +1463,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get emptyPastHint => 'Tamamlanan maçların burada görünür';
 
   @override
-  String get installBannerTitle => 'Maça gel! uygulamasını yükle';
+  String get installBannerTitle => 'Korta gel! uygulamasını yükle';
 
   @override
   String get installBannerBody => 'Uygulama gibi tek dokunuşla aç.';

@@ -41,6 +41,8 @@ Before the web build works end to end: create a new **browser** API key restrict
 
 #### Connecting kortagel.com (one-time)
 
+Custom domains and their SSL certificates are free on the Spark plan — no Blaze upgrade needed. The site ID `macagel` can't be renamed (it predates the "Korta gel!" rename); it only shows up in the fallback `macagel.web.app` URL.
+
 1. Firebase Console → Hosting → site `macagel` → **Add custom domain** → `kortagel.com`. Firebase shows a TXT record (ownership) and A record(s) — add them at the registrar's DNS panel, deleting any existing A/AAAA/parking records for `@`.
 2. Add custom domain again → `www.kortagel.com` → choose **Redirect to kortagel.com**; add the CNAME/A records it shows.
 3. Wait for status "Connected" (DNS can take up to 24h; the SSL certificate is issued automatically afterwards).

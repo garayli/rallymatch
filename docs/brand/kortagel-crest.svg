@@ -37,7 +37,7 @@
   <circle cx="512" cy="512" r="395" fill="none" stroke="url(#gold)" stroke-width="3"/>
   <circle cx="512" cy="512" r="265" fill="none" stroke="url(#gold)" stroke-width="3"/>
   <g font-family="Instrument Serif, serif" font-size="70" letter-spacing="14" fill="#F7D98B" text-anchor="middle">
-    <text><textPath href="#top" startOffset="50%">MAÇA GEL!</textPath></text>
+    <text><textPath href="#top" startOffset="50%">KORTA GEL!</textPath></text>
     <text><textPath href="#bottom" startOffset="50%">TENİS KULÜBÜ</textPath></text>
   </g>
   <g fill="#F7D98B">

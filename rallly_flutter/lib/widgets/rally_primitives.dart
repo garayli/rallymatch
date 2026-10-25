@@ -239,7 +239,7 @@ class RallyAppBar extends StatelessWidget {
 }
 
 // ─── RallyWordmark ───────────────────────────────────────────────────────────
-/// "Maça *gel!*" logo: upright [accent] "Maça", italic "gel!" in [ink] (gold).
+/// "Korta *gel!*" logo: upright [accent] "Korta", italic "gel!" in [ink] (gold).
 class RallyWordmark extends StatelessWidget {
   final double size;
   final Color accent;
@@ -260,12 +260,12 @@ class RallyWordmark extends StatelessWidget {
       letterSpacing: -0.5,
     );
     return Semantics(
-      label: 'Maça gel!',
+      label: 'Korta gel!',
       excludeSemantics: true,
       child: RichText(
         text: TextSpan(
           children: [
-            TextSpan(text: 'Maça ', style: style.copyWith(color: accent)),
+            TextSpan(text: 'Korta ', style: style.copyWith(color: accent)),
             TextSpan(
               text: 'gel!',
               style: style.copyWith(color: ink, fontStyle: FontStyle.italic),
