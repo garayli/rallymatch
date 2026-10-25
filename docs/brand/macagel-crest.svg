@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+<defs>
+  <symbol id="ball" viewBox="-100 -100 200 200">
+  <defs>
+    <radialGradient id="bg_ball" cx="-30" cy="-35" r="150" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F2FF8A"/><stop offset=".55" stop-color="#D6EA3C"/><stop offset="1" stop-color="#9DB81E"/>
+    </radialGradient>
+    <clipPath id="ballclip"><circle r="100"/></clipPath>
+    <pattern id="fuzz" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r=".9" fill="#fff" opacity=".18"/></pattern>
+  </defs>
+  <circle r="100" fill="url(#bg_ball)"/>
+  <circle r="100" fill="url(#fuzz)"/>
+  <g clip-path="url(#ballclip)" fill="none" stroke="#FBF7EC" stroke-width="11" stroke-linecap="round">
+    <path d="M-62,-110 C-5,-60 -5,60 -62,110"/>
+    <path d="M62,-110 C5,-60 5,60 62,110"/>
+  </g>
+  <ellipse cx="-38" cy="-45" rx="34" ry="20" fill="#fff" opacity=".35" transform="rotate(-35 -38 -45)"/>
+</symbol>
+
+  <radialGradient id="bg" cx="50%" cy="40%" r="75%"><stop offset="0" stop-color="#1E3A5F"/><stop offset="1" stop-color="#0A1628"/></radialGradient>
+  <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F7D98B"/><stop offset=".5" stop-color="#D9A441"/><stop offset="1" stop-color="#9E6E1C"/></linearGradient>
+  <pattern id="strings" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M0 0H20M0 0V20" stroke="#F7D98B" stroke-width="2.5" opacity=".6"/></pattern>
+  <path id="top" d="M182 512 A330 330 0 0 1 842 512"/>
+  <path id="bottom" d="M137 512 A375 375 0 0 0 887 512"/>
+  <g id="racket">
+    <ellipse cy="-150" rx="95" ry="125" fill="url(#strings)"/>
+    <ellipse cy="-150" rx="95" ry="125" fill="none" stroke="url(#gold)" stroke-width="18"/>
+    <path d="M-38,-30 L-12,50 M38,-30 L12,50" stroke="url(#gold)" stroke-width="15" stroke-linecap="round"/>
+    <rect x="-14" y="46" width="28" height="150" rx="10" fill="url(#gold)"/>
+  </g>
+  <filter id="sh"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity=".5"/></filter>
+</defs>
+<rect width="1024" height="1024" fill="url(#bg)"/>
+<g transform="translate(512 512) scale(1.0) translate(-512 -512)">
+  
+  <circle cx="512" cy="512" r="420" fill="none" stroke="url(#gold)" stroke-width="14"/>
+  <circle cx="512" cy="512" r="395" fill="none" stroke="url(#gold)" stroke-width="3"/>
+  <circle cx="512" cy="512" r="265" fill="none" stroke="url(#gold)" stroke-width="3"/>
+  <g font-family="Instrument Serif, serif" font-size="70" letter-spacing="14" fill="#F7D98B" text-anchor="middle">
+    <text><textPath href="#top" startOffset="50%">MAÇA GEL!</textPath></text>
+    <text><textPath href="#bottom" startOffset="50%">TENİS KULÜBÜ</textPath></text>
+  </g>
+  <g fill="#F7D98B">
+    <path transform="translate(150 512)" d="M0 -22 l7 15 16 2 -12 11 3 16 -14 -8 -14 8 3 -16 -12 -11 16 -2z"/>
+    <path transform="translate(874 512)" d="M0 -22 l7 15 16 2 -12 11 3 16 -14 -8 -14 8 3 -16 -12 -11 16 -2z"/>
+    <path d="M512 250 l10 22 24 3 -18 16 5 24 -21 -12 -21 12 5 -24 -18 -16 24 -3z"/>
+  </g>
+  <g filter="url(#sh)">
+    <use href="#racket" transform="translate(470 590) rotate(-38)"/>
+    <use href="#racket" transform="translate(554 590) rotate(38)"/>
+    <use href="#ball" x="442" y="555" width="140" height="140"/>
+  </g>
+</g>
+</svg>
