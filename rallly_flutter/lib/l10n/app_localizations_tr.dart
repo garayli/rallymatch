@@ -1312,7 +1312,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get sendInviteButton => 'Davetiye Gönder 🎾';
 
   @override
-  String get shareText => 'Maç sonucum — Maça gel! 🎾';
+  String get shareText => 'Maç sonucum — Maça gel! 🎾 kortagel.com';
 
   @override
   String get shareFailed => 'Paylaşılamadı. Tekrar deneyin.';

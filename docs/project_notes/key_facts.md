@@ -31,12 +31,22 @@ Project configuration, credentials, and constants.
 
 | Item | Value |
 |------|-------|
-| Site | `macagel` → https://macagel.web.app (Spark/free plan; the default `rallymatch.web.app` site is left unused) |
+| Domain | **https://kortagel.com** (bought 2026-10-25) — custom domain on the `macagel` site; `www.kortagel.com` redirects to the apex |
+| Site | `macagel` → https://macagel.web.app (Spark/free plan; the default `rallymatch.web.app` site is left unused). Keeps working after the domain is connected, but share/install from kortagel.com |
 | Config | `rallly_flutter/firebase.json` → `hosting` (serves `build/web`, SPA rewrite to `index.html` for GoRouter, `no-cache` on `index.html` / service worker / bootstrap / manifest) + `rallly_flutter/.firebaserc` |
 | One-time setup | Create the site: `firebase hosting:sites:create macagel` (or Console → Hosting → Add another site) |
 | Deploy | `flutter build web --release && firebase deploy --only hosting` (from `rallly_flutter/`) |
 
-Before the web build works end to end: create a new **browser** API key restricted to `https://macagel.web.app/*` (see below), and add `https://macagel.web.app` to Supabase → Authentication → URL Configuration (Site URL / Redirect URLs).
+Before the web build works end to end: create a new **browser** API key restricted to `https://kortagel.com/*`, `https://www.kortagel.com/*` and `https://macagel.web.app/*` (see below), and in Supabase → Authentication → URL Configuration set **Site URL** to `https://kortagel.com` and add `https://kortagel.com/**` and `https://macagel.web.app/**` to Redirect URLs (keep `io.supabase.rallly://login-callback/`). `authRedirectUrl` uses the page's own origin, so no code change is needed per domain.
+
+#### Connecting kortagel.com (one-time)
+
+1. Firebase Console → Hosting → site `macagel` → **Add custom domain** → `kortagel.com`. Firebase shows a TXT record (ownership) and A record(s) — add them at the registrar's DNS panel, deleting any existing A/AAAA/parking records for `@`.
+2. Add custom domain again → `www.kortagel.com` → choose **Redirect to kortagel.com**; add the CNAME/A records it shows.
+3. Wait for status "Connected" (DNS can take up to 24h; the SSL certificate is issued automatically afterwards).
+4. Do the Supabase URL + browser-key steps above, then `flutter build web --release && firebase deploy --only hosting`.
+
+`web/index.html` hardcodes `https://kortagel.com/` in `canonical`, `og:url` and `og:image` (link previews need an absolute image URL); the result-share text (`shareText` in the ARB files) ends with `kortagel.com`.
 
 ### API key restrictions
 
