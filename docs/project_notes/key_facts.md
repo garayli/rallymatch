@@ -36,7 +36,7 @@ Project configuration, credentials, and constants.
 | Config | `rallly_flutter/firebase.json` → `hosting` (serves `build/web`, SPA rewrite to `index.html` for GoRouter, `no-cache` on `index.html` / service worker / bootstrap / manifest) + `rallly_flutter/.firebaserc` |
 | Deploy | `flutter build web --release && firebase deploy --only hosting` (from `rallly_flutter/`) |
 
-Before the web build works end to end: create a new **browser** API key restricted to `https://kortagel.com/*`, `https://www.kortagel.com/*` and `https://rallymatch.web.app/*` (see below), and in Supabase → Authentication → URL Configuration set **Site URL** to `https://kortagel.com` and add `https://kortagel.com/**` and `https://rallymatch.web.app/**` to Redirect URLs (keep `io.supabase.rallly://login-callback/`). `authRedirectUrl` uses the page's own origin, so no code change is needed per domain.
+Done 2026-10-26: a **browser** API key restricted to `https://kortagel.com/*`, `https://www.kortagel.com/*`, `https://rallymatch.web.app/*` and `https://rallymatch.firebaseapp.com/*` (see below) is in the `web` block of the local `firebase_options.dart`, and Supabase → Authentication → URL Configuration has **Site URL** `https://kortagel.com` with `https://kortagel.com/**`, `https://www.kortagel.com/**` and `https://rallymatch.web.app/**` in Redirect URLs (plus `io.supabase.rallly://login-callback/`). Verified: `webConfig` 200, GA `collect` 204, user visible in Analytics → Realtime. `authRedirectUrl` uses the page's own origin, so no code change is needed per domain.
 
 #### Connecting kortagel.com (one-time)
 
@@ -47,7 +47,7 @@ Custom domains and their SSL certificates are free on the Spark plan — no Blaz
 3. Wait for status "Connected" (DNS can take up to 24h; the SSL certificate is issued automatically afterwards). If the domain then shows Firebase's **"Site Not Found"** page while another domain on the same site works, run `firebase deploy --only hosting` again — the new domain only picks up content on the next release (hit on kortagel.com, 2026-10-26). The Hosting dashboard card lists only the first few domains; use "View all N domains" to find the rest.
 
 Cloudflare DNS (registrar for kortagel.com): A `@` → `199.36.158.100`, TXT `@` → `hosting-site=rallymatch`, CNAME `www` → `rallymatch.web.app`, all **DNS only** (grey cloud) — the orange proxy breaks Firebase verification and certificate minting. Ignore Cloudflare's "Proxying is required" banner.
-4. Do the Supabase URL + browser-key steps above, then `flutter build web --release && firebase deploy --only hosting`.
+4. Do the Supabase URL + browser-key steps above (only the `apiKey` in `firebase_options.dart` → `web` changes; don't re-run `flutterfire configure`, it mints an unrestricted key), then `flutter build web --release && firebase deploy --only hosting`.
 
 `web/index.html` hardcodes `https://kortagel.com/` in `canonical`, `og:url` and `og:image` (link previews need an absolute image URL); the result-share text (`shareText` in the ARB files) ends with `kortagel.com`.
 
@@ -59,7 +59,7 @@ Firebase client keys aren't real secrets, but they must be restricted so a key c
 |-----|-------|
 | Android | active — restricted to package `com.rallymatch.app` + the debug and upload SHA-1s |
 | iOS | **deleted 2026-09-21** (was unrestricted and exposed in commit `489ab8f`). No iOS Xcode project existed. |
-| Browser | **deleted 2026-09-21** (same reason). No web domain existed; `flutter run -d chrome` has no working Firebase key until a new one is created. |
+| Browser | old key **deleted 2026-09-21** (same reason). **New key created 2026-10-26**, restricted to the kortagel.com / www / rallymatch.web.app / rallymatch.firebaseapp.com referrers and the same API allowlist as the Android key. `flutter run -d chrome` (localhost) is blocked unless a `http://localhost/*` referrer is added. |
 
 Deleted keys can be restored for ~30 days with `gcloud services api-keys undelete`. When iOS or web is set up, create a **new** key restricted from day one (iOS bundle ID / HTTP referrers), via `flutterfire configure` or the Console, and never reuse the deleted ones (they are in git history).
 
