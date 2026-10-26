@@ -50,16 +50,31 @@ class _LogResultScreenState extends State<LogResultScreen> {
     final s2me = int.tryParse(_s2[0].text) ?? 0;
     final s2op = int.tryParse(_s2[1].text) ?? 0;
     int meSets = 0, opSets = 0;
-    if (s1me > s1op) meSets++; else if (s1op > s1me) opSets++;
-    if (s2me > s2op) meSets++; else if (s2op > s2me) opSets++;
+    if (s1me > s1op) {
+      meSets++;
+    } else if (s1op > s1me) {
+      opSets++;
+    }
+    if (s2me > s2op) {
+      meSets++;
+    } else if (s2op > s2me) {
+      opSets++;
+    }
     if (_showSet3) {
       final s3me = int.tryParse(_s3[0].text) ?? 0;
       final s3op = int.tryParse(_s3[1].text) ?? 0;
-      if (s3me > s3op) meSets++; else if (s3op > s3me) opSets++;
+      if (s3me > s3op) {
+        meSets++;
+      } else if (s3op > s3me) {
+        opSets++;
+      }
     }
     String? newWinner;
-    if (meSets > opSets) newWinner = 'me';
-    else if (opSets > meSets) newWinner = 'opponent';
+    if (meSets > opSets) {
+      newWinner = 'me';
+    } else if (opSets > meSets) {
+      newWinner = 'opponent';
+    }
     setState(() => _winner = newWinner);
   }
 

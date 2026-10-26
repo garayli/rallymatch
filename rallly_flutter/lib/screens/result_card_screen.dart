@@ -46,7 +46,7 @@ class _ResultCardScreenState extends State<ResultCardScreen> {
       if (byteData == null) return;
       final bytes = byteData.buffer.asUint8List();
       final xFile = XFile.fromData(bytes, mimeType: 'image/png', name: 'rallly-result.png');
-      await Share.shareXFiles([xFile], text: l.shareText);
+      await SharePlus.instance.share(ShareParams(files: [xFile], text: l.shareText));
     } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

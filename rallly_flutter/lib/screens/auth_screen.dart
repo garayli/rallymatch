@@ -503,12 +503,14 @@ class _AuthOtpScreenState extends State<AuthOtpScreen>
                               shouldCreateUser: widget.isSignUp,
                             );
                           } on AuthException catch (e) {
-                            if (mounted)
+                            if (mounted) {
                               setState(
                                   () => _error = _translateError(l, e.message));
+                            }
                           } catch (_) {
-                            if (mounted)
+                            if (mounted) {
                               setState(() => _error = l.authErrorResendFailed);
+                            }
                           }
                         },
                         child: Text(

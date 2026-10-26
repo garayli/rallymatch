@@ -31,12 +31,25 @@ Project configuration, credentials, and constants.
 
 | Item | Value |
 |------|-------|
-| Site | `macagel` → https://macagel.web.app (Spark/free plan; the default `rallymatch.web.app` site is left unused) |
+| Domain | **https://kortagel.com** (bought 2026-10-25) — custom domain on the default `rallymatch` site; `www.kortagel.com` redirects to the apex |
+| Site | `rallymatch` → https://rallymatch.web.app (Spark/free plan, the project's default site). Keeps working after the domain is connected, but share/install from kortagel.com. A separate `macagel` site was planned but never created |
 | Config | `rallly_flutter/firebase.json` → `hosting` (serves `build/web`, SPA rewrite to `index.html` for GoRouter, `no-cache` on `index.html` / service worker / bootstrap / manifest) + `rallly_flutter/.firebaserc` |
-| One-time setup | Create the site: `firebase hosting:sites:create macagel` (or Console → Hosting → Add another site) |
 | Deploy | `flutter build web --release && firebase deploy --only hosting` (from `rallly_flutter/`) |
 
-Before the web build works end to end: create a new **browser** API key restricted to `https://macagel.web.app/*` (see below), and add `https://macagel.web.app` to Supabase → Authentication → URL Configuration (Site URL / Redirect URLs).
+Before the web build works end to end: create a new **browser** API key restricted to `https://kortagel.com/*`, `https://www.kortagel.com/*` and `https://rallymatch.web.app/*` (see below), and in Supabase → Authentication → URL Configuration set **Site URL** to `https://kortagel.com` and add `https://kortagel.com/**` and `https://rallymatch.web.app/**` to Redirect URLs (keep `io.supabase.rallly://login-callback/`). `authRedirectUrl` uses the page's own origin, so no code change is needed per domain.
+
+#### Connecting kortagel.com (one-time)
+
+Custom domains and their SSL certificates are free on the Spark plan — no Blaze upgrade needed. Use **Hosting** (Build → Hosting), not **App Hosting**: App Hosting is for server-rendered apps and asks for Blaze; this static Flutter build doesn't need it.
+
+1. Firebase Console → Hosting → site `rallymatch` → **Add custom domain** → `kortagel.com`. Firebase shows a TXT record (ownership) and A record(s) — add them at the registrar's DNS panel, deleting any existing A/AAAA/parking records for `@`.
+2. Add custom domain again → `www.kortagel.com` → choose **Redirect to kortagel.com**; add the CNAME/A records it shows.
+3. Wait for status "Connected" (DNS can take up to 24h; the SSL certificate is issued automatically afterwards). If the domain then shows Firebase's **"Site Not Found"** page while another domain on the same site works, run `firebase deploy --only hosting` again — the new domain only picks up content on the next release (hit on kortagel.com, 2026-10-26). The Hosting dashboard card lists only the first few domains; use "View all N domains" to find the rest.
+
+Cloudflare DNS (registrar for kortagel.com): A `@` → `199.36.158.100`, TXT `@` → `hosting-site=rallymatch`, CNAME `www` → `rallymatch.web.app`, all **DNS only** (grey cloud) — the orange proxy breaks Firebase verification and certificate minting. Ignore Cloudflare's "Proxying is required" banner.
+4. Do the Supabase URL + browser-key steps above, then `flutter build web --release && firebase deploy --only hosting`.
+
+`web/index.html` hardcodes `https://kortagel.com/` in `canonical`, `og:url` and `og:image` (link previews need an absolute image URL); the result-share text (`shareText` in the ARB files) ends with `kortagel.com`.
 
 ### API key restrictions
 
