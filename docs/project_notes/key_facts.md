@@ -44,7 +44,9 @@ Custom domains and their SSL certificates are free on the Spark plan — no Blaz
 
 1. Firebase Console → Hosting → site `rallymatch` → **Add custom domain** → `kortagel.com`. Firebase shows a TXT record (ownership) and A record(s) — add them at the registrar's DNS panel, deleting any existing A/AAAA/parking records for `@`.
 2. Add custom domain again → `www.kortagel.com` → choose **Redirect to kortagel.com**; add the CNAME/A records it shows.
-3. Wait for status "Connected" (DNS can take up to 24h; the SSL certificate is issued automatically afterwards).
+3. Wait for status "Connected" (DNS can take up to 24h; the SSL certificate is issued automatically afterwards). If the domain then shows Firebase's **"Site Not Found"** page while another domain on the same site works, run `firebase deploy --only hosting` again — the new domain only picks up content on the next release (hit on kortagel.com, 2026-10-26). The Hosting dashboard card lists only the first few domains; use "View all N domains" to find the rest.
+
+Cloudflare DNS (registrar for kortagel.com): A `@` → `199.36.158.100`, TXT `@` → `hosting-site=rallymatch`, CNAME `www` → `rallymatch.web.app`, all **DNS only** (grey cloud) — the orange proxy breaks Firebase verification and certificate minting. Ignore Cloudflare's "Proxying is required" banner.
 4. Do the Supabase URL + browser-key steps above, then `flutter build web --release && firebase deploy --only hosting`.
 
 `web/index.html` hardcodes `https://kortagel.com/` in `canonical`, `og:url` and `og:image` (link previews need an absolute image URL); the result-share text (`shareText` in the ARB files) ends with `kortagel.com`.
