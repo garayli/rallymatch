@@ -31,7 +31,7 @@ Project configuration, credentials, and constants.
 
 | Item | Value |
 |------|-------|
-| Domain | **https://kortagel.com** (bought 2026-10-25) — custom domain on the default `rallymatch` site; `www.kortagel.com` redirects to the apex |
+| Domain | **https://kortagel.com** (bought 2026-10-25, **live** since 2026-10-29) — custom domain on the default `rallymatch` site; `www.kortagel.com` redirects to the apex |
 | Site | `rallymatch` → https://rallymatch.web.app (Spark/free plan, the project's default site). Keeps working after the domain is connected, but share/install from kortagel.com. A separate `macagel` site was planned but never created |
 | Config | `rallly_flutter/firebase.json` → `hosting` (serves `build/web`, SPA rewrite to `index.html` for GoRouter, `no-cache` on `index.html` / service worker / bootstrap / manifest) + `rallly_flutter/.firebaserc` |
 | Deploy | `flutter build web --release && firebase deploy --only hosting` (from `rallly_flutter/`) |
