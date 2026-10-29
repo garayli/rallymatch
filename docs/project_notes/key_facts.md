@@ -36,7 +36,7 @@ Project configuration, credentials, and constants.
 | Config | `rallly_flutter/firebase.json` → `hosting` (serves `build/web`, SPA rewrite to `index.html` for GoRouter, `no-cache` on `index.html` / service worker / bootstrap / manifest) + `rallly_flutter/.firebaserc` |
 | Deploy | `flutter build web --release && firebase deploy --only hosting` (from `rallly_flutter/`) |
 
-Before the web build works end to end: create a new **browser** API key restricted to `https://kortagel.com/*`, `https://www.kortagel.com/*` and `https://rallymatch.web.app/*` (see below), and in Supabase → Authentication → URL Configuration set **Site URL** to `https://kortagel.com` and add `https://kortagel.com/**` and `https://rallymatch.web.app/**` to Redirect URLs (keep `io.supabase.rallly://login-callback/`). `authRedirectUrl` uses the page's own origin, so no code change is needed per domain.
+Done 2026-10-29 (www redirect, Supabase URLs, browser key). For reference — before the web build works end to end: create a new **browser** API key restricted to `https://kortagel.com/*`, `https://www.kortagel.com/*` and `https://rallymatch.web.app/*` (see below), and in Supabase → Authentication → URL Configuration set **Site URL** to `https://kortagel.com` and add `https://kortagel.com/**` and `https://rallymatch.web.app/**` to Redirect URLs (keep `io.supabase.rallly://login-callback/`). `authRedirectUrl` uses the page's own origin, so no code change is needed per domain.
 
 #### Connecting kortagel.com (one-time)
 
@@ -59,7 +59,8 @@ Firebase client keys aren't real secrets, but they must be restricted so a key c
 |-----|-------|
 | Android | active — restricted to package `com.rallymatch.app` + the debug and upload SHA-1s |
 | iOS | **deleted 2026-09-21** (was unrestricted and exposed in commit `489ab8f`). No iOS Xcode project existed. |
-| Browser | **deleted 2026-09-21** (same reason). No web domain existed; `flutter run -d chrome` has no working Firebase key until a new one is created. |
+| Browser (old) | **deleted 2026-09-21** (same reason). |
+| Browser (new) | active since 2026-10-29 — HTTP referrers `https://kortagel.com/*`, `https://www.kortagel.com/*`, `https://rallymatch.web.app/*`. `localhost` is not allowed, so Firebase calls fail under `flutter run -d chrome` (the app still runs; analytics no-ops). |
 
 Deleted keys can be restored for ~30 days with `gcloud services api-keys undelete`. When iOS or web is set up, create a **new** key restricted from day one (iOS bundle ID / HTTP referrers), via `flutterfire configure` or the Console, and never reuse the deleted ones (they are in git history).
 
