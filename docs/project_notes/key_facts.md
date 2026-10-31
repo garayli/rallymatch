@@ -102,7 +102,7 @@ All events go through `lib/services/analytics_service.dart` (fire-and-forget, er
 | `otp_requested` | `flow` = signup / login | `auth_screen.dart` after `signInWithOtp` succeeds |
 | `otp_verified` | `flow` | `auth_screen.dart` after `verifyOTP` succeeds. The gap from `otp_requested` is the email-delivery drop-off |
 | `sign_up` | `method` = email_otp | `signup_screen.dart` after the profile upsert |
-| `login` | `method` = email_otp | `auth_screen.dart`, existing account with a complete profile |
+| `login` | `method` = email_otp | `auth_screen.dart`, an account with a complete profile — from either button ("Get started" skips the wizard for returning players, so it never logs `sign_up`) |
 | `match_requested` | `format`, `opponent_type` = registered / guest | `DataService.sendMatchRequest` |
 | `match_request_responded` | `response` = accepted / declined | `DataService.respondToMatchRequest` |
 | `lobby_created` | `sport`, `format`, `skill_level` | `open_lobby_screen.dart` |

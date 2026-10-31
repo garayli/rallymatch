@@ -319,7 +319,9 @@ class _AuthOtpScreenState extends State<AuthOtpScreen>
         });
         return;
       }
-      if (!widget.isSignUp) unawaited(analyticsService.logLogin());
+      unawaited(widget.isSignUp
+          ? _logLoginIfReturning()
+          : analyticsService.logLogin());
       if (mounted) widget.onVerified();
     } on AuthException catch (e) {
       _triggerShake();
@@ -333,6 +335,19 @@ class _AuthOtpScreenState extends State<AuthOtpScreen>
         _loading = false;
         _error = l.authErrorInvalidCode;
       });
+    }
+  }
+
+  // A returning player who taps "Get started" lands on /home (the profile
+  // gate skips the wizard), so sign_up never fires for them — count it as a
+  // login. New players log sign_up when the wizard saves their profile.
+  Future<void> _logLoginIfReturning() async {
+    try {
+      if (await dataService.hasCompletedProfile()) {
+        await analyticsService.logLogin();
+      }
+    } catch (e) {
+      debugPrint('LOGIN EVENT CHECK ERROR: $e');
     }
   }
 
