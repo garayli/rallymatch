@@ -119,7 +119,7 @@ Test a new signup without a new inbox: a Gmail `+` alias (`name+test1@gmail.com`
 | Certificate | In assetlinks.json |
 |-------------|--------------------|
 | Debug (dev MacBook) | ✅ `71:9F:2E:…:40:B7` |
-| Upload key | ⚠ not yet — `keytool -list -v -keystore android/upload-keystore.jks -alias upload` (the keystore wasn't on the dev Mac on 2026-10-31) |
+| Upload key | ✅ added to `web/.well-known/assetlinks.json` 2026-10-31 (**not deployed yet** — `firebase deploy --only hosting`). Keystore lives at `android/app/upload-keystore.jks`; `key.properties` must say `storeFile=app/upload-keystore.jks` (resolved from `android/`) |
 | Play app signing | ⚠ add at first Play upload (Play Console → App integrity), together with the SHA-1 step above |
 
 After changing `assetlinks.json`: `flutter build web --release && firebase deploy --only hosting`, check `https://kortagel.com/.well-known/assetlinks.json` returns the JSON, then on a device `adb shell pm verify-app-links --re-verify com.rallymatch.app` and `adb shell pm get-app-links com.rallymatch.app` → `kortagel.com: verified`. Until then Android opens the links in the browser (the web app), not the app.
