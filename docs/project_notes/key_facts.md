@@ -93,6 +93,20 @@ Google Play re-signs every build it distributes (internal-testing track included
    Or in the Console: Credentials → Android key → Application restrictions → Add an item.
 3. Install from the Play track and confirm Firebase events arrive, then update the table above.
 
+## Email (Resend + Supabase SMTP)
+
+Login/signup codes are sent by Supabase Auth through Resend. Set up 2026-10-31.
+
+| Item | Value |
+|------|-------|
+| Resend domain | `kortagel.com`, region **eu-west-1** (Ireland). Free plan: 1 domain, 100 emails/day, 3,000/month |
+| DNS (Cloudflare) | Resend's records: TXT `resend._domainkey` (DKIM), CNAMEs `send` and `rsend` (sending, **DNS only** — a proxied CNAME breaks verification), TXT `_dmarc` = `v=DMARC1; p=none;`. Receiving is off (no MX) |
+| Supabase → Authentication → Emails → SMTP | Custom SMTP **on**: host `smtp.resend.com`, port `465`, user `resend`, password = a Resend API key with Sending access to kortagel.com (stored only in Supabase), sender `noreply@kortagel.com`, name `Korta gel!` |
+| Rate limit | Authentication → Rate Limits → "Rate limit for sending emails": keep it well above the default (e.g. ~100/hour) or a launch day hits it |
+| Templates | **Confirm sign up** (new users) and **Magic Link** (existing users) must contain `{{ .Token }}`: the app's OTP screen (`auth_screen.dart`, `_codeLength = 8`) only takes a typed code. Email OTP Length in Supabase must stay **8** |
+
+Test a new signup without a new inbox: a Gmail `+` alias (`name+test1@gmail.com`) is a different user in Supabase but lands in the same inbox. Delivery problems show in Resend → Emails and Supabase → Logs → Auth, not in the app (it only shows a generic error).
+
 ## Analytics (Firebase) — funnel events
 
 All events go through `lib/services/analytics_service.dart` (fire-and-forget, errors swallowed; no-op when Firebase didn't start). `setUserId` is the Supabase user uuid, set on every auth state change in `app_router.dart` — never an email or phone. Screen views come from `FirebaseAnalyticsObserver` on the router.
