@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
@@ -5,6 +6,7 @@ import '../config/court_options.dart';
 import '../theme/app_theme.dart';
 import '../widgets/shared_widgets.dart';
 import '../main.dart' show supabase;
+import '../services/analytics_service.dart';
 import '../l10n/l10n.dart';
 import '../l10n/option_labels.dart';
 import '../l10n/data_error_message.dart';
@@ -78,6 +80,11 @@ class _OpenLobbyScreenState extends State<OpenLobbyScreen> {
         'is_public': _isPublic,
         'status': 'open',
       });
+      unawaited(analyticsService.logLobbyCreated(
+        sport: _sport,
+        format: _format,
+        skillLevel: _skillLevel,
+      ));
       if (!mounted) return;
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

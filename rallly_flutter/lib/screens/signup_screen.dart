@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../config/profile_options.dart';
@@ -5,6 +6,7 @@ import '../theme/app_theme.dart';
 import '../widgets/shared_widgets.dart';
 import '../widgets/rally_primitives.dart';
 import '../main.dart' show supabase;
+import '../services/analytics_service.dart';
 import '../utils/initials.dart';
 import '../l10n/l10n.dart';
 import '../l10n/option_labels.dart';
@@ -91,6 +93,7 @@ class _SignupScreenState extends State<SignupScreen> {
         'available_days': _selectedDays.toList(),
         'time_prefs': _selectedTimes.toList(),
       });
+      unawaited(analyticsService.logSignUp());
       if (mounted) widget.onComplete();
     } catch (e) {
       // Stay on the wizard: moving on after a failed save is what made

@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../theme/app_theme.dart';
 import '../widgets/shared_widgets.dart';
 import '../models/models.dart';
+import '../services/analytics_service.dart';
 import '../services/data_service.dart';
 import '../main.dart' show supabase;
 import '../utils/uuid.dart';
@@ -145,6 +147,10 @@ class _LogResultScreenState extends State<LogResultScreen> {
       ));
       return;
     }
+    unawaited(analyticsService.logResultSubmitted(
+      opponentType: opponentIsRealUser ? 'registered' : 'guest',
+      won: _winner == 'me',
+    ));
     if (!mounted) return;
     final result = MatchResult(
       winnerId: _winner == 'me' ? 'me' : effectiveOpponent.id,

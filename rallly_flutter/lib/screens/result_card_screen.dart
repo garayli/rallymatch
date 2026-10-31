@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -7,6 +8,7 @@ import '../theme/app_theme.dart';
 import '../widgets/shared_widgets.dart';
 import '../widgets/rally_primitives.dart';
 import '../models/models.dart';
+import '../services/analytics_service.dart';
 import '../l10n/l10n.dart';
 
 class ResultCardScreen extends StatefulWidget {
@@ -46,7 +48,12 @@ class _ResultCardScreenState extends State<ResultCardScreen> {
       if (byteData == null) return;
       final bytes = byteData.buffer.asUint8List();
       final xFile = XFile.fromData(bytes, mimeType: 'image/png', name: 'rallly-result.png');
-      await SharePlus.instance.share(ShareParams(files: [xFile], text: l.shareText));
+      final shared = await SharePlus.instance
+          .share(ShareParams(files: [xFile], text: l.shareText));
+      unawaited(analyticsService.logShare(
+        contentType: 'result_card',
+        status: shared.status.name,
+      ));
     } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

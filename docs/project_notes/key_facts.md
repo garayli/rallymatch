@@ -93,6 +93,27 @@ Google Play re-signs every build it distributes (internal-testing track included
    Or in the Console: Credentials → Android key → Application restrictions → Add an item.
 3. Install from the Play track and confirm Firebase events arrive, then update the table above.
 
+## Analytics (Firebase) — funnel events
+
+All events go through `lib/services/analytics_service.dart` (fire-and-forget, errors swallowed; no-op when Firebase didn't start). `setUserId` is the Supabase user uuid, set on every auth state change in `app_router.dart` — never an email or phone. Screen views come from `FirebaseAnalyticsObserver` on the router.
+
+| Event | Params | Logged in |
+|-------|--------|-----------|
+| `otp_requested` | `flow` = signup / login | `auth_screen.dart` after `signInWithOtp` succeeds |
+| `otp_verified` | `flow` | `auth_screen.dart` after `verifyOTP` succeeds. The gap from `otp_requested` is the email-delivery drop-off |
+| `sign_up` | `method` = email_otp | `signup_screen.dart` after the profile upsert |
+| `login` | `method` = email_otp | `auth_screen.dart`, existing account with a complete profile |
+| `match_requested` | `format`, `opponent_type` = registered / guest | `DataService.sendMatchRequest` |
+| `match_request_responded` | `response` = accepted / declined | `DataService.respondToMatchRequest` |
+| `lobby_created` | `sport`, `format`, `skill_level` | `open_lobby_screen.dart` |
+| `lobby_joined` | `sport` | `DataService.joinLobby` |
+| `result_submitted` | `opponent_type`, `outcome` = win / loss | `log_result_screen.dart` |
+| `result_confirmed` / `result_disputed` | — | `DataService.confirmResult` / `disputeResult`. `result_confirmed` = a played match (North Star) |
+| `message_sent` | — | `DataService.sendMessage` |
+| `share` | `content_type` = result_card, `status` = success / dismissed / unavailable | `result_card_screen.dart` |
+
+Param values are canonical (Turkish data values, ADR-011), never localized labels. Add new events as a typed method on `AnalyticsService`, not as a raw `logEvent` call in a screen.
+
 ## External Resources
 
 | Resource | URL |
