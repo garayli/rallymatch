@@ -1548,4 +1548,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get installIosDone => 'Got it';
+
+  @override
+  String get deleteAccount => 'Delete account';
+
+  @override
+  String get deleteAccountTitle => 'Delete your account?';
+
+  @override
+  String get deleteAccountBody =>
+      'Your profile, matches, messages and notifications are permanently deleted. Your pending matches and any lobbies you opened are cancelled and the other players are told. This cannot be undone.';
+
+  @override
+  String get deleteAccountWord => 'DELETE';
+
+  @override
+  String deleteAccountTypeHint(String word) {
+    return 'Type $word to confirm';
+  }
+
+  @override
+  String get deleteAccountConfirm => 'Delete my account permanently';
+
+  @override
+  String get errorDeleteAccount =>
+      'Could not delete the account. Please try again; if it keeps failing, write to support@kortagel.com.';
 }

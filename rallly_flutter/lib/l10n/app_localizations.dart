@@ -2911,6 +2911,48 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Tamam'**
   String get installIosDone;
+
+  /// No description provided for @deleteAccount.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hesabı sil'**
+  String get deleteAccount;
+
+  /// No description provided for @deleteAccountTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hesabını silmek istiyor musun?'**
+  String get deleteAccountTitle;
+
+  /// No description provided for @deleteAccountBody.
+  ///
+  /// In tr, this message translates to:
+  /// **'Profilin, maçların, mesajların ve bildirimlerin kalıcı olarak silinir. Bekleyen maçların ve açtığın lobiler iptal edilir, diğer oyunculara haber verilir. Bu işlem geri alınamaz.'**
+  String get deleteAccountBody;
+
+  /// No description provided for @deleteAccountWord.
+  ///
+  /// In tr, this message translates to:
+  /// **'ONAYLA'**
+  String get deleteAccountWord;
+
+  /// No description provided for @deleteAccountTypeHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Onaylamak için {word} yaz'**
+  String deleteAccountTypeHint(String word);
+
+  /// No description provided for @deleteAccountConfirm.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hesabımı kalıcı olarak sil'**
+  String get deleteAccountConfirm;
+
+  /// No description provided for @errorDeleteAccount.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hesap silinemedi. Lütfen tekrar dene; sorun sürerse support@kortagel.com adresine yaz.'**
+  String get errorDeleteAccount;
 }
 
 class _AppLocalizationsDelegate

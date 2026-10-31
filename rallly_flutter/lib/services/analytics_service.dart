@@ -110,6 +110,8 @@ class AnalyticsService {
 
   Future<void> logMessageSent() => logEvent('message_sent');
 
+  Future<void> logAccountDeleted() => logEvent('account_deleted');
+
   /// Answer to the Android 13+ notification prompt: AuthorizationStatus
   /// name (`authorized`, `denied`, `notDetermined`, `provisional`).
   Future<void> logPushPermission({required String status}) =>

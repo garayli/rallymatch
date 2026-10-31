@@ -93,6 +93,12 @@ Google Play re-signs every build it distributes (internal-testing track included
    Or in the Console: Credentials → Android key → Application restrictions → Add an item.
 3. Install from the Play track and confirm Firebase events arrive, then update the table above.
 
+## Account deletion
+
+Profile -> "Hesabi sil" (`delete_account_dialog.dart`) -> `dataService.deleteAccount()` -> RPC `delete_my_account` (ADR-014). Setup: run `docs/migrations/2026-10-31_delete_account.sql` in the Supabase SQL editor; until then the button fails with "Hesap silinemedi". Web request page (email-based, for people without the app): `https://kortagel.com/delete-account/`, used as the "Data deletion" URL in Play Console -> App content -> Data safety.
+
+Test with a throwaway Gmail `+` alias account, never a real one. Afterwards `select count(*) from matches where player1_id = '<uuid>' or player2_id = '<uuid>'` (and messages, notifications, reviews, push_tokens, profiles) must all be 0.
+
 ## Email (Resend + Supabase SMTP)
 
 Login/signup codes are sent by Supabase Auth through Resend. Set up 2026-10-31.

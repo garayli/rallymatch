@@ -233,6 +233,25 @@ Device testing showed (1) profiles "not saving": signup swallowed a failed save 
 
 ---
 
+## ADR-014: In-app account deletion (`delete_my_account`)
+**Date:** 2026-10-31
+**Status:** Accepted (migration written, **not yet run** - see key_facts)
+
+### Context
+Google Play requires an in-app way to delete the account plus a public deletion URL (`kortagel.com/delete-account/`). The schema (checked with an introspection query) already cascades most user data from `auth.users`.
+
+### Decision
+- One SECURITY DEFINER RPC, `delete_my_account()` (`docs/migrations/2026-10-31_delete_account.sql`), deletes the caller: closes their open lobbies (existing `lobby_on_close_trg` cancels and notifies requesters), notifies opponents of upcoming pending/confirmed matches, deletes received messages, **deletes every match the player played or logged** (option A: no anonymising), then `DELETE FROM auth.users`, which cascades to `profiles`, `lobbies`, `notifications`, `push_tokens`, `reviews` (both directions) and sent `messages`.
+- Why the explicit steps: `messages.receiver_id` is SET NULL (would leave orphan chats) and `matches.winner_id` / `result_logged_by` are NO ACTION (would block the profile delete).
+- Client: `DataService.deleteAccount()` calls the RPC, then a local `signOut`; `DeleteAccountDialog` requires typing a confirm word (`ONAYLA` / `DELETE`, no dotted i). No push unregister: the token row cascades.
+
+### Consequences
+- **Positive:** one transaction, no leftovers, reuses the lobby triggers.
+- **Negative:** opponents lose the deleted player's games and the reviews that player wrote; their stored `wins/losses/ntrp` on `profiles` are untouched. The cancellation notice text is Turkish only (ADR-011 gap).
+- **How to apply:** a new table that references `profiles`/`auth.users` must either cascade or be added to this function; re-run the introspection query when adding one.
+
+---
+
 <!-- Add new ADRs above this line -->
 ---
 

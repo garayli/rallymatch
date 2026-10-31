@@ -13,6 +13,7 @@ String dataErrorMessage(AppLocalizations l, Object error) {
       DataError.lobbyQueueFull => l.errorLobbyQueueFull,
       DataError.lobbyFull => l.errorLobbyFull,
       DataError.lobbyClosed => l.errorLobbyClosed,
+      DataError.deleteAccountFailed => l.errorDeleteAccount,
     };
   }
   return l.errorUnknown;
