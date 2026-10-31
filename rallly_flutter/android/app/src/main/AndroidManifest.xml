@@ -37,6 +37,19 @@
                     android:scheme="io.supabase.rallly"
                     android:host="login-callback"/>
             </intent-filter>
+            <!-- Lobby invite links (kortagel.com/l/<id>) open the app. Verified
+                 against web/.well-known/assetlinks.json, which must list the
+                 SHA-256 of every certificate that signs an installed build
+                 (debug, upload, and Play app signing once on Play). -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="https"
+                    android:host="kortagel.com"
+                    android:pathPrefix="/l/"/>
+            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

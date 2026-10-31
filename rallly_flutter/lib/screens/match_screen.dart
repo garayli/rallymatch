@@ -16,9 +16,9 @@ import 'open_lobby_screen.dart';
 import 'games_screen.dart';
 import '../widgets/match_detail_sheet.dart';
 import '../widgets/lobby_manage_sheet.dart';
+import '../widgets/lobby_actions.dart';
 import '../widgets/rally_primitives.dart';
 import '../utils/lobby_state.dart';
-import '../l10n/data_error_message.dart';
 import '../l10n/l10n.dart';
 import '../l10n/option_labels.dart';
 
@@ -1033,48 +1033,10 @@ class _LobbyCardState extends State<_LobbyCard> {
       .firstOrNull;
 
   Future<void> _join() async {
-    final dt = lobby.dateTime;
-    if (dt == null) return;
-    final l = context.l10n;
-    final messenger = ScaffoldMessenger.of(context);
     setState(() => _joining = true);
-    try {
-      await dataService.joinLobby(
-        lobbyId: lobby.id,
-        creatorId: lobby.creatorId,
-        dateTime: dt,
-        court: lobby.court,
-        sport: sportLabel(l, lobby.sport),
-      );
-      if (!mounted) return;
-      setState(() => _joining = false);
-      messenger.showSnackBar(SnackBar(
-        content: Text(l.lobbyJoinSent(sportLabel(l, lobby.sport))),
-        backgroundColor: RallyColors.accent,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      ));
-    } catch (e) {
-      debugPrint('LOBBY JOIN ERROR: $e');
-      if (!mounted) return;
-      setState(() => _joining = false);
-      // The card was stale (someone filled the lobby meanwhile): re-read.
-      dataService.refreshLive();
-      messenger.showSnackBar(SnackBar(
-        content: Text(l.actionFailed(dataErrorMessage(l, e))),
-        backgroundColor: RallyColors.accent2,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      ));
-    }
+    await joinLobbyWithFeedback(context, lobby, source: 'list');
+    if (mounted) setState(() => _joining = false);
   }
-
-  static const _sportEmojis = {
-    'Tenis': '🎾',
-    'Padel': '🏓',
-    'Badminton': '🏸',
-    'Squash': '🟡',
-  };
 
   @override
   Widget build(BuildContext context) {
@@ -1111,7 +1073,7 @@ class _LobbyCardState extends State<_LobbyCard> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Row(children: [
-            Text(_sportEmojis[lobby.sport] ?? '🎾',
+            Text(lobbySportEmojis[lobby.sport] ?? '🎾',
                 style: const TextStyle(fontSize: 18)),
             const SizedBox(width: 6),
             Expanded(
@@ -1147,22 +1109,39 @@ class _LobbyCardState extends State<_LobbyCard> {
             overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 8),
-          SizedBox(
-            width: double.infinity,
-            child: FilledButton(
-              onPressed: onPressed,
-              style: FilledButton.styleFrom(
-                backgroundColor: cp.accent,
-                minimumSize: const Size(0, 32),
-                maximumSize: const Size(double.infinity, 32),
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                padding: EdgeInsets.zero,
-                textStyle: const TextStyle(
-                    fontSize: 12, fontWeight: FontWeight.w600),
+          Row(children: [
+            Expanded(
+              child: FilledButton(
+                onPressed: onPressed,
+                style: FilledButton.styleFrom(
+                  backgroundColor: cp.accent,
+                  minimumSize: const Size(0, 32),
+                  maximumSize: const Size(double.infinity, 32),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  padding: EdgeInsets.zero,
+                  textStyle: const TextStyle(
+                      fontSize: 12, fontWeight: FontWeight.w600),
+                ),
+                child: Text(label),
               ),
-              child: Text(label),
             ),
-          ),
+            const SizedBox(width: 6),
+            Tooltip(
+              message: l.lobbyShare,
+              child: OutlinedButton(
+                onPressed: () => shareLobby(context, lobby),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: cp.accentStrong,
+                  side: BorderSide(color: cp.border),
+                  minimumSize: const Size(32, 32),
+                  maximumSize: const Size(32, 32),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  padding: EdgeInsets.zero,
+                ),
+                child: const Icon(Icons.ios_share, size: 16),
+              ),
+            ),
+          ]),
         ],
       ),
     );

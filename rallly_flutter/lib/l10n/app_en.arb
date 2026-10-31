@@ -673,6 +673,32 @@
       "count": {"type": "int"}
     }
   },
+  "lobbyShare": "Invite",
+  "lobbyShareInvite": "Share invite link",
+  "lobbyShareText": "Up for {sport}? 🎾 {when} · {court}\nJoin the Korta gel! lobby: {link}",
+  "@lobbyShareText": {
+    "placeholders": {
+      "sport": {"type": "String"},
+      "when": {"type": "String"},
+      "court": {"type": "String"},
+      "link": {"type": "String"}
+    }
+  },
+  "lobbyLinkCopied": "Invite link copied — paste it into WhatsApp.",
+  "lobbyLinkTitle": "Lobby invite",
+  "lobbyLinkOrganiser": "Organiser: {name}",
+  "@lobbyLinkOrganiser": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "lobbyLinkUnavailable": "This lobby is no longer open",
+  "lobbyLinkUnavailableHint": "It may have been closed or removed. Have a look at the other open lobbies.",
+  "lobbyLinkBrowse": "Browse open lobbies",
+  "lobbyLinkLoadFailed": "Couldn't load the lobby. Check your connection and try again.",
+  "lobbyLinkRetry": "Try again",
+  "lobbyLinkSignUpToJoin": "Sign up to join",
+  "lobbyLinkSignedOutHint": "Create a free account to join — it takes a minute.",
   "requestIncomingLabel": "Request for you",
   "requestSentLabel": "Awaiting reply",
   "matchDetailRespondHint": "Accept or decline from the Notifications tab.",

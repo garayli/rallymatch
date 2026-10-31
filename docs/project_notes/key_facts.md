@@ -107,6 +107,25 @@ Login/signup codes are sent by Supabase Auth through Resend. Set up 2026-10-31.
 
 Test a new signup without a new inbox: a Gmail `+` alias (`name+test1@gmail.com`) is a different user in Supabase but lands in the same inbox. Delivery problems show in Resend → Emails and Supabase → Logs → Auth, not in the app (it only shows a generic error).
 
+## Lobby invite links
+
+`https://kortagel.com/l/<lobbyId>` (`lobbyLink()` in `lib/config/app_links.dart`) is shared from the lobby card (share button beside Join) and the organiser's manage sheet ("Davet linkini paylaş"). Route `AppRoutes.lobby` → `LobbyLinkScreen`.
+
+- **Signed out** it is a public preview (RLS lets anon read public open/full lobbies) with "Kaydol ve katıl". The link is kept in `_pendingLobbyLink` (`app_router.dart`) through OTP and the signup wizard; the redirect sends the player back to it instead of /home.
+- **Signed in** it shows the same Join / Manage / state button as the Match-tab card. Past, closed, private or unknown lobbies show "Bu lobi artık açık değil".
+- **Web** uses path URLs (`usePathUrlStrategy()` in `main.dart`); Firebase Hosting rewrites every path to `index.html`.
+- **Android App Links**: intent filter for `https://kortagel.com/l/` in `AndroidManifest.xml`, verified against `web/.well-known/assetlinks.json` (served by Hosting — `firebase.json` no longer ignores dot-folders). It must list the SHA-256 of every certificate that signs an installed build:
+
+| Certificate | In assetlinks.json |
+|-------------|--------------------|
+| Debug (dev MacBook) | ✅ `71:9F:2E:…:40:B7` |
+| Upload key | ⚠ not yet — `keytool -list -v -keystore android/upload-keystore.jks -alias upload` (the keystore wasn't on the dev Mac on 2026-10-31) |
+| Play app signing | ⚠ add at first Play upload (Play Console → App integrity), together with the SHA-1 step above |
+
+After changing `assetlinks.json`: `flutter build web --release && firebase deploy --only hosting`, check `https://kortagel.com/.well-known/assetlinks.json` returns the JSON, then on a device `adb shell pm verify-app-links --re-verify com.rallymatch.app` and `adb shell pm get-app-links com.rallymatch.app` → `kortagel.com: verified`. Until then Android opens the links in the browser (the web app), not the app.
+
+WhatsApp link previews show the generic Kortagel card from `web/index.html`: the site is static, so per-lobby previews would need a server function.
+
 ## Analytics (Firebase) — funnel events
 
 All events go through `lib/services/analytics_service.dart` (fire-and-forget, errors swallowed; no-op when Firebase didn't start). `setUserId` is the Supabase user uuid, set on every auth state change in `app_router.dart` — never an email or phone. Screen views come from `FirebaseAnalyticsObserver` on the router.
@@ -120,11 +139,12 @@ All events go through `lib/services/analytics_service.dart` (fire-and-forget, er
 | `match_requested` | `format`, `opponent_type` = registered / guest | `DataService.sendMatchRequest` |
 | `match_request_responded` | `response` = accepted / declined | `DataService.respondToMatchRequest` |
 | `lobby_created` | `sport`, `format`, `skill_level` | `open_lobby_screen.dart` |
-| `lobby_joined` | `sport` | `DataService.joinLobby` |
+| `lobby_joined` | `sport`, `source` = list / link | `DataService.joinLobby` |
 | `result_submitted` | `opponent_type`, `outcome` = win / loss | `log_result_screen.dart` |
 | `result_confirmed` / `result_disputed` | — | `DataService.confirmResult` / `disputeResult`. `result_confirmed` = a played match (North Star) |
 | `message_sent` | — | `DataService.sendMessage` |
-| `share` | `content_type` = result_card, `status` = success / dismissed / unavailable | `result_card_screen.dart` |
+| `share` | `content_type` = result_card / lobby, `status` = success / dismissed / unavailable | `result_card_screen.dart`, `lobby_actions.dart` |
+| `lobby_link_opened` | `signed_in` = yes / no | `lobby_link_screen.dart`. Invite loop: `share` (lobby) → `lobby_link_opened` → `sign_up` → `lobby_joined` (source = link) |
 
 Param values are canonical (Turkish data values, ADR-011), never localized labels. Add new events as a typed method on `AnalyticsService`, not as a raw `logEvent` call in a screen.
 

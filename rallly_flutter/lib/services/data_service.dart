@@ -136,16 +136,23 @@ abstract class DataService {
   /// user's own lobby, [DataError.alreadyRequested] for a repeat request, and
   /// [DataError.lobbyQueueFull] / [lobbyFull] / [lobbyClosed] when the server
   /// refuses (10 pending requests, roster complete, organiser closed it).
+  /// [source] (`list` or `link`) only feeds analytics.
   Future<void> joinLobby({
     required String lobbyId,
     required String creatorId,
     required DateTime dateTime,
     required String court,
     required String sport,
+    String source = 'list',
   });
 
   /// Open/full lobbies visible to the user (cached; refreshed by [refreshLive]).
   List<Lobby> getLobbies();
+
+  /// One lobby, for an opened invite link. Works signed out too: RLS shows
+  /// public open/full lobbies to everyone. Null when it is closed, private,
+  /// past its start time or gone.
+  Future<Lobby?> getLobby(String lobbyId);
 
   /// Pending and accepted players of one of the user's own lobbies.
   Future<List<LobbyParticipant>> getLobbyParticipants(String lobbyId);
@@ -521,6 +528,24 @@ class MockDataService implements DataService {
   @override
   List<Lobby> getLobbies() => _cachedLobbies;
 
+  @override
+  Future<Lobby?> getLobby(String lobbyId) async {
+    if (!isUuid(lobbyId)) return null;
+    final row = await supabase
+        .from('lobbies')
+        .select()
+        .eq('id', lobbyId)
+        .maybeSingle();
+    if (row == null) return null;
+    final lobby = Lobby.fromJson(Map<String, dynamic>.from(row));
+    // RLS also returns the creator's own closed/cancelled lobbies, and
+    // nothing closes a lobby whose time has passed — an old link must not
+    // offer to join a game that's over.
+    final over = lobby.dateTime?.isBefore(DateTime.now()) ?? false;
+    final open = lobby.status == 'open' || lobby.status == 'full';
+    return open && !over ? lobby : null;
+  }
+
   Future<void> _refreshLobbies() async {
     final uid = supabase.auth.currentUser?.id;
     if (uid == null) {
@@ -528,11 +553,14 @@ class MockDataService implements DataService {
       return;
     }
     try {
+      // Nothing closes a lobby once its time has passed, so leave those out
+      // here (as getLobby does for invite links) — no Join on a game that's over.
       final rows = await supabase
           .from('lobbies')
           .select()
           .inFilter('status', ['open', 'full'])
           .or('is_public.eq.true,creator_id.eq.$uid')
+          .gte('date_time', DateTime.now().toUtc().toIso8601String())
           .order('date_time');
       _cachedLobbies = (rows as List)
           .map((r) => Lobby.fromJson(Map<String, dynamic>.from(r as Map)))
@@ -761,6 +789,7 @@ class MockDataService implements DataService {
     required DateTime dateTime,
     required String court,
     required String sport,
+    String source = 'list',
   }) async {
     final uid = supabase.auth.currentUser?.id;
     if (uid == null) throw const DataException(DataError.notSignedIn);
@@ -784,7 +813,7 @@ class MockDataService implements DataService {
     } on PostgrestException catch (e) {
       throw _lobbyError(e) ?? e;
     }
-    unawaited(analyticsService.logLobbyJoined(sport: sport));
+    unawaited(analyticsService.logLobbyJoined(sport: sport, source: source));
     await _notifyMatchRequest(
       matchId: inserted['id'] as String,
       opponentId: creatorId,

@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rallly/l10n/app_localizations.dart';
 import 'package:rallly/l10n/option_labels.dart';
+import 'package:rallly/config/app_links.dart';
 import 'package:rallly/main.dart' show CourtThemeProvider;
 import 'package:rallly/models/models.dart';
 import 'package:rallly/screens/achievements_screen.dart';
@@ -14,6 +15,7 @@ import 'package:rallly/screens/edit_profile_screen.dart';
 import 'package:rallly/screens/notifications_preferences_screen.dart';
 import 'package:rallly/screens/reputation_screen.dart';
 import 'package:rallly/screens/log_result_screen.dart';
+import 'package:rallly/screens/lobby_link_screen.dart';
 import 'package:rallly/utils/uuid.dart';
 import 'package:rallly/screens/match_screen.dart';
 import 'package:rallly/screens/my_results_screen.dart';
@@ -374,6 +376,27 @@ void main() {
       'AchievementsScreen': () => const AchievementsScreen(),
       'ReputationScreen': () => const ReputationScreen(),
       'NotificationPreferencesScreen': () => const NotificationPreferencesScreen(),
+      // Longest realistic content: doubles, long court name, notes.
+      'LobbyInviteCard': () => Scaffold(
+            body: Padding(
+              padding: const EdgeInsets.all(16),
+              child: LobbyInviteCard(
+                lobby: Lobby(
+                  id: '00000000-0000-4000-8000-000000000001',
+                  creatorId: 'c1',
+                  sport: 'Badminton',
+                  skillLevel: 'İleri Seviye',
+                  dateTime: DateTime(2026, 11, 7, 18, 30),
+                  court: 'Fenerbahçe SK Tenis Kortları',
+                  notes: 'Toplar bende, kort ücreti bölüşülür. Isınma 15 dk.',
+                  isDoubles: true,
+                  pendingCount: 4,
+                  acceptedCount: 2,
+                ),
+                organiserName: 'Leyla Garaylı',
+              ),
+            ),
+          ),
     };
 
     for (final locale in AppLocalizations.supportedLocales) {
@@ -437,5 +460,22 @@ void main() {
 
       expect(find.byIcon(Icons.arrow_back_ios_new), findsNothing);
     });
+  });
+
+  // ── Lobby invite links ─────────────────────────────────────────────────────
+  group('Lobby invite links', () {
+    test('lobbyLink points at the /l/<id> route on kortagel.com', () {
+      expect(lobbyLink('abc-123'), 'https://kortagel.com/l/abc-123');
+    });
+
+    for (final locale in AppLocalizations.supportedLocales) {
+      test('share text carries the link (${locale.languageCode})', () {
+        final l = lookupAppLocalizations(locale);
+        final text = l.lobbyShareText(
+            'Tenis', 'Cmt 7 Kas, 18:30', 'Caddebostan', lobbyLink('x1'));
+        expect(text, contains('https://kortagel.com/l/x1'));
+        expect(text, contains('Caddebostan'));
+      });
+    }
   });
 }

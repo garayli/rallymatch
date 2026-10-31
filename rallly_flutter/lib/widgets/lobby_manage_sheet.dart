@@ -9,6 +9,7 @@ import '../screens/messages_screen.dart';
 import '../services/data_service.dart';
 import '../theme/app_theme.dart';
 import '../theme/design_tokens.dart';
+import 'lobby_actions.dart';
 import 'shared_widgets.dart';
 
 /// Organiser's view of one of their lobbies: who is waiting, who is in, with
@@ -270,6 +271,18 @@ class _LobbyManageSheetState extends State<_LobbyManageSheet> {
                 _section(l.lobbyAcceptedSection, accepted),
               ],
               const SizedBox(height: Spacing.xl),
+              // Filling the roster is the organiser's job here: the invite
+              // link is the way to reach players outside the app.
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton.icon(
+                  onPressed: () => shareLobby(context, lobby),
+                  icon: const Icon(Icons.ios_share, size: 18),
+                  label: Text(l.lobbyShareInvite),
+                  style: FilledButton.styleFrom(backgroundColor: cp.accent),
+                ),
+              ),
+              const SizedBox(height: Spacing.sm),
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton(

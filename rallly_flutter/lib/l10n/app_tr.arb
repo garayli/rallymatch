@@ -673,6 +673,32 @@
       "count": {"type": "int"}
     }
   },
+  "lobbyShare": "Davet et",
+  "lobbyShareInvite": "Davet linkini paylaş",
+  "lobbyShareText": "{sport} oynamaya var mısın? 🎾 {when} · {court}\nKorta gel! lobisine katıl: {link}",
+  "@lobbyShareText": {
+    "placeholders": {
+      "sport": {"type": "String"},
+      "when": {"type": "String"},
+      "court": {"type": "String"},
+      "link": {"type": "String"}
+    }
+  },
+  "lobbyLinkCopied": "Davet linki kopyalandı — WhatsApp'a yapıştır.",
+  "lobbyLinkTitle": "Lobi daveti",
+  "lobbyLinkOrganiser": "Organizatör: {name}",
+  "@lobbyLinkOrganiser": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "lobbyLinkUnavailable": "Bu lobi artık açık değil",
+  "lobbyLinkUnavailableHint": "Kapanmış, dolmuş ya da silinmiş olabilir. Diğer açık lobilere göz at.",
+  "lobbyLinkBrowse": "Açık lobilere göz at",
+  "lobbyLinkLoadFailed": "Lobi yüklenemedi. Bağlantını kontrol edip tekrar dene.",
+  "lobbyLinkRetry": "Tekrar dene",
+  "lobbyLinkSignUpToJoin": "Kaydol ve katıl",
+  "lobbyLinkSignedOutHint": "Katılmak için ücretsiz hesap aç — 1 dakika sürer.",
   "requestIncomingLabel": "Sana gelen istek",
   "requestSentLabel": "Yanıt bekleniyor",
   "matchDetailRespondHint": "Kabul veya Reddet için Bildirimler sekmesine bak.",

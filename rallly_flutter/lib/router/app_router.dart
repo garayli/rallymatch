@@ -10,6 +10,7 @@ import '../screens/main_shell.dart';
 import '../screens/notifications_screen.dart';
 import '../screens/player_profile_screen.dart';
 import '../screens/messages_screen.dart';
+import '../screens/lobby_link_screen.dart';
 import '../models/models.dart';
 import '../services/analytics_service.dart';
 import '../services/data_service.dart';
@@ -45,7 +46,20 @@ class AppRoutes {
   static const notifications = '/home/notifications';
   static const player = '/home/player';
   static const conversation = '/home/conversation';
+  /// `/l/<lobbyId>` — invite links (`lobbyLink()` in config/app_links.dart).
+  static const lobby = '/l';
 }
+
+// ── Invite links ──────────────────────────────────────────────────────────────
+
+/// An invite link whose visitor went to sign up / sign in. Kept through OTP
+/// and the signup wizard, then [redirect] sends them back to it instead of
+/// /home; [LobbyLinkScreen] clears it once it shows signed in.
+String? _pendingLobbyLink;
+
+void rememberLobbyLink(String location) => _pendingLobbyLink = location;
+
+void clearPendingLobbyLink() => _pendingLobbyLink = null;
 
 // ── Router ────────────────────────────────────────────────────────────────────
 
@@ -63,8 +77,19 @@ final appRouter = GoRouter(
     // wizard ever renders and skips profile setup entirely.
     final onPreAuth = state.matchedLocation == AppRoutes.landing ||
         state.matchedLocation.startsWith('/auth');
-    final onPublic = onPreAuth || state.matchedLocation == AppRoutes.signup;
+    // Invite links are public: signed out they show a preview to sign up from.
+    final onLobbyLink =
+        state.matchedLocation.startsWith('${AppRoutes.lobby}/');
+    final onPublic = onPreAuth ||
+        state.matchedLocation == AppRoutes.signup ||
+        onLobbyLink;
 
+    final pending = _pendingLobbyLink;
+    if (isLoggedIn &&
+        pending != null &&
+        (onPreAuth || state.matchedLocation == AppRoutes.home)) {
+      return pending;
+    }
     if (isLoggedIn && onPreAuth) return AppRoutes.home;
     if (!isLoggedIn && !onPublic) return AppRoutes.landing;
     return null;
@@ -127,6 +152,18 @@ final appRouter = GoRouter(
       builder: (context, state) => SignupScreen(
         onComplete: () => context.go(AppRoutes.home),
       ),
+    ),
+
+    GoRoute(
+      path: '${AppRoutes.lobby}/:id',
+      builder: (context, state) {
+        final screen = LobbyLinkScreen(lobbyId: state.pathParameters['id']!);
+        // Joining needs a saved profile (the gate runs the wizard first and
+        // the pending link brings the player back); signed out it's a preview.
+        return supabase.auth.currentSession != null
+            ? _ProfileGate(child: screen)
+            : screen;
+      },
     ),
 
     // ── Authenticated routes ─────────────────────────────────────────────────

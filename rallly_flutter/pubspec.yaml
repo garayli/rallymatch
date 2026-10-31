@@ -11,6 +11,9 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  # Path URLs on web (kortagel.com/l/<id>, not /#/l/<id>)
+  flutter_web_plugins:
+    sdk: flutter
 
   # Navigation
   go_router: ^13.0.0

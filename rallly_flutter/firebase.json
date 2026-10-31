@@ -25,7 +25,8 @@
     "public": "build/web",
     "ignore": [
       "firebase.json",
-      "**/.*",
+      "**/.DS_Store",
+      "**/.last_build_id",
       "**/node_modules/**"
     ],
     "rewrites": [

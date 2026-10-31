@@ -1452,6 +1452,52 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get lobbyShare => 'Invite';
+
+  @override
+  String get lobbyShareInvite => 'Share invite link';
+
+  @override
+  String lobbyShareText(String sport, String when, String court, String link) {
+    return 'Up for $sport? 🎾 $when · $court\nJoin the Korta gel! lobby: $link';
+  }
+
+  @override
+  String get lobbyLinkCopied => 'Invite link copied — paste it into WhatsApp.';
+
+  @override
+  String get lobbyLinkTitle => 'Lobby invite';
+
+  @override
+  String lobbyLinkOrganiser(String name) {
+    return 'Organiser: $name';
+  }
+
+  @override
+  String get lobbyLinkUnavailable => 'This lobby is no longer open';
+
+  @override
+  String get lobbyLinkUnavailableHint =>
+      'It may have been closed or removed. Have a look at the other open lobbies.';
+
+  @override
+  String get lobbyLinkBrowse => 'Browse open lobbies';
+
+  @override
+  String get lobbyLinkLoadFailed =>
+      'Couldn\'t load the lobby. Check your connection and try again.';
+
+  @override
+  String get lobbyLinkRetry => 'Try again';
+
+  @override
+  String get lobbyLinkSignUpToJoin => 'Sign up to join';
+
+  @override
+  String get lobbyLinkSignedOutHint =>
+      'Create a free account to join — it takes a minute.';
+
+  @override
   String get requestIncomingLabel => 'Request for you';
 
   @override
