@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,6 +14,10 @@ import 'router/app_router.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Shared links are kortagel.com/l/<id>: without this the web router reads
+  // only the #fragment and every link lands on the landing page. Firebase
+  // Hosting already rewrites every path to index.html. No-op off the web.
+  usePathUrlStrategy();
 
   // On Android the google-services plugin already creates [DEFAULT] natively
   // (google-services.json), so a second initializeApp throws duplicate-app.

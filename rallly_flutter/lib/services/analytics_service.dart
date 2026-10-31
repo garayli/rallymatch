@@ -83,8 +83,14 @@ class AnalyticsService {
         'skill_level': skillLevel,
       });
 
-  Future<void> logLobbyJoined({required String sport}) =>
-      logEvent('lobby_joined', {'sport': sport});
+  /// [source] is `list` (Match tab) or `link` (an opened invite link).
+  Future<void> logLobbyJoined({required String sport, required String source}) =>
+      logEvent('lobby_joined', {'sport': sport, 'source': source});
+
+  /// An invite link was opened. With `signed_in` = no, the funnel continues
+  /// at otp_requested → sign_up → lobby_joined (source = link).
+  Future<void> logLobbyLinkOpened({required bool signedIn}) =>
+      logEvent('lobby_link_opened', {'signed_in': signedIn ? 'yes' : 'no'});
 
   /// [opponentType] is `registered` or `guest`; a guest result carries a
   /// phone number, so it is the seed of the invite loop.
@@ -104,8 +110,9 @@ class AnalyticsService {
 
   Future<void> logMessageSent() => logEvent('message_sent');
 
-  /// [status] is share_plus's ShareResultStatus name (`success`,
-  /// `dismissed`, `unavailable`).
+  /// [contentType] is `result_card` or `lobby`. [status] is share_plus's
+  /// ShareResultStatus name (`success`, `dismissed`, `unavailable`), or
+  /// `copied` when a desktop browser had no share sheet.
   Future<void> logShare({
     required String contentType,
     required String status,

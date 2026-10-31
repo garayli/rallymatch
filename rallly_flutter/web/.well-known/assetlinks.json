@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.rallymatch.app",
+      "sha256_cert_fingerprints": [
+        "71:9F:2E:0D:26:8D:39:53:D7:01:42:42:24:14:75:02:4B:75:73:18:CB:7D:EC:AE:A7:05:71:D2:76:2D:40:B7"
+      ]
+    }
+  }
+]

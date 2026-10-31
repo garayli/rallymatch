@@ -2738,6 +2738,84 @@ abstract class AppLocalizations {
   /// **'{count} istek'**
   String lobbyIncomingRequests(int count);
 
+  /// No description provided for @lobbyShare.
+  ///
+  /// In tr, this message translates to:
+  /// **'Davet et'**
+  String get lobbyShare;
+
+  /// No description provided for @lobbyShareInvite.
+  ///
+  /// In tr, this message translates to:
+  /// **'Davet linkini paylaş'**
+  String get lobbyShareInvite;
+
+  /// No description provided for @lobbyShareText.
+  ///
+  /// In tr, this message translates to:
+  /// **'{sport} oynamaya var mısın? 🎾 {when} · {court}\nKorta gel! lobisine katıl: {link}'**
+  String lobbyShareText(String sport, String when, String court, String link);
+
+  /// No description provided for @lobbyLinkCopied.
+  ///
+  /// In tr, this message translates to:
+  /// **'Davet linki kopyalandı — WhatsApp\'a yapıştır.'**
+  String get lobbyLinkCopied;
+
+  /// No description provided for @lobbyLinkTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Lobi daveti'**
+  String get lobbyLinkTitle;
+
+  /// No description provided for @lobbyLinkOrganiser.
+  ///
+  /// In tr, this message translates to:
+  /// **'Organizatör: {name}'**
+  String lobbyLinkOrganiser(String name);
+
+  /// No description provided for @lobbyLinkUnavailable.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu lobi artık açık değil'**
+  String get lobbyLinkUnavailable;
+
+  /// No description provided for @lobbyLinkUnavailableHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kapanmış, dolmuş ya da silinmiş olabilir. Diğer açık lobilere göz at.'**
+  String get lobbyLinkUnavailableHint;
+
+  /// No description provided for @lobbyLinkBrowse.
+  ///
+  /// In tr, this message translates to:
+  /// **'Açık lobilere göz at'**
+  String get lobbyLinkBrowse;
+
+  /// No description provided for @lobbyLinkLoadFailed.
+  ///
+  /// In tr, this message translates to:
+  /// **'Lobi yüklenemedi. Bağlantını kontrol edip tekrar dene.'**
+  String get lobbyLinkLoadFailed;
+
+  /// No description provided for @lobbyLinkRetry.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tekrar dene'**
+  String get lobbyLinkRetry;
+
+  /// No description provided for @lobbyLinkSignUpToJoin.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kaydol ve katıl'**
+  String get lobbyLinkSignUpToJoin;
+
+  /// No description provided for @lobbyLinkSignedOutHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Katılmak için ücretsiz hesap aç — 1 dakika sürer.'**
+  String get lobbyLinkSignedOutHint;
+
   /// No description provided for @requestIncomingLabel.
   ///
   /// In tr, this message translates to:

@@ -1444,6 +1444,53 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String get lobbyShare => 'Davet et';
+
+  @override
+  String get lobbyShareInvite => 'Davet linkini paylaş';
+
+  @override
+  String lobbyShareText(String sport, String when, String court, String link) {
+    return '$sport oynamaya var mısın? 🎾 $when · $court\nKorta gel! lobisine katıl: $link';
+  }
+
+  @override
+  String get lobbyLinkCopied =>
+      'Davet linki kopyalandı — WhatsApp\'a yapıştır.';
+
+  @override
+  String get lobbyLinkTitle => 'Lobi daveti';
+
+  @override
+  String lobbyLinkOrganiser(String name) {
+    return 'Organizatör: $name';
+  }
+
+  @override
+  String get lobbyLinkUnavailable => 'Bu lobi artık açık değil';
+
+  @override
+  String get lobbyLinkUnavailableHint =>
+      'Kapanmış, dolmuş ya da silinmiş olabilir. Diğer açık lobilere göz at.';
+
+  @override
+  String get lobbyLinkBrowse => 'Açık lobilere göz at';
+
+  @override
+  String get lobbyLinkLoadFailed =>
+      'Lobi yüklenemedi. Bağlantını kontrol edip tekrar dene.';
+
+  @override
+  String get lobbyLinkRetry => 'Tekrar dene';
+
+  @override
+  String get lobbyLinkSignUpToJoin => 'Kaydol ve katıl';
+
+  @override
+  String get lobbyLinkSignedOutHint =>
+      'Katılmak için ücretsiz hesap aç — 1 dakika sürer.';
+
+  @override
   String get requestIncomingLabel => 'Sana gelen istek';
 
   @override
