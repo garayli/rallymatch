@@ -103,11 +103,17 @@ abstract class DataService {
   /// Reactive unread count — listen to this to auto-update badges anywhere.
   ValueNotifier<int> get unreadNotifier;
 
+  /// Incoming chat messages not read yet (`messages.is_read`), for the
+  /// Messages tab badge.
+  ValueNotifier<int> get unreadMessagesNotifier;
+
   /// Notification preferences — persisted in memory (Supabase when ready).
   Map<String, bool> getNotifPrefs();
   void saveNotifPrefs(Map<String, bool> prefs);
 
-  /// Mark a conversation as read (all incoming messages seen).
+  /// Mark a conversation as read (all incoming messages seen): saved to
+  /// `messages.is_read`, so it holds across restarts and devices, and a new
+  /// message in an already-opened chat shows as unread again.
   void markConversationRead(String conversationId);
   bool isConversationRead(String conversationId);
 
@@ -189,6 +195,7 @@ class MockDataService implements DataService {
   List<Lobby> _cachedLobbies = [];
 
   final ValueNotifier<int> _unreadNotifier = ValueNotifier(0);
+  final ValueNotifier<int> _unreadMessagesNotifier = ValueNotifier(0);
   final ValueNotifier<int> _cacheVersion = ValueNotifier(0);
 
   MockDataService() {
@@ -197,6 +204,15 @@ class MockDataService implements DataService {
 
   @override
   ValueNotifier<int> get unreadNotifier => _unreadNotifier;
+
+  @override
+  ValueNotifier<int> get unreadMessagesNotifier => _unreadMessagesNotifier;
+
+  void _countUnreadMessages() {
+    final uid = currentUserId;
+    _unreadMessagesNotifier.value = _cachedConversations.fold(
+        0, (sum, c) => sum + c.unreadCount(uid));
+  }
 
   @override
   ValueNotifier<int> get cacheVersion => _cacheVersion;
@@ -352,6 +368,7 @@ class MockDataService implements DataService {
     final uid = supabase.auth.currentUser?.id;
     if (uid == null) {
       _cachedConversations = [];
+      _countUnreadMessages();
       return;
     }
     final rows = await supabase
@@ -375,7 +392,10 @@ class MockDataService implements DataService {
           ));
     }
     if (grouped.isEmpty) {
-      if (seq == _conversationsFetchSeq) _cachedConversations = [];
+      if (seq == _conversationsFetchSeq) {
+        _cachedConversations = [];
+        _countUnreadMessages();
+      }
       return;
     }
     final profileRows =
@@ -396,6 +416,7 @@ class MockDataService implements DataService {
       // Inbox order: most recent activity first.
       ..sort((a, b) =>
           b.lastMessage!.timestamp.compareTo(a.lastMessage!.timestamp));
+    _countUnreadMessages();
   }
 
   Future<void> _refreshUpcomingSessions(double myNtrp) async {
@@ -694,15 +715,49 @@ class MockDataService implements DataService {
   @override
   void saveNotifPrefs(Map<String, bool> prefs) => _notifPrefs.addAll(prefs);
 
-  final Set<String> _readConversationIds = {};
-
   @override
-  void markConversationRead(String conversationId) =>
-      _readConversationIds.add(conversationId);
+  void markConversationRead(String conversationId) {
+    final uid = currentUserId;
+    final i = _cachedConversations.indexWhere((c) => c.id == conversationId);
+    if (i < 0 || _cachedConversations[i].unreadCount(uid) == 0) return;
+    final c = _cachedConversations[i];
+    // Show it read at once; the server catches up (RLS: "Receiver can mark
+    // as read"). Called on every chat refresh, so only when something's new.
+    _cachedConversations[i] = Conversation(
+      id: c.id,
+      other: c.other,
+      isOnline: c.isOnline,
+      messages: [
+        for (final m in c.messages)
+          m.senderId == uid || m.isRead
+              ? m
+              : ChatMessage(
+                  id: m.id,
+                  senderId: m.senderId,
+                  text: m.text,
+                  timestamp: m.timestamp,
+                  isRead: true,
+                ),
+      ],
+    );
+    _countUnreadMessages();
+    _cacheVersion.value++;
+    unawaited(supabase
+        .from('messages')
+        .update({'is_read': true})
+        .eq('receiver_id', uid)
+        .eq('sender_id', conversationId)
+        .eq('is_read', false)
+        .then((_) {}, onError: (Object e) {
+      debugPrint('MARK MESSAGES READ ERROR: $e');
+    }));
+  }
 
   @override
   bool isConversationRead(String conversationId) =>
-      _readConversationIds.contains(conversationId);
+      _cachedConversations
+          .where((c) => c.id == conversationId)
+          .every((c) => c.unreadCount(currentUserId) == 0);
 
   @override
   Future<void> updateMyProfile({

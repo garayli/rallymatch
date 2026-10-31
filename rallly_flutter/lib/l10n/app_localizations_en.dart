@@ -1504,6 +1504,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get requestSentLabel => 'Awaiting reply';
 
   @override
+  String matchDetailMessage(String name) {
+    return 'Message $name';
+  }
+
+  @override
   String get matchDetailRespondHint =>
       'Accept or decline from the Notifications tab.';
 

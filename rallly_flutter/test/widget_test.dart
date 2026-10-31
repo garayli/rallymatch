@@ -18,6 +18,7 @@ import 'package:rallly/screens/log_result_screen.dart';
 import 'package:rallly/screens/lobby_link_screen.dart';
 import 'package:rallly/utils/uuid.dart';
 import 'package:rallly/screens/match_screen.dart';
+import 'package:rallly/services/push_service.dart';
 import 'package:rallly/screens/my_results_screen.dart';
 import 'package:rallly/screens/games_screen.dart';
 import 'package:rallly/screens/notifications_screen.dart';
@@ -477,5 +478,18 @@ void main() {
         expect(text, contains('Caddebostan'));
       });
     }
+  });
+
+  // ── Push notifications ─────────────────────────────────────────────────────
+  group('Push tap → MainShell tab', () {
+    test('tab key from the push edge function picks the tab', () {
+      expect(shellTabForPush({'tab': 'messages'}), 1);
+      expect(shellTabForPush({'tab': 'alerts', 'type': 'matchRequest'}), 2);
+    });
+
+    test('unknown or missing tab leaves the shell where it is', () {
+      expect(shellTabForPush({}), isNull);
+      expect(shellTabForPush({'tab': 'something-new'}), isNull);
+    });
   });
 }

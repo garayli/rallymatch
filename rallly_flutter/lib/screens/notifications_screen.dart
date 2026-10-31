@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -45,6 +46,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   List<AppNotification> _notifs = [];
   bool _loading = true;
   _Filter _filter = _Filter.all;
+  // Requests answered (or being answered) here. Their buttons hide at once:
+  // until the reload lands a second tap re-sent the answer, the server
+  // refused it (already answered) and the player saw "İşlem başarısız".
+  final Set<String> _answered = {};
 
   @override
   void initState() {
@@ -98,13 +103,17 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   }
 
   Future<void> _respondToRequest(AppNotification n, {required bool accept}) async {
-    if (n.actionId == null) return;
+    if (n.actionId == null || _answered.contains(n.id)) return;
+    setState(() => _answered.add(n.id));
     try {
       await dataService.respondToMatchRequest(
           matchId: n.actionId!, notificationId: n.id, accept: accept);
     } catch (e) {
       debugPrint('MATCH REQUEST RESPONSE ERROR: $e');
       if (!mounted) return;
+      setState(() => _answered.remove(n.id));
+      // Already answered or withdrawn elsewhere: the reload drops the buttons.
+      unawaited(_load(silent: true));
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(context.l10n.actionFailed(dataErrorMessage(context.l10n, e))),
         backgroundColor: RallyColors.accent2,
@@ -327,6 +336,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                     _NotifTile(
                                       notif: n,
                                       cp: cp,
+                                      answered: _answered.contains(n.id),
                                       onAccept: () => _respondToRequest(n, accept: true),
                                       onDecline: () => _respondToRequest(n, accept: false),
                                       onConfirm: () => _confirmResult(n),
@@ -375,6 +385,7 @@ class _GroupHeader extends StatelessWidget {
 class _NotifTile extends StatelessWidget {
   final AppNotification notif;
   final CourtPalette cp;
+  final bool answered;
   final VoidCallback onAccept;
   final VoidCallback onDecline;
   final VoidCallback onConfirm;
@@ -383,6 +394,7 @@ class _NotifTile extends StatelessWidget {
   const _NotifTile({
     required this.notif,
     required this.cp,
+    this.answered = false,
     required this.onAccept,
     required this.onDecline,
     required this.onConfirm,
@@ -539,7 +551,9 @@ class _NotifTile extends StatelessWidget {
             ),
 
             // Action buttons for match requests
-            if (notif.hasActions && notif.type == NotifType.matchRequest) ...[
+            if (notif.hasActions &&
+                !answered &&
+                notif.type == NotifType.matchRequest) ...[
               const SizedBox(height: Spacing.md),
               Row(
                 children: [
