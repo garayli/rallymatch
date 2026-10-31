@@ -719,5 +719,13 @@
   "installIosStep1": "Tarayıcının Paylaş simgesine dokun.",
   "installIosStep2": "Listeden “Ana Ekrana Ekle”yi seç.",
   "installIosStep3": "Sağ üstteki “Ekle”ye dokun.",
-  "installIosDone": "Tamam"
+  "installIosDone": "Tamam",
+  "deleteAccount": "Hesabı sil",
+  "deleteAccountTitle": "Hesabını silmek istiyor musun?",
+  "deleteAccountBody": "Profilin, maçların, mesajların ve bildirimlerin kalıcı olarak silinir. Bekleyen maçların ve açtığın lobiler iptal edilir, diğer oyunculara haber verilir. Bu işlem geri alınamaz.",
+  "deleteAccountWord": "ONAYLA",
+  "deleteAccountTypeHint": "Onaylamak için {word} yaz",
+  "@deleteAccountTypeHint": { "placeholders": { "word": { "type": "String" } } },
+  "deleteAccountConfirm": "Hesabımı kalıcı olarak sil",
+  "errorDeleteAccount": "Hesap silinemedi. Lütfen tekrar dene; sorun sürerse support@kortagel.com adresine yaz."
 }

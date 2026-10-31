@@ -243,3 +243,53 @@ Organiser card: format chip + `1/3 kabul · 4 bekleyen` ; tap → management she
 ### Status 2026-10-04
 - Done: SQL file, app code, l10n, 7 new unit tests (`test/lobby_state_test.dart`); `flutter analyze` 0 errors, `flutter test` 51 pass.
 - Not done: migration not run by me; two-account device test of the whole flow; joiner-side "message organiser" entry point (organiser → player only, replies work both ways).
+
+---
+
+## 2026-10-31 — In-app "Delete account" (Play policy) (PLAN — awaiting approval)
+
+Why: Play requires apps with in-app sign-up to offer in-app deletion **and** a public web link. Web link is live (`kortagel.com/delete-account/`, email-based stopgap); in-app path is missing. Needed before production, not before the first internal-testing upload.
+
+### Decisions needed
+1. **Matches the user played**: (A, recommended) delete every `matches` row where the user is player1/player2 — simplest, cleanest privacy; opponent's history loses those games. (B) keep rows and anonymise — needs a tombstone profile or nullable `player1_id`, more schema work. Privacy page says "may be anonymised", so A is allowed by the text.
+2. **Immediate deletion** after typed confirmation (recommended) vs a 30-day grace period (needs a job; not worth it for v1).
+3. **Migration**: user runs the SQL (as before) vs authorise Supabase MCP so I apply + verify.
+
+### Step 0 — introspect (no changes; user runs in SQL editor, pastes result)
+- [ ] List every FK pointing at `auth.users` / `public.profiles` with its ON DELETE action, plus columns of `notifications`, `reviews`, `matches`, `messages`, `lobbies` (the original tables were created outside `docs/migrations/`, so their FKs aren't recorded). Result decides the delete order and whether anything blocks (NO ACTION FKs).
+
+### Backend (`docs/migrations/2026-11-xx_delete_account.sql`, idempotent)
+- [ ] `public.delete_my_account()` — `SECURITY DEFINER`, `SET search_path = public`, raises `not_signed_in` when `auth.uid()` is null. One transaction, in order:
+  1. Close the user's open lobbies; cancel their pending/upcoming matches and notify the other player (reuse the lobby-v2 close logic so counters stay right).
+  2. Delete `notifications` (user_id = me), `messages` (sender or receiver = me), `reviews` (either side), `push_tokens`, then matches per decision 1.
+  3. Delete the `lobbies` they created, the `profiles` row, then `auth.users` row (`DELETE FROM auth.users WHERE id = auth.uid()`).
+- [ ] `REVOKE ALL … FROM public, anon; GRANT EXECUTE … TO authenticated;` then `NOTIFY pgrst, 'reload schema'` (CLAUDE.md checklist).
+- [ ] Verify with a throwaway account: row counts for that uuid are 0 in every table afterwards; other players' lobbies/counters unaffected.
+
+### App (presentation + one DataService method; no change to other flows)
+- [ ] `DataService.deleteAccount()` → `rpc('delete_my_account')`; errors map to `DataException` (add `DataError.deleteAccountFailed`), shown via `dataErrorMessage()`.
+- [ ] Profile screen: red "Hesabı sil / Delete account" row under Sign out → confirmation dialog explaining what is lost, user must type the confirm word (localised) → loading state → success.
+- [ ] On success: `pushService.unregister()` first (needs the session), clear DataService caches, `analytics.setUserId(null)` + `account_deleted` event, `supabase.auth.signOut()` (GoRouter redirect returns to landing).
+- [ ] l10n TR + EN (title, warning, confirm word/hint, button, success, error); `flutter gen-l10n`.
+- [ ] Tests: widget test for the dialog (button disabled until the word matches); ARB parity test already covers keys; `flutter analyze` 0 errors.
+
+### Docs / store
+- [ ] `delete-account/` page: add the in-app route ("Profil → Hesabı sil") and keep the email option for people who no longer have the app; privacy page "Retention" wording matches decision 1.
+- [ ] ADR-014 in `decisions.md`; key_facts: function name + what it deletes.
+- [ ] Play Console → Data safety: "users can request deletion" = yes, URL `https://kortagel.com/delete-account/`.
+
+### Verification before done
+- [ ] Two real devices/accounts: delete account B while A has a pending request + open lobby with B → A sees a sensible state, no crash, counters correct.
+- [ ] Re-signup with the same email works (fresh profile, no leftovers).
+- [ ] Sign-in with the deleted account's OTP creates a new account, not an error loop.
+
+### Status 2026-10-31 (delete account)
+- Done: Step 0 introspection (result in ADR-014), `docs/migrations/2026-10-31_delete_account.sql`, `DataService.deleteAccount()`, `DeleteAccountDialog` + Profile row, l10n TR/EN, `account_deleted` analytics event, widget test (`test/delete_account_dialog_test.dart`), ADR-014, key_facts, web page mentions the in-app path. `flutter analyze` 0 issues, `flutter test` all pass.
+- Changed vs plan: no `pushService.unregister()` — the RPC cascades `push_tokens`, and unregister would need the session the RPC just destroyed.
+- Not done: **user runs the migration**; two-account device test (verification checklist above); deploy hosting for the updated page; Data safety answer in Play Console.
+
+### Status 2026-10-31 (delete account)
+- Done: Step 0 introspection (result in ADR-014), `docs/migrations/2026-10-31_delete_account.sql`, `DataService.deleteAccount()`, `DeleteAccountDialog` + Profile row, l10n TR/EN, `account_deleted` analytics event, widget test (`test/delete_account_dialog_test.dart`), ADR-014, key_facts, web page mentions the in-app path. `flutter analyze` 0 issues, `flutter test` all pass.
+- Changed vs plan: no `pushService.unregister()`; the RPC cascades `push_tokens`, and unregister would need the session the RPC just destroyed.
+- Not done: **user runs the migration**; two-account device test (checklist above); deploy hosting for the updated page; Data safety answer in Play Console.
+- 2026-10-31: migration run; two-device test (phone B deleted, emulator A watching) passed, re-signup OK.

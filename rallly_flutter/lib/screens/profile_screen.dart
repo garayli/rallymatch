@@ -16,6 +16,7 @@ import 'notifications_preferences_screen.dart';
 import 'log_result_screen.dart';
 import 'my_results_screen.dart';
 import '../widgets/match_detail_sheet.dart';
+import '../widgets/delete_account_dialog.dart';
 import '../l10n/l10n.dart';
 import '../l10n/option_labels.dart';
 
@@ -503,6 +504,13 @@ class _ProfileScreenState extends State<ProfileScreen>
                   await pushService.unregister();
                   await supabase.auth.signOut();
                 },
+                isDestructive: true,
+              ),
+              _SettingsItem(
+                icon: Icons.delete_forever_outlined,
+                label: l.deleteAccount,
+                cp: cp,
+                onTap: () => showDeleteAccountDialog(context),
                 isDestructive: true,
               ),
               const SizedBox(height: 100),

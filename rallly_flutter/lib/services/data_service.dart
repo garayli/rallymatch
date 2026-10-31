@@ -20,6 +20,7 @@ enum DataError {
   lobbyQueueFull,
   lobbyFull,
   lobbyClosed,
+  deleteAccountFailed,
 }
 
 class DataException implements Exception {
@@ -65,6 +66,10 @@ abstract class DataService {
   /// Inserts a message to [receiverId] and refreshes the conversation cache
   /// before returning. Throws on failure so the caller can mark it unsent.
   Future<void> sendMessage({required String receiverId, required String text});
+
+  /// Permanently deletes the signed-in player's account and data (server-side
+  /// `delete_my_account`, see ADR-014). Throws [DataException] on failure.
+  Future<void> deleteAccount();
 
   /// Reads real notification rows from Supabase for the current user.
   Future<List<AppNotification>> getNotifications();
@@ -305,6 +310,20 @@ class MockDataService implements DataService {
         for (final b in _cachedLobbies)
           '${b.id}:${b.status}:${b.pendingCount}:${b.acceptedCount}',
       ].join('|');
+
+  @override
+  Future<void> deleteAccount() async {
+    if (supabase.auth.currentUser == null) {
+      throw const DataException(DataError.notSignedIn);
+    }
+    try {
+      await supabase.rpc('delete_my_account');
+    } catch (e) {
+      debugPrint('DELETE ACCOUNT ERROR: $e');
+      throw const DataException(DataError.deleteAccountFailed);
+    }
+    unawaited(analyticsService.logAccountDeleted());
+  }
 
   @override
   Future<void> sendMessage({

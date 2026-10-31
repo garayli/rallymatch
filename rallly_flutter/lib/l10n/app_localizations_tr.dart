@@ -1540,4 +1540,29 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get installIosDone => 'Tamam';
+
+  @override
+  String get deleteAccount => 'Hesabı sil';
+
+  @override
+  String get deleteAccountTitle => 'Hesabını silmek istiyor musun?';
+
+  @override
+  String get deleteAccountBody =>
+      'Profilin, maçların, mesajların ve bildirimlerin kalıcı olarak silinir. Bekleyen maçların ve açtığın lobiler iptal edilir, diğer oyunculara haber verilir. Bu işlem geri alınamaz.';
+
+  @override
+  String get deleteAccountWord => 'ONAYLA';
+
+  @override
+  String deleteAccountTypeHint(String word) {
+    return 'Onaylamak için $word yaz';
+  }
+
+  @override
+  String get deleteAccountConfirm => 'Hesabımı kalıcı olarak sil';
+
+  @override
+  String get errorDeleteAccount =>
+      'Hesap silinemedi. Lütfen tekrar dene; sorun sürerse support@kortagel.com adresine yaz.';
 }
