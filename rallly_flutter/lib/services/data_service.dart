@@ -7,6 +7,7 @@ import '../utils/initials.dart';
 import '../utils/profile_check.dart';
 import '../utils/uuid.dart';
 import '../main.dart' show supabase;
+import 'analytics_service.dart';
 
 /// Why a DataService write failed. The UI maps these to localized text with
 /// `dataErrorMessage()` — never put user-facing strings in the data layer.
@@ -297,6 +298,7 @@ class MockDataService implements DataService {
       'receiver_id': receiverId,
       'text': text,
     });
+    unawaited(analyticsService.logMessageSent());
     // The insert succeeded — a failed re-read must not surface as "unsent"
     // (the user would retry and duplicate it); the next poll catches up.
     try {
@@ -571,6 +573,7 @@ class MockDataService implements DataService {
       'result_status': 'confirmed',
       'result_confirmed_at': DateTime.now().toUtc().toIso8601String(),
     }).eq('id', matchId);
+    unawaited(analyticsService.logResultConfirmed());
     await supabase
         .from('notifications')
         .update({'is_read': true}).eq('id', notificationId);
@@ -601,6 +604,7 @@ class MockDataService implements DataService {
     if (updated.isEmpty) {
       throw const DataException(DataError.matchUpdateDenied);
     }
+    unawaited(analyticsService.logMatchRequestResponded(accepted: accept));
     notificationId ??= await _requestNotificationId(matchId);
     final match = Map<String, dynamic>.from(updated.first as Map);
     await _notifyRequesterOfResponse(
@@ -637,6 +641,7 @@ class MockDataService implements DataService {
     await supabase.from('matches').update({
       'result_status': 'disputed',
     }).eq('id', matchId);
+    unawaited(analyticsService.logResultDisputed());
     await supabase
         .from('notifications')
         .update({'is_read': true}).eq('id', notificationId);
@@ -779,6 +784,7 @@ class MockDataService implements DataService {
     } on PostgrestException catch (e) {
       throw _lobbyError(e) ?? e;
     }
+    unawaited(analyticsService.logLobbyJoined(sport: sport));
     await _notifyMatchRequest(
       matchId: inserted['id'] as String,
       opponentId: creatorId,
@@ -882,6 +888,10 @@ class MockDataService implements DataService {
       'format': format,
       'status': 'pending',
     }).select('id').single();
+    unawaited(analyticsService.logMatchRequested(
+      format: format,
+      opponentType: isUuid(opponentId) ? 'registered' : 'guest',
+    ));
 
     if (isUuid(opponentId)) {
       await _notifyMatchRequest(

@@ -19,7 +19,10 @@ import '../theme/app_theme.dart';
 
 class _GoRouterRefreshStream extends ChangeNotifier {
   _GoRouterRefreshStream() {
-    _sub = supabase.auth.onAuthStateChange.listen((_) => notifyListeners());
+    _sub = supabase.auth.onAuthStateChange.listen((state) {
+      unawaited(analyticsService.setUserId(state.session?.user.id));
+      notifyListeners();
+    });
   }
 
   late final StreamSubscription<AuthState> _sub;

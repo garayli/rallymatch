@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -6,6 +7,7 @@ import '../theme/app_theme.dart';
 import '../widgets/shared_widgets.dart';
 import '../widgets/rally_primitives.dart';
 import '../main.dart' show supabase;
+import '../services/analytics_service.dart';
 import '../services/data_service.dart';
 import '../l10n/l10n.dart';
 import '../config/supabase_config.dart' show authRedirectUrl;
@@ -65,6 +67,8 @@ class _AuthEmailScreenState extends State<AuthEmailScreen> {
         emailRedirectTo: authRedirectUrl,
         shouldCreateUser: widget.isSignUp,
       );
+      unawaited(analyticsService.logOtpRequested(
+          flow: widget.isSignUp ? 'signup' : 'login'));
       if (mounted) widget.onOtpSent(email);
     } on AuthException catch (e) {
       debugPrint('OTP SEND AUTH ERROR: ${e.statusCode} ${e.message}');
@@ -302,6 +306,8 @@ class _AuthOtpScreenState extends State<AuthOtpScreen>
         token: _code,
         type: OtpType.email,
       );
+      unawaited(analyticsService.logOtpVerified(
+          flow: widget.isSignUp ? 'signup' : 'login'));
       // "Zaten hesabım var" must not let someone who never finished signing
       // up in (an unverified signup still leaves an auth user behind).
       if (!widget.isSignUp && !await dataService.hasCompletedProfile()) {
@@ -313,6 +319,7 @@ class _AuthOtpScreenState extends State<AuthOtpScreen>
         });
         return;
       }
+      if (!widget.isSignUp) unawaited(analyticsService.logLogin());
       if (mounted) widget.onVerified();
     } on AuthException catch (e) {
       _triggerShake();
