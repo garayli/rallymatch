@@ -7,6 +7,7 @@ import '../widgets/shared_widgets.dart';
 import '../widgets/profile_completeness.dart';
 import '../models/models.dart';
 import '../services/data_service.dart';
+import '../services/push_service.dart';
 import '../main.dart' show supabase, CourtThemeProvider, courtThemeNotifier;
 import 'edit_profile_screen.dart';
 import 'reputation_screen.dart';
@@ -497,7 +498,11 @@ class _ProfileScreenState extends State<ProfileScreen>
                 icon: Icons.logout,
                 label: l.signOut,
                 cp: cp,
-                onTap: () async { await supabase.auth.signOut(); },
+                onTap: () async {
+                  // Before signOut: removing the token needs the session.
+                  await pushService.unregister();
+                  await supabase.auth.signOut();
+                },
                 isDestructive: true,
               ),
               const SizedBox(height: 100),

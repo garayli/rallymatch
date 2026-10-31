@@ -1497,6 +1497,11 @@ class AppLocalizationsTr extends AppLocalizations {
   String get requestSentLabel => 'Yanıt bekleniyor';
 
   @override
+  String matchDetailMessage(String name) {
+    return '$name ile mesajlaş';
+  }
+
+  @override
   String get matchDetailRespondHint =>
       'Kabul veya Reddet için Bildirimler sekmesine bak.';
 

@@ -5,6 +5,8 @@ import '../theme/app_theme.dart';
 import '../theme/design_tokens.dart';
 import '../main.dart' show CourtThemeProvider;
 import '../screens/log_result_screen.dart';
+import '../screens/messages_screen.dart';
+import '../services/data_service.dart';
 import '../screens/player_profile_screen.dart';
 import '../l10n/l10n.dart';
 import '../l10n/option_labels.dart';
@@ -132,8 +134,42 @@ class _MatchDetailSheet extends StatelessWidget {
             if (session.isIncomingRequest)
               Text(context.l10n.matchDetailRespondHint,
                   style: RallyType.bodySM.copyWith(color: cp.text2)),
-            if (session.status == MatchStatus.confirmed) ...[
+            // Agreeing on the details (court booking, balls, time) happens in
+            // chat; until now the only way there was through the profile.
+            if (!isGuest && session.status != MatchStatus.cancelled) ...[
               const SizedBox(height: Spacing.md),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: cp.accentStrong,
+                    side: BorderSide(color: cp.border),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(RallyRadius.pill)),
+                  ),
+                  onPressed: () {
+                    final existing = dataService
+                        .getConversations()
+                        .where((c) => c.other.id == opponent.id)
+                        .firstOrNull;
+                    final convo = existing ??
+                        Conversation(
+                            id: 'new_${opponent.id}',
+                            other: opponent,
+                            messages: const []);
+                    Navigator.pop(context);
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (_) => ConversationScreen(conversation: convo)));
+                  },
+                  icon: const Icon(Icons.chat_bubble_outline, size: 18),
+                  label: Text(context.l10n.matchDetailMessage(opponent.name),
+                    style: const TextStyle(fontWeight: FontWeight.w600)),
+                ),
+              ),
+            ],
+            if (session.status == MatchStatus.confirmed) ...[
+              const SizedBox(height: Spacing.sm),
               SizedBox(
                 width: double.infinity,
                 child: FilledButton(

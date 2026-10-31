@@ -110,6 +110,15 @@ class AnalyticsService {
 
   Future<void> logMessageSent() => logEvent('message_sent');
 
+  /// Answer to the Android 13+ notification prompt: AuthorizationStatus
+  /// name (`authorized`, `denied`, `notDetermined`, `provisional`).
+  Future<void> logPushPermission({required String status}) =>
+      logEvent('push_permission', {'status': status});
+
+  /// A push was tapped. [tab] is the `tab` it carried (`alerts`, `messages`).
+  Future<void> logPushOpened({required String tab}) =>
+      logEvent('push_opened', {'tab': tab});
+
   /// [contentType] is `result_card` or `lobby`. [status] is share_plus's
   /// ShareResultStatus name (`success`, `dismissed`, `unavailable`), or
   /// `copied` when a desktop browser had no share sheet.

@@ -2828,6 +2828,12 @@ abstract class AppLocalizations {
   /// **'Yanıt bekleniyor'**
   String get requestSentLabel;
 
+  /// No description provided for @matchDetailMessage.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} ile mesajlaş'**
+  String matchDetailMessage(String name);
+
   /// No description provided for @matchDetailRespondHint.
   ///
   /// In tr, this message translates to:

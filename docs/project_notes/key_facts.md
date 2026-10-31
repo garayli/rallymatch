@@ -119,12 +119,39 @@ Test a new signup without a new inbox: a Gmail `+` alias (`name+test1@gmail.com`
 | Certificate | In assetlinks.json |
 |-------------|--------------------|
 | Debug (dev MacBook) | ✅ `71:9F:2E:…:40:B7` |
-| Upload key | ⚠ not yet — `keytool -list -v -keystore android/upload-keystore.jks -alias upload` (the keystore wasn't on the dev Mac on 2026-10-31) |
+| Upload key | ✅ added to `web/.well-known/assetlinks.json` 2026-10-31 (**not deployed yet** — `firebase deploy --only hosting`). Keystore lives at `android/app/upload-keystore.jks`; `key.properties` must say `storeFile=app/upload-keystore.jks` (resolved from `android/`) |
 | Play app signing | ⚠ add at first Play upload (Play Console → App integrity), together with the SHA-1 step above |
 
 After changing `assetlinks.json`: `flutter build web --release && firebase deploy --only hosting`, check `https://kortagel.com/.well-known/assetlinks.json` returns the JSON, then on a device `adb shell pm verify-app-links --re-verify com.rallymatch.app` and `adb shell pm get-app-links com.rallymatch.app` → `kortagel.com: verified`. Until then Android opens the links in the browser (the web app), not the app.
 
 WhatsApp link previews show the generic Kortagel card from `web/index.html`: the site is static, so per-lobby previews would need a server function.
+
+## Push notifications (FCM, Android)
+
+A push goes out for every new row in `notifications` (match requests, accept/decline, results — written by the app or n8n) and in `messages`.
+
+```
+app (push_service.dart) ── register_push_token RPC ──▶ push_tokens
+notifications / messages INSERT ── Database Webhook ──▶ edge function `push` ── FCM HTTP v1 ──▶ device
+```
+
+- **App**: `PushService.register()` runs when MainShell has loaded (signed in, profile saved): asks for permission (Android 13+), saves the token through `register_push_token`. Sign-out calls `unregister()` first. A tapped push opens Messages or Bildirimler (`tab` in the FCM data → `shellTabForPush`). With the app open Android shows nothing; `onMessage` refreshes the data instead. Status-bar icon `res/drawable/ic_notification.xml`, colour `ic_launcher_background`.
+- **DB**: `docs/migrations/2026-10-31_push_tokens.sql` — table with RLS and no policies; the app only goes through the two SECURITY DEFINER RPCs (a phone that switches accounts moves its token to the new player).
+- **Edge function**: `supabase/functions/push/index.ts`. JWT verification **off**; it checks the `x-push-secret` header instead. Removes tokens FCM reports as gone. One notification per chat partner (Android `tag`).
+
+### One-time setup
+1. Supabase → SQL editor: run `docs/migrations/2026-10-31_push_tokens.sql` and `docs/migrations/2026-10-31_notify_requester.sql` (without the second, accept/decline notices to the requester are refused by RLS — no row, no push).
+2. Firebase console → Project settings → Service accounts → **Generate new private key** (JSON). It's a password-level secret: never commit or paste it anywhere but step 4.
+3. Supabase → Edge Functions → **Deploy a new function → Via editor**: name `push`, paste `supabase/functions/push/index.ts`, deploy. In the function's settings turn **Verify JWT off**.
+4. Edge Functions → **Secrets**: `FIREBASE_SERVICE_ACCOUNT` = the whole JSON file content; `PUSH_WEBHOOK_SECRET` = a random string (`openssl rand -hex 24`).
+5. Database → **Webhooks** → create two: table `notifications`, event **Insert**, type **Supabase Edge Functions** → `push`, POST; add HTTP header `x-push-secret` = the same random string. Same again for table `messages`.
+6. Install a build with `firebase_messaging`, open it, allow notifications. `select * from push_tokens` should show the device.
+
+Debug: Edge Functions → `push` → Logs/Invocations (each call returns `sent` / `removed` / `failed` or why it skipped); Database → Webhooks shows delivery status.
+
+### Not covered yet
+- The in-app notification preferences (`NotificationPreferencesScreen`) live only in memory, so the function can't honour them — every notification row is pushed.
+- No web push and no iOS (no app); no banner while the app is in the foreground.
 
 ## Analytics (Firebase) — funnel events
 
@@ -143,7 +170,9 @@ All events go through `lib/services/analytics_service.dart` (fire-and-forget, er
 | `result_submitted` | `opponent_type`, `outcome` = win / loss | `log_result_screen.dart` |
 | `result_confirmed` / `result_disputed` | — | `DataService.confirmResult` / `disputeResult`. `result_confirmed` = a played match (North Star) |
 | `message_sent` | — | `DataService.sendMessage` |
-| `share` | `content_type` = result_card / lobby, `status` = success / dismissed / unavailable | `result_card_screen.dart`, `lobby_actions.dart` |
+| `share` | `content_type` = result_card / lobby, `status` = success / dismissed / unavailable / copied | `result_card_screen.dart`, `lobby_actions.dart` |
+| `push_permission` | `status` = authorized / denied / … | `push_service.dart`, answer to the Android 13+ prompt |
+| `push_opened` | `tab` = alerts / messages | `push_service.dart`, a push was tapped |
 | `lobby_link_opened` | `signed_in` = yes / no | `lobby_link_screen.dart`. Invite loop: `share` (lobby) → `lobby_link_opened` → `sign_up` → `lobby_joined` (source = link) |
 
 Param values are canonical (Turkish data values, ADR-011), never localized labels. Add new events as a typed method on `AnalyticsService`, not as a raw `logEvent` call in a screen.

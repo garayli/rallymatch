@@ -701,6 +701,12 @@
   "lobbyLinkSignedOutHint": "Create a free account to join — it takes a minute.",
   "requestIncomingLabel": "Request for you",
   "requestSentLabel": "Awaiting reply",
+  "matchDetailMessage": "Message {name}",
+  "@matchDetailMessage": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
   "matchDetailRespondHint": "Accept or decline from the Notifications tab.",
   "signupNameNeedsSurname": "Enter your first and last name",
   "signupSaveFailed": "Couldn't save your profile, please try again",

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/data_service.dart';
+import '../services/push_service.dart';
 import '../theme/app_theme.dart';
 import '../theme/design_tokens.dart';
 import '../widgets/shared_widgets.dart';
@@ -48,12 +49,16 @@ class _MainShellState extends State<MainShell> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    // A push tap that cold-started the app asked for a tab already.
+    _currentIndex = _takePushTab() ?? _currentIndex;
+    pushService.openTab.addListener(_openPushTab);
     _loadSeenState();
     _warmCache();
   }
 
   @override
   void dispose() {
+    pushService.openTab.removeListener(_openPushTab);
     WidgetsBinding.instance.removeObserver(this);
     _livePoll?.cancel();
     super.dispose();
@@ -81,6 +86,21 @@ class _MainShellState extends State<MainShell> with WidgetsBindingObserver {
     if (!mounted) return;
     setState(() => _cacheLoaded = true);
     _startLivePoll();
+    // Signed in with a saved profile: ask for push permission here, not on
+    // the landing page, and save this device's token.
+    unawaited(pushService.register());
+  }
+
+  /// A tapped push asks for a tab (Messages / Bildirimler).
+  void _openPushTab() {
+    final tab = _takePushTab();
+    if (tab != null && mounted) setState(() => _currentIndex = tab);
+  }
+
+  int? _takePushTab() {
+    final tab = pushService.openTab.value;
+    if (tab != null) pushService.openTab.value = null;
+    return tab;
   }
 
   Future<void> _loadSeenState() async {
@@ -185,13 +205,19 @@ class _MainShellState extends State<MainShell> with WidgetsBindingObserver {
                         cp: cp,
                         onTap: () => setState(() => _currentIndex = 0),
                       ),
-                      _NavItem(
-                        icon: Icons.chat_bubble_outline,
-                        activeIcon: Icons.chat_bubble,
-                        label: context.l10n.navMessages,
-                        active: _currentIndex == 1,
-                        cp: cp,
-                        onTap: () => setState(() => _currentIndex = 1),
+                      // No render object in between, so _NavItem's Expanded
+                      // still sizes against the Row.
+                      ValueListenableBuilder<int>(
+                        valueListenable: dataService.unreadMessagesNotifier,
+                        builder: (context, unreadMessages, _) => _NavItem(
+                          icon: Icons.chat_bubble_outline,
+                          activeIcon: Icons.chat_bubble,
+                          label: context.l10n.navMessages,
+                          active: _currentIndex == 1,
+                          badge: unreadMessages,
+                          cp: cp,
+                          onTap: () => setState(() => _currentIndex = 1),
+                        ),
                       ),
                       _NavItem(
                         icon: Icons.notifications_outlined,

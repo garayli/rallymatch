@@ -701,6 +701,12 @@
   "lobbyLinkSignedOutHint": "Katılmak için ücretsiz hesap aç — 1 dakika sürer.",
   "requestIncomingLabel": "Sana gelen istek",
   "requestSentLabel": "Yanıt bekleniyor",
+  "matchDetailMessage": "{name} ile mesajlaş",
+  "@matchDetailMessage": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
   "matchDetailRespondHint": "Kabul veya Reddet için Bildirimler sekmesine bak.",
   "signupNameNeedsSurname": "Adını ve soyadını birlikte yaz",
   "signupSaveFailed": "Profilin kaydedilemedi, tekrar dene",

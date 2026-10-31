@@ -79,11 +79,11 @@ Verified in the Supabase Dashboard SQL Editor on 2026-09-27 (no migration needed
 - [ ] Two-device retest: A sends from the Match tab, profile and chat → a notification reaches B within ≤10s. Messages flow both ways within ~4s while the chat is open, and each side's inbox shows the thread.
 
 Known follow-ups (not fixed in this pass):
-- [ ] The requester isn't notified when a request is accepted or declined; they only see the status change in Schedule. The notifications insert policy only allows `matchRequest`.
+- [x] The requester isn't notified when a request is accepted or declined; they only see the status change in Schedule. The notifications insert policy only allows `matchRequest`. **Fixed 2026-10-31**: `docs/migrations/2026-10-31_notify_requester.sql` (player2 of the match may insert matchConfirmed/matchDeclined for player1).
 - [ ] `resultPending` notifications come back with their buttons after confirm/dispute. Only `is_read` is set; the type isn't changed because n8n owns the result-notification types. Now more visible because of live reload.
-- [ ] `markConversationRead` only tracks read state locally, in memory. New messages in a thread that was already opened don't show as unread, and `messages.is_read` is never written.
+- [x] `markConversationRead` only tracks read state locally, in memory. New messages in a thread that was already opened don't show as unread, and `messages.is_read` is never written. **Done 2026-10-31**: `markConversationRead` writes `messages.is_read`; unread is computed from it; Messages tab badge from `unreadMessagesNotifier`.
 - [ ] Replace polling with Supabase Realtime. Checked 2026-09-27: `profiles`, `matches`, `messages` and `reviews` are already in the `supabase_realtime` publication; `notifications` is **not**. Adding it: `alter publication supabase_realtime add table notifications;`. Don't run it before the decision to switch to Realtime.
-- [ ] `messages` already has a "Receiver can mark as read" UPDATE policy (`auth.uid() = receiver_id`), so writing `is_read` needs no migration, only app code.
+- [x] `messages` already has a "Receiver can mark as read" UPDATE policy (`auth.uid() = receiver_id`), so writing `is_read` needs no migration, only app code. **Done 2026-10-31**: `markConversationRead` writes `messages.is_read`; unread is computed from it; Messages tab badge from `unreadMessagesNotifier`.
 
 ## Phase 3 — Full manual QA pass (all 21 screens)
 Use two real accounts from Phase 2 throughout, not mock/'me'.
