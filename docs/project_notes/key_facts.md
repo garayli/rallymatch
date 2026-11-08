@@ -23,7 +23,7 @@ Project configuration, credentials, and constants.
 | Item | Value |
 |------|-------|
 | Project ID | `rallymatch` (owner: the Google account used for `firebase login` / `gcloud auth login`) |
-| Android package | `com.rallymatch.app` |
+| Android package | `com.kortagel.app` (changed from `com.rallymatch.app` on 2026-11-08 — that name was already taken on Google Play, see ADR-015) |
 | Config files | `rallly_flutter/lib/firebase_options.dart`, `rallly_flutter/android/app/google-services.json` — **gitignored** (GitHub secret scanning flagged the keys in commit `489ab8f`). Regenerate with `flutterfire configure`; placeholder template at `lib/firebase_options.dart.example` |
 | Keys console | https://console.cloud.google.com/apis/credentials?project=rallymatch (sign in as the owner account) |
 
@@ -57,7 +57,7 @@ Firebase client keys aren't real secrets, but they must be restricted so a key c
 
 | Key | State |
 |-----|-------|
-| Android | active — restricted to package `com.rallymatch.app` + the debug and upload SHA-1s |
+| Android | active — restricted to package `com.kortagel.app` + the debug and upload SHA-1s. Since 2026-11-08 this is the key auto-created by Firebase for the new app (name ends `…aGgE`, Firebase-only API allowlist); the old key (`…RjlA`, package `com.rallymatch.app`) is obsolete and can be deleted once the Play build is verified |
 | iOS | **deleted 2026-09-21** (was unrestricted and exposed in commit `489ab8f`). No iOS Xcode project existed. |
 | Browser | **deleted 2026-09-21** (same reason). No web domain existed; `flutter run -d chrome` has no working Firebase key until a new one is created. |
 
@@ -85,9 +85,9 @@ Google Play re-signs every build it distributes (internal-testing track included
    ```bash
    KEY_ID=$(gcloud services api-keys list --project=rallymatch --filter="displayName:Android" --format="value(uid)")
    gcloud services api-keys update "$KEY_ID" --project=rallymatch \
-     --allowed-application=sha1_fingerprint=<DEBUG_SHA1>,package_name=com.rallymatch.app \
-     --allowed-application=sha1_fingerprint=<UPLOAD_SHA1>,package_name=com.rallymatch.app \
-     --allowed-application=sha1_fingerprint=<PLAY_SHA1>,package_name=com.rallymatch.app
+     --allowed-application=sha1_fingerprint=<DEBUG_SHA1>,package_name=com.kortagel.app \
+     --allowed-application=sha1_fingerprint=<UPLOAD_SHA1>,package_name=com.kortagel.app \
+     --allowed-application=sha1_fingerprint=<PLAY_SHA1>,package_name=com.kortagel.app
    ```
 
    Or in the Console: Credentials → Android key → Application restrictions → Add an item.

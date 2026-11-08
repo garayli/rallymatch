@@ -125,6 +125,15 @@ Re-verify these don't regress (see `docs/project_notes/bugs.md`):
 - [ ] Confirm Supabase RLS policies are production-safe (no overly permissive `true` policies left over from dev) — cross-check against `mcp__supabase__get_advisors`
 - [ ] Remove/guard any dev-only affordances (e.g. debug prints, test accounts, seeded mock fallbacks) from the release build
 - [ ] **FIRST PLAY UPLOAD — add Google's app-signing SHA-1 to the Android API key.** Play re-signs every build it distributes (internal testing included) with its own certificate, and the Android key (restricted 2026-09-21) only allows the debug + upload SHA-1s. Until Play's SHA-1 is added, Firebase calls from Play-installed builds are rejected with 403. Steps + exact `gcloud` command: `docs/project_notes/key_facts.md` → "Firebase / Google Cloud".
+- [x] 2026-11-08: ID verification done; `flutter analyze` clean, `flutter test` 60/60, release AAB built and signed with the upload key (`rallly_flutter/build/app/outputs/bundle/release/app-release.aab`, 1.0.0+1)
+- [ ] **Play upload checklist (do in this order, don't skip):**
+  - [x] App created in Play Console as `com.kortagel.app` (2026-11-08; `com.rallymatch.app` was already taken). Code switched to the new ID — **still to do: register the new Android app in Firebase, replace `android/app/google-services.json` and regenerate `lib/firebase_options.dart` (`flutterfire configure`), add `com.kortagel.app` to the Android API key restriction, redeploy `assetlinks.json`, rebuild the AAB**
+  - [ ] Upload the rebuilt AAB to **Internal testing**
+  - [ ] Copy Play's **App signing key certificate** SHA-1 (Play Console → App integrity) → add to the Android API key (`gcloud` command in `key_facts.md`) — else Firebase 403 on Play-installed builds
+  - [ ] Add Play's SHA-256 to `web/.well-known/assetlinks.json`, then `flutter build web --release && firebase deploy --only hosting`
+  - [ ] **Release smoke test on a real phone, installed from the Play testing track** (not sideloaded): sign-in OTP, profile, match request, messages, push notification, Firebase events arriving
+  - [ ] Data safety form (data-deletion URL `https://kortagel.com/delete-account/`), privacy policy URL, content rating, target audience, store listings (TR + EN)
+  - [ ] Before Production: remove hardcoded demo data (profile stats, reputation, landing "2.400+"), fix the fake doubles submit; personal account → 12 testers × 14 days closed test first
 - [x] iOS and browser API keys deleted 2026-09-21 (unrestricted, exposed in git history). When iOS or web is set up later, create new keys restricted from day one — see `key_facts.md` → "Firebase / Google Cloud"
 
 ## Phase 5b — Internationalization (i18n) before store upload
