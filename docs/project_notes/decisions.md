@@ -272,3 +272,17 @@ Lobbies had no format, no limit on requests, no way to see/remove accepted playe
 - **Positive:** every card is correct for every viewer; two people can't take the last slot.
 - **Negative:** code needs the migration applied first (`lobbies.format` insert fails otherwise). Requests made before the migration have no `lobby_id` and don't count toward a lobby.
 - **How to apply:** any new way of changing `matches.status` for lobby rows must go through the trigger-protected columns; never write the counters from the app.
+
+## ADR-015: Android applicationId changed to com.kortagel.app
+**Date:** 2026-11-08
+**Status:** Accepted (supersedes the `applicationId` value in ADR-010)
+
+### Context
+At first Play Console app creation, `com.rallymatch.app` was reported as already in use (the developer account had no apps, so another account owns the name). `applicationId` is permanent once an app is created in Play.
+
+### Decision
+Use `com.kortagel.app` (reverse domain of kortagel.com, which we own). Changed in `android/app/build.gradle.kts`, `web/.well-known/assetlinks.json`, the Firebase Android app registration (`google-services.json`, `firebase_options.dart`) and the Android API key restriction. `namespace` is unchanged.
+
+### Consequences
+- The old Firebase Android app and any API-key entries for `com.rallymatch.app` are obsolete and can be removed once the new build is verified.
+- Debug installs of the old package id stay on test phones as a separate app until uninstalled.

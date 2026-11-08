@@ -411,7 +411,7 @@ No new build was made. `build/app/outputs/flutter-apk/app-debug.apk` was timesta
 A related hazard came up the same evening. A `flutter build`/`run` started at 22:10 failed with `getCurrentPlayer isn't defined`. Another session had just run `git checkout main` + `pull` and re-applied the uncommitted changes, and the compile landed in the moment the files were reverted.
 
 ### Solution
-- Quit the old session (`q`) and run `flutter run` again, or press `R` (hot restart; `r` isn't enough when a service interface changes). Confirm with `adb shell dumpsys package com.rallymatch.app | grep lastUpdateTime`.
+- Quit the old session (`q`) and run `flutter run` again, or press `R` (hot restart; `r` isn't enough when a service interface changes). Confirm with `adb shell dumpsys package com.kortagel.app | grep lastUpdateTime`.
 - A backgrounded `flutter run` (no stdin) exits once the app is installed ("Lost connection to device"). The app keeps running, but hot reload is gone. For the web, `flutter build web` + a static server (`python -m http.server 8080` in `build/web`) is more reliable than a detached `flutter run -d chrome`.
 
 ### Prevention
