@@ -106,7 +106,7 @@ Login/signup codes are sent by Supabase Auth through Resend. Set up 2026-10-31.
 | Item | Value |
 |------|-------|
 | Resend domain | `kortagel.com`, region **eu-west-1** (Ireland). Free plan: 1 domain, 100 emails/day, 3,000/month |
-| DNS (Cloudflare) | Resend's records: TXT `resend._domainkey` (DKIM), CNAMEs `send` and `rsend` (sending, **DNS only** — a proxied CNAME breaks verification), TXT `_dmarc` = `v=DMARC1; p=none;`. Receiving is off (no MX) |
+| DNS (Cloudflare) | Resend's records: TXT `resend._domainkey` (DKIM), CNAMEs `send` and `rsend` (sending, **DNS only** — a proxied CNAME breaks verification), TXT `_dmarc` = `v=DMARC1; p=none;`. Receiving: Cloudflare Email Routing is on (MX `route1-3.mx.cloudflare.net`); rule `support@kortagel.com` → the owner's Gmail (active), catch-all disabled. `support@` is the contact address on the privacy policy and `/delete-account/` page. `noreply@` has no inbox |
 | Supabase → Authentication → Emails → SMTP | Custom SMTP **on**: host `smtp.resend.com`, port `465`, user `resend`, password = a Resend API key with Sending access to kortagel.com (stored only in Supabase), sender `noreply@kortagel.com`, name `Korta gel!` |
 | Rate limit | Authentication → Rate Limits → "Rate limit for sending emails": keep it well above the default (e.g. ~100/hour) or a launch day hits it |
 | Templates | **Confirm sign up** (new users) and **Magic Link** (existing users) must contain `{{ .Token }}`: the app's OTP screen (`auth_screen.dart`, `_codeLength = 8`) only takes a typed code. Email OTP Length in Supabase must stay **8** |

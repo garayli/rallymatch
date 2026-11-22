@@ -25,3 +25,6 @@ rallly_flutter/package-lock.json
 **/ios/Flutter/Generated.xcconfig
 **/ios/Flutter/flutter_export_environment.sh
 **/ios/Flutter/ephemeral/
+
+# Play Store screenshots (may show real player names)
+docs/brand/store/screenshots/

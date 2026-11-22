@@ -140,6 +140,11 @@ Re-verify these don't regress (see `docs/project_notes/bugs.md`):
     - [ ] Tester feedback round 1 → plan, fix, upload to the Alpha track
     - [ ] Day 14+: Play Console → Dashboard → Apply for production
   - [ ] Before Production: remove hardcoded demo data (profile stats, reputation, landing "2.400+"), fix the fake doubles submit; personal account → 12 testers × 14 days closed test first
+  - [ ] **Terms of Service page** (`web/terms/`, TR + EN, contact `support@kortagel.com`; have it legally reviewed) → deploy hosting → add the URL to Play Console → Trader status → "Terms of Service link" (left blank on 2026-11-08; trader status was declared "Yes")
+  - [ ] **Report + Block users** (profiles and chat; DB table + filtering) — Play UGC policy; the content-rating questionnaire was answered "No" to block/report on 2026-11-08, so re-run the questionnaire after shipping it
+  - [ ] Privacy policy: add a line about the guest opponent's phone number (`opponent_phone`) and Firebase approximate location (IP-derived)
+  - [ ] Advertising ID: the merged manifest declares `AD_ID` (Firebase Analytics); declared "Yes / Analytics" in Play, or remove the permission in the next build and answer "No"
+  - [ ] Gmail filter so `support@kortagel.com` forwards never go to Spam (first forwarded mail landed in Spam)
 - [x] iOS and browser API keys deleted 2026-09-21 (unrestricted, exposed in git history). When iOS or web is set up later, create new keys restricted from day one — see `key_facts.md` → "Firebase / Google Cloud"
 
 ## Phase 5b — Internationalization (i18n) before store upload
