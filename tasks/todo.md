@@ -127,12 +127,18 @@ Re-verify these don't regress (see `docs/project_notes/bugs.md`):
 - [ ] **FIRST PLAY UPLOAD — add Google's app-signing SHA-1 to the Android API key.** Play re-signs every build it distributes (internal testing included) with its own certificate, and the Android key (restricted 2026-09-21) only allows the debug + upload SHA-1s. Until Play's SHA-1 is added, Firebase calls from Play-installed builds are rejected with 403. Steps + exact `gcloud` command: `docs/project_notes/key_facts.md` → "Firebase / Google Cloud".
 - [x] 2026-11-08: ID verification done; `flutter analyze` clean, `flutter test` 60/60, release AAB built and signed with the upload key (`rallly_flutter/build/app/outputs/bundle/release/app-release.aab`, 1.0.0+1)
 - [ ] **Play upload checklist (do in this order, don't skip):**
-  - [x] App created in Play Console as `com.kortagel.app` (2026-11-08; `com.rallymatch.app` was already taken). Code switched to the new ID — **still to do: register the new Android app in Firebase, replace `android/app/google-services.json` and regenerate `lib/firebase_options.dart` (`flutterfire configure`), add `com.kortagel.app` to the Android API key restriction, redeploy `assetlinks.json`, rebuild the AAB**
-  - [ ] Upload the rebuilt AAB to **Internal testing**
-  - [ ] Copy Play's **App signing key certificate** SHA-1 (Play Console → App integrity) → add to the Android API key (`gcloud` command in `key_facts.md`) — else Firebase 403 on Play-installed builds
-  - [ ] Add Play's SHA-256 to `web/.well-known/assetlinks.json`, then `flutter build web --release && firebase deploy --only hosting`
-  - [ ] **Release smoke test on a real phone, installed from the Play testing track** (not sideloaded): sign-in OTP, profile, match request, messages, push notification, Firebase events arriving
+  - [x] App created in Play Console as `com.kortagel.app` (2026-11-08; `com.rallymatch.app` was already taken). Code switched to the new ID; `com.kortagel.app` registered in Firebase (confirmed 2026-11-22)
+  - [x] Upload the rebuilt AAB to **Internal testing**
+  - [ ] (SHA-1 is `6D:37:A8:…:63:F7`; user is checking whether it is already on the key, 2026-11-22) Copy Play's **App signing key certificate** SHA-1 (Play Console → App integrity) → add to the Android API key (`gcloud` command in `key_facts.md`) — else Firebase 403 on Play-installed builds
+  - [ ] ~~Add Play's SHA-256 to `web/.well-known/assetlinks.json`~~ (added 2026-11-22), then `flutter build web --release && firebase deploy --only hosting`
+  - [x] (2026-11-22, user) **Release smoke test on a real phone, installed from the Play testing track** (not sideloaded): sign-in OTP, profile, match request, messages, push notification, Firebase events arriving
   - [ ] Data safety form (data-deletion URL `https://kortagel.com/delete-account/`), privacy policy URL, content rating, target audience, store listings (TR + EN)
+  - [x] Closed testing — Alpha track created, email list "Internal" (21 testers) attached; sent for review 2026-11-22
+  - [ ] **14-day closed test** (personal account: ≥12 testers opted in continuously for 14 days; the clock starts once the review passes and testers join via the opt-in link). Next build must bump `pubspec.yaml` version (now `1.0.0+1`). Keep a short "feedback → change" log here — the production-access application asks for it
+    - [ ] Review approved → share opt-in link (testers must use the same Gmail as on the list)
+    - [ ] Verify support@kortagel.com actually receives mail (used in privacy/delete-account pages and as the Play feedback address)
+    - [ ] Tester feedback round 1 → plan, fix, upload to the Alpha track
+    - [ ] Day 14+: Play Console → Dashboard → Apply for production
   - [ ] Before Production: remove hardcoded demo data (profile stats, reputation, landing "2.400+"), fix the fake doubles submit; personal account → 12 testers × 14 days closed test first
 - [x] iOS and browser API keys deleted 2026-09-21 (unrestricted, exposed in git history). When iOS or web is set up later, create new keys restricted from day one — see `key_facts.md` → "Firebase / Google Cloud"
 
