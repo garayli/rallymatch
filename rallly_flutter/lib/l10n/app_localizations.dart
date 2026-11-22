@@ -641,14 +641,8 @@ abstract class AppLocalizations {
   /// No description provided for @privacySecuritySub.
   ///
   /// In tr, this message translates to:
-  /// **'Profil görünürlüğü'**
+  /// **'Ekran kaydı, gizlilik politikası'**
   String get privacySecuritySub;
-
-  /// No description provided for @privacySettingsSoon.
-  ///
-  /// In tr, this message translates to:
-  /// **'Gizlilik ayarları yakında'**
-  String get privacySettingsSoon;
 
   /// No description provided for @sectionAbout.
   ///
@@ -2953,6 +2947,48 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Hesap silinemedi. Lütfen tekrar dene; sorun sürerse support@kortagel.com adresine yaz.'**
   String get errorDeleteAccount;
+
+  /// No description provided for @clarityConsentTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Uygulamayı geliştirmemize yardım eder misiniz?'**
+  String get clarityConsentTitle;
+
+  /// No description provided for @clarityConsentBody.
+  ///
+  /// In tr, this message translates to:
+  /// **'İzin verirseniz Microsoft Clarity, uygulamada nasıl dokunup kaydırdığınızı kaydeder (ekran kaydı, ses yok); böylece kafa karıştıran ekranları görürüz. Mesajlar, e-posta ve telefon alanları gizlenir; kayıtlar hesabınıza bağlanmaz. Veriler Türkiye dışındaki Microsoft sunucularında işlenir. Bunu istediğiniz zaman Profil → Gizlilik ve Güvenlik bölümünden değiştirebilirsiniz.'**
+  String get clarityConsentBody;
+
+  /// No description provided for @clarityConsentAllow.
+  ///
+  /// In tr, this message translates to:
+  /// **'İzin ver'**
+  String get clarityConsentAllow;
+
+  /// No description provided for @clarityConsentDecline.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hayır, teşekkürler'**
+  String get clarityConsentDecline;
+
+  /// No description provided for @clarityToggleTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Uygulamayı geliştirmeye yardım et'**
+  String get clarityToggleTitle;
+
+  /// No description provided for @clarityToggleSub.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ekran kayıtlarını Microsoft Clarity ile paylaş'**
+  String get clarityToggleSub;
+
+  /// No description provided for @privacyPolicyLink.
+  ///
+  /// In tr, this message translates to:
+  /// **'Gizlilik politikasını oku'**
+  String get privacyPolicyLink;
 }
 
 class _AppLocalizationsDelegate

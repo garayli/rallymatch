@@ -1,3 +1,4 @@
+import '../services/clarity_sdk.dart' show ClarityMask;
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -83,7 +84,7 @@ class _AuthEmailScreenState extends State<AuthEmailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ClarityMask(child: Scaffold(
       backgroundColor: RallyColors.bg,
       body: SafeArea(
         child: Column(
@@ -206,7 +207,7 @@ class _AuthEmailScreenState extends State<AuthEmailScreen> {
           ],
         ),
       ),
-    );
+    ));
   }
 }
 
@@ -377,7 +378,7 @@ class _AuthOtpScreenState extends State<AuthOtpScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ClarityMask(child: Scaffold(
       backgroundColor: RallyColors.bg,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -555,6 +556,6 @@ class _AuthOtpScreenState extends State<AuthOtpScreen>
           ),
         ),
       ),
-    );
+    ));
   }
 }

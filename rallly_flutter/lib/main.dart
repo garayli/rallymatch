@@ -11,6 +11,7 @@ import 'firebase_options.dart';
 import 'l10n/l10n.dart';
 import 'theme/app_theme.dart';
 import 'router/app_router.dart';
+import 'services/clarity_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,6 +46,7 @@ Future<void> main() async {
 
   await initializeDateFormatting();
   await courtThemeNotifier.load();
+  await clarityService.load();
 
   runApp(
     const CourtThemeProvider(

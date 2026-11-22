@@ -13,6 +13,7 @@ import 'edit_profile_screen.dart';
 import 'reputation_screen.dart';
 import 'achievements_screen.dart';
 import 'notifications_preferences_screen.dart';
+import 'privacy_settings_screen.dart';
 import 'log_result_screen.dart';
 import 'my_results_screen.dart';
 import '../widgets/match_detail_sheet.dart';
@@ -476,12 +477,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                 label: l.privacySecurity,
                 sub: l.privacySecuritySub,
                 cp: cp,
-                onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(l.privacySettingsSoon),
-                    behavior: SnackBarBehavior.floating,
-                  ),
-                ),
+                onTap: () => Navigator.push(context,
+                  MaterialPageRoute(
+                    builder: (_) => const PrivacySettingsScreen())),
               ),
               _SettingsSection(title: l.sectionAbout, cp: cp),
               _SettingsItem(

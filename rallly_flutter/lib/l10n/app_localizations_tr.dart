@@ -291,10 +291,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get privacySecurity => 'Gizlilik ve Güvenlik';
 
   @override
-  String get privacySecuritySub => 'Profil görünürlüğü';
-
-  @override
-  String get privacySettingsSoon => 'Gizlilik ayarları yakında';
+  String get privacySecuritySub => 'Ekran kaydı, gizlilik politikası';
 
   @override
   String get sectionAbout => 'HAKKINDA';
@@ -1565,4 +1562,28 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get errorDeleteAccount =>
       'Hesap silinemedi. Lütfen tekrar dene; sorun sürerse support@kortagel.com adresine yaz.';
+
+  @override
+  String get clarityConsentTitle =>
+      'Uygulamayı geliştirmemize yardım eder misiniz?';
+
+  @override
+  String get clarityConsentBody =>
+      'İzin verirseniz Microsoft Clarity, uygulamada nasıl dokunup kaydırdığınızı kaydeder (ekran kaydı, ses yok); böylece kafa karıştıran ekranları görürüz. Mesajlar, e-posta ve telefon alanları gizlenir; kayıtlar hesabınıza bağlanmaz. Veriler Türkiye dışındaki Microsoft sunucularında işlenir. Bunu istediğiniz zaman Profil → Gizlilik ve Güvenlik bölümünden değiştirebilirsiniz.';
+
+  @override
+  String get clarityConsentAllow => 'İzin ver';
+
+  @override
+  String get clarityConsentDecline => 'Hayır, teşekkürler';
+
+  @override
+  String get clarityToggleTitle => 'Uygulamayı geliştirmeye yardım et';
+
+  @override
+  String get clarityToggleSub =>
+      'Ekran kayıtlarını Microsoft Clarity ile paylaş';
+
+  @override
+  String get privacyPolicyLink => 'Gizlilik politikasını oku';
 }

@@ -1,3 +1,4 @@
+import '../services/clarity_sdk.dart' show ClarityMask;
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -77,7 +78,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
     final cp = CourtThemeProvider.of(context);
     final convos = _filtered;
 
-    return Scaffold(
+    return ClarityMask(child: Scaffold(
       backgroundColor: cp.bg,
       appBar: AppBar(
         backgroundColor: cp.bg.withValues(alpha: 0.96),
@@ -251,7 +252,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
           ),
         ],
       ),
-    );
+    ));
   }
 }
 
@@ -510,7 +511,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
   Widget build(BuildContext context) {
     final cp = CourtThemeProvider.of(context);
 
-    return Scaffold(
+    return ClarityMask(child: Scaffold(
       backgroundColor: cp.bg,
       appBar: AppBar(
         backgroundColor: cp.bg.withValues(alpha: 0.96),
@@ -728,6 +729,6 @@ class _ConversationScreenState extends State<ConversationScreen> {
           ),
         ],
       ),
-    );
+    ));
   }
 }

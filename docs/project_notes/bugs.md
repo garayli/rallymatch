@@ -504,3 +504,17 @@ Swapped `Padding` for `SingleChildScrollView(padding: EdgeInsets.all(28))`. The 
 
 ### Prevention
 Any form screen with a text field needs a scrollable body. The email screen in the same file already does this (`Expanded > SingleChildScrollView`).
+
+## 2026-11-22 — `flutter build web` fails after adding clarity_flutter
+### Problem
+`flutter build web` stopped with "The integer literal 0x9E3779B185EBCA87 can't be represented exactly in JavaScript" (and follow-on `num` vs `int` errors) right after `clarity_flutter` was added; `flutter analyze` and `flutter test` were clean, so it only shows in a real web build.
+
+### Root Cause
+`clarity_flutter` depends on `xxh3`, which uses 64-bit integer literals. dart2js can't represent them, and the SDK has no web support anyway.
+
+### Solution
+`lib/services/clarity_sdk.dart` re-exports a stub on web and `clarity_sdk_native.dart` (the only importer of the package) when `dart.library.io` exists. Screens import `ClarityMask` from that file, never from the package.
+
+### Prevention
+After adding any plugin that is "Android/iOS only", run `flutter build web --release` once, not just analyze/test, before touching the web deploy.
+

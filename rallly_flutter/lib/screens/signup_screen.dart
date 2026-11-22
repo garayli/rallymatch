@@ -1,3 +1,4 @@
+import '../services/clarity_sdk.dart' show ClarityMask;
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -120,7 +121,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ClarityMask(child: Scaffold(
       backgroundColor: RallyColors.bg,
       body: SafeArea(
         child: Column(
@@ -195,7 +196,7 @@ class _SignupScreenState extends State<SignupScreen> {
           ],
         ),
       ),
-    );
+    ));
   }
 }
 
