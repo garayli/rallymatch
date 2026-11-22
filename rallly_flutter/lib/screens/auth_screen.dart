@@ -35,15 +35,21 @@ class _AuthEmailScreenState extends State<AuthEmailScreen> {
   bool _loading = false;
   String? _error;
 
-  String _translateError(AppLocalizations l, String msg) {
+  String _translateError(AppLocalizations l, String msg, {String? code}) {
     final lower = msg.toLowerCase();
-    if (lower.contains('rate limit') ||
+    // "For security purposes, you can only request this after N seconds"
+    // (a second tap within 60s) carries no "rate limit" wording, only a code.
+    if (code == 'over_email_send_rate_limit' ||
+        code == 'over_request_rate_limit' ||
+        lower.contains('rate limit') ||
         lower.contains('email rate') ||
-        lower.contains('too many')) {
+        lower.contains('too many') ||
+        lower.contains('for security purposes')) {
       return l.authErrorRateLimit;
     }
     // shouldCreateUser:false + unknown email → 422 otp_disabled.
-    if (lower.contains('signups not allowed') ||
+    if (code == 'otp_disabled' ||
+        lower.contains('signups not allowed') ||
         lower.contains('user not found')) {
       return l.authErrorNoAccount;
     }
@@ -73,7 +79,7 @@ class _AuthEmailScreenState extends State<AuthEmailScreen> {
       if (mounted) widget.onOtpSent(email);
     } on AuthException catch (e) {
       debugPrint('OTP SEND AUTH ERROR: ${e.statusCode} ${e.message}');
-      setState(() => _error = _translateError(l, e.message));
+      setState(() => _error = _translateError(l, e.message, code: e.code));
     } catch (e) {
       debugPrint('OTP SEND ERROR: $e');
       setState(() => _error = l.authErrorGeneric);
