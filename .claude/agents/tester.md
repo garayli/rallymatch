@@ -1,7 +1,7 @@
 ---
 name: tester
 description: Use this agent to design and run tests for new or changed functionality in the RallyMatch Flutter app. Invoke after code review is approved to validate core functionality, edge cases, and regressions.
-model: claude-sonnet-4-6
+model: sonnet
 tools:
   - Read
   - Glob

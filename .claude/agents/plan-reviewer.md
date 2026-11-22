@@ -1,7 +1,7 @@
 ---
 name: plan-reviewer
 description: Use this agent to critically evaluate a proposed implementation plan. Invoke when you have a plan draft and need it challenged for unnecessary complexity, over-engineering, or premature abstraction before development begins.
-model: claude-sonnet-4-6
+model: opus
 tools:
   - Read
   - Glob

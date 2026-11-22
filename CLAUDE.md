@@ -173,15 +173,21 @@ Typography: **InstrumentSerif** (local font, `assets/fonts/`) for display/headli
 
 When a task is given, all agents run conceptually in parallel — each produces output independently without waiting for others. Every agent focuses only on its own responsibility.
 
+### Model routing (rule — ADR-016)
+
+- **Orchestrator = Fable.** The main session runs on Fable (`.claude/settings.json` → `"model": "fable"`). It plans, splits work, briefs subagents, reviews their reports and writes the Synthesis. It does **not** write feature code itself — only docs, config and one-line fixes.
+- **Coding = Sonnet and Opus**, via the subagents below. Sonnet is the default for implementation; the orchestrator passes `model: "opus"` to the **developer** agent for complex or risky work (auth, data layer / `DataService`, Supabase migrations + RLS, routing, anything touching many files, a bug Sonnet failed to fix).
+- The `model:` line in each `.claude/agents/*.md` is the source of truth; use aliases (`sonnet`, `opus`, `fable`), never pinned version IDs, so agents follow the latest model.
+
 ### Agents
 
-| Agent | Responsibility |
-|---|---|
-| **Research** | Best practices, similar patterns, library trade-offs, feasibility |
-| **Plan Reviewer** | Challenges complexity, enforces simplicity, flags over-engineering |
-| **Developer** | Implements the validated plan following project conventions |
-| **Code Reviewer** | Reviews output for correctness, null safety, convention compliance |
-| **Tester** | Writes and runs `flutter analyze` + widget/unit tests |
+| Agent | Model | Responsibility |
+|---|---|---|
+| **Research** | Sonnet | Best practices, similar patterns, library trade-offs, feasibility |
+| **Plan Reviewer** | Opus | Challenges complexity, enforces simplicity, flags over-engineering |
+| **Developer** | Sonnet (Opus for complex/risky work) | Implements the validated plan following project conventions |
+| **Code Reviewer** | Opus | Reviews output for correctness, null safety, convention compliance |
+| **Tester** | Sonnet | Writes and runs `flutter analyze` + widget/unit tests |
 
 ### Output structure
 
@@ -221,7 +227,7 @@ Always include at minimum: Developer + Code Reviewer.
 
 ### Agent definitions
 
-Live in `.claude/agents/` — one file per agent with its system prompt and allowed tools.
+Live in `.claude/agents/` — one file per agent with its system prompt, allowed tools and `model:` (see Model routing above).
 
 ---
 
