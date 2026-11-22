@@ -66,13 +66,21 @@ class RallyTheme {
       onSurface: isDark ? RallyColors.darkText : RallyColors.textPrimary,
     );
 
+    // GoogleFonts' default base is the *light* text theme (dark text colours).
+    // Without a brightness-matched base, text inside TextFields — which has no
+    // explicit colour — stays near-black on the dark surface and looks invisible.
+    final baseTextTheme = ThemeData(brightness: brightness).textTheme.apply(
+          bodyColor: colorScheme.onSurface,
+          displayColor: colorScheme.onSurface,
+        );
+
     return ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
       scaffoldBackgroundColor: isDark ? RallyColors.darkBg : RallyColors.bg,
 
       // Typography
-      textTheme: GoogleFonts.plusJakartaSansTextTheme().copyWith(
+      textTheme: GoogleFonts.plusJakartaSansTextTheme(baseTextTheme).copyWith(
         displayLarge: const TextStyle(
           fontFamily: 'InstrumentSerif',
           fontSize: 48,

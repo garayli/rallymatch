@@ -518,3 +518,16 @@ Any form screen with a text field needs a scrollable body. The email screen in t
 ### Prevention
 After adding any plugin that is "Android/iOS only", run `flutter build web --release` once, not just analyze/test, before touching the web deploy.
 
+
+## 2026-11-22 — Typed text invisible in TextFields in dark mode
+### Problem
+On a phone in dark mode, letters typed into the email field (auth/signup) were not visible; the field looked empty while typing.
+
+### Root Cause
+`RallyTheme` built `textTheme` from `GoogleFonts.plusJakartaSansTextTheme()` with no base, which defaults to the *light* text theme (near-black text). That colour overrides the dark typography, and TextField input text (`bodyLarge`) has no explicit colour, so it was dark on the dark `darkSurface` fill.
+
+### Solution
+`app_theme.dart` now passes a brightness-matched base (`ThemeData(brightness:).textTheme.apply(bodyColor/displayColor: colorScheme.onSurface)`) into `GoogleFonts.plusJakartaSansTextTheme(...)`. Regression test: `test/dark_theme_text_test.dart`.
+
+### Prevention
+Always give `GoogleFonts.xxxTextTheme(...)` a base text theme for the current brightness; check inputs in dark mode on a real device or emulator.
