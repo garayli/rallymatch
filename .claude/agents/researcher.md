@@ -1,7 +1,7 @@
 ---
 name: researcher
 description: Use this agent to research best practices, similar apps, technical trade-offs, or Flutter/Dart patterns before implementing a feature. Invoke when you need external context, library comparisons, or to validate an approach against industry standards.
-model: claude-sonnet-4-6
+model: sonnet
 tools:
   - WebSearch
   - WebFetch

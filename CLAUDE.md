@@ -26,7 +26,7 @@ flutter test test/widget_test.dart      # run a single test file
 
 **Lessons (non-obvious):** `Firebase.initializeApp` in `main.dart` must tolerate `duplicate-app` — with `google-services.json` present Android creates `[DEFAULT]` natively, and an uncaught throw there means a blank screen. Each dev machine needs its own debug SHA-1 on the Android API key (403 `API_KEY_ANDROID_APP_BLOCKED` otherwise). Flutter isn't on PATH by default (`~/development/flutter/bin`). Details in `docs/project_notes/bugs.md`.
 
-**Clarity (mobile-only, opt-in, ADR-016):** `package:clarity_flutter` may only be imported in `lib/services/clarity_sdk_native.dart`. Its `xxh3` dependency has 64-bit literals dart2js can't compile, so any other import breaks `flutter build web`; everything else goes through `lib/services/clarity_sdk.dart` (conditional export, web gets a stub). `clarityProjectId` in `lib/config/clarity_config.dart` is empty until the Clarity project exists, and an empty ID turns the whole feature (and its consent prompt) off. Mask any new screen with free text or personal data in `ClarityMask`.
+**Clarity (mobile-only, opt-in, ADR-017):** `package:clarity_flutter` may only be imported in `lib/services/clarity_sdk_native.dart`. Its `xxh3` dependency has 64-bit literals dart2js can't compile, so any other import breaks `flutter build web`; everything else goes through `lib/services/clarity_sdk.dart` (conditional export, web gets a stub). `clarityProjectId` in `lib/config/clarity_config.dart` is empty until the Clarity project exists, and an empty ID turns the whole feature (and its consent prompt) off. Mask any new screen with free text or personal data in `ClarityMask`.
 
 **Web / PWA:** `flutter build web` → `build/web` (add `--no-web-resources-cdn` to self-host CanvasKit). On web Firebase is analytics-only: `main.dart` gives `initializeApp` a 4s timeout because when the SDK can't load from gstatic (ad blockers) it never completes and the app sticks on the splash; `analyticsService` then no-ops. "Add to home screen" = `InstallBanner` (`lib/widgets/install_banner.dart`) above the bottom nav, bridged to `window.rallyPwa` in `web/index.html` via `lib/services/pwa_install.dart` (stub on native). Supabase redirect URLs must include the web origin (`authRedirectUrl` in `supabase_config.dart`). Hosted on Firebase Hosting at **kortagel.com** (custom domain on the default site `rallymatch` in `firebase.json`, also reachable as rallymatch.web.app; visible name "Korta gel!"): `flutter build web --release && firebase deploy --only hosting` — setup steps in `docs/project_notes/key_facts.md` → Web hosting.
 
@@ -175,15 +175,21 @@ Typography: **InstrumentSerif** (local font, `assets/fonts/`) for display/headli
 
 When a task is given, all agents run conceptually in parallel — each produces output independently without waiting for others. Every agent focuses only on its own responsibility.
 
+### Model routing (rule — ADR-016)
+
+- **Orchestrator = Fable.** The main session runs on Fable (`.claude/settings.json` → `"model": "fable"`). It plans, splits work, briefs subagents, reviews their reports and writes the Synthesis. It does **not** write feature code itself — only docs, config and one-line fixes.
+- **Coding = Sonnet and Opus**, via the subagents below. Sonnet is the default for implementation; the orchestrator passes `model: "opus"` to the **developer** agent for complex or risky work (auth, data layer / `DataService`, Supabase migrations + RLS, routing, anything touching many files, a bug Sonnet failed to fix).
+- The `model:` line in each `.claude/agents/*.md` is the source of truth; use aliases (`sonnet`, `opus`, `fable`), never pinned version IDs, so agents follow the latest model.
+
 ### Agents
 
-| Agent | Responsibility |
-|---|---|
-| **Research** | Best practices, similar patterns, library trade-offs, feasibility |
-| **Plan Reviewer** | Challenges complexity, enforces simplicity, flags over-engineering |
-| **Developer** | Implements the validated plan following project conventions |
-| **Code Reviewer** | Reviews output for correctness, null safety, convention compliance |
-| **Tester** | Writes and runs `flutter analyze` + widget/unit tests |
+| Agent | Model | Responsibility |
+|---|---|---|
+| **Research** | Sonnet | Best practices, similar patterns, library trade-offs, feasibility |
+| **Plan Reviewer** | Opus | Challenges complexity, enforces simplicity, flags over-engineering |
+| **Developer** | Sonnet (Opus for complex/risky work) | Implements the validated plan following project conventions |
+| **Code Reviewer** | Opus | Reviews output for correctness, null safety, convention compliance |
+| **Tester** | Sonnet | Writes and runs `flutter analyze` + widget/unit tests |
 
 ### Output structure
 
@@ -223,7 +229,7 @@ Always include at minimum: Developer + Code Reviewer.
 
 ### Agent definitions
 
-Live in `.claude/agents/` — one file per agent with its system prompt and allowed tools.
+Live in `.claude/agents/` — one file per agent with its system prompt, allowed tools and `model:` (see Model routing above).
 
 ---
 

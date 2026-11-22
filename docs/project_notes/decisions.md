@@ -287,7 +287,27 @@ Use `com.kortagel.app` (reverse domain of kortagel.com, which we own). Changed i
 - The old Firebase Android app and any API-key entries for `com.rallymatch.app` are obsolete and can be removed once the new build is verified.
 - Debug installs of the old package id stay on test phones as a separate app until uninstalled.
 
-## ADR-016: Microsoft Clarity session recording, mobile only, opt-in
+## ADR-016: Model routing — Fable orchestrates, Sonnet and Opus write code
+**Date:** 2026-11-22
+**Status:** Accepted
+
+### Context
+Work is split across the agents in `.claude/agents/` (CLAUDE.md → Agent Execution Protocol). All of them were pinned to one old Sonnet version, and the main session's model was whatever each machine had selected.
+
+### Decision
+- The main session is the **orchestrator** and runs on **Fable** — project default in `.claude/settings.json` (`"model": "fable"`). It plans, delegates, reviews and synthesizes; it does not write feature code itself (docs, config and one-line fixes are fine).
+- **Code is written by Sonnet and Opus** through the subagents:
+  - `developer` → Sonnet by default; the orchestrator overrides to Opus for complex or risky work (auth, `DataService` / data layer, Supabase migrations and RLS, routing, multi-file refactors, a bug Sonnet failed to fix).
+  - `code-reviewer` → Opus (correctness gate). `plan-reviewer` → Opus.
+  - `tester`, `researcher` → Sonnet.
+- Agent files use model **aliases** (`sonnet`, `opus`, `fable`), not version IDs.
+
+### Consequences
+- Agent `model:` lines in `.claude/agents/*.md` must follow this table; changing it means updating this ADR and CLAUDE.md → "Model routing".
+- A machine-level `/model` choice still overrides the project default for that session; switch back with `/model fable`.
+- Opus/Fable runs cost more than Sonnet — keep routine edits on Sonnet.
+
+## ADR-017: Microsoft Clarity session recording, mobile only, opt-in
 **Date:** 2026-11-22
 **Status:** Accepted
 
@@ -304,4 +324,3 @@ We want to see where players get stuck, beyond the GA4 funnel numbers. Clarity r
 - Web has no session recording; GA4 remains the only web analytics.
 - The privacy policy (`web/privacy/index.html`, TR + EN, updated 2026-11-22) and the Play Data safety form must keep matching this.
 - iOS needs no extra code, but the SDK has not been run on an iOS build yet.
-

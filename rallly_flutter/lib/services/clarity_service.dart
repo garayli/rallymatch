@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../config/clarity_config.dart';
 import 'clarity_sdk.dart';
 
-/// Opt-in session recording through Microsoft Clarity (ADR-016).
+/// Opt-in session recording through Microsoft Clarity (ADR-017).
 ///
 /// Nothing is captured until the user says yes: [consent] is `null` until they
 /// answer, and the SDK is only initialised once it is `true`. Turning it off

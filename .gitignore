@@ -28,3 +28,7 @@ rallly_flutter/package-lock.json
 
 # Play Store screenshots (may show real player names)
 docs/brand/store/screenshots/
+
+# macOS / Firebase CLI local files
+.DS_Store
+**/.firebase/

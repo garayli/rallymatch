@@ -1,7 +1,7 @@
 ---
 name: code-reviewer
 description: Use this agent to review code after implementation. Invoke after the developer agent has made changes to verify quality, correctness, consistency with project conventions, and absence of overengineering.
-model: claude-sonnet-4-6
+model: opus
 tools:
   - Read
   - Glob

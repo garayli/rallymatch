@@ -71,7 +71,7 @@ SHA-1 fingerprints the Android key allows, and where each comes from (`keytool` 
 |-------------|----------------------|
 | Debug (this PC) | `keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android` |
 | Upload | `keytool -list -v -keystore rallly_flutter/android/upload-keystore.jks -alias upload` (password is in `rallly_flutter/android/key.properties`). **Regenerated on the MacBook 2026-10-11** (the Windows keystore was lost); the new SHA-1 was added to the Android key the same day. Backed up in Google Drive. |
-| **Play app signing** | Play's SHA-1 is `6D:37:A8:…:63:F7` (Play Console → Protected with Play → Play Store protection → Play app signing → *App signing key certificate*). **Not yet confirmed on the Android key as of 2026-11-22** — check Cloud Console → Credentials → Android key → Android apps |
+| **Play app signing** | Play's SHA-1 is `6D:37:A8:…:63:F7` (Play Console → Protected with Play → Play Store protection → Play app signing → *App signing key certificate*). ✅ confirmed on the Android key 2026-11-22 |
 
 A different PC has a different debug keystore, so its debug builds are blocked until that machine's SHA-1 is added too. The MacBook's (M1 Pro) debug SHA-1 was added on 2026-10-03 via Cloud Console. On macOS, `keytool` is at `/Applications/Android Studio.app/Contents/jbr/Contents/Home/bin/keytool`.
 
@@ -125,8 +125,8 @@ Test a new signup without a new inbox: a Gmail `+` alias (`name+test1@gmail.com`
 | Certificate | In assetlinks.json |
 |-------------|--------------------|
 | Debug (dev MacBook) | ✅ `71:9F:2E:…:40:B7` |
-| Upload key | ✅ added to `web/.well-known/assetlinks.json` 2026-10-31 (**not deployed yet** — `firebase deploy --only hosting`). Keystore lives at `android/app/upload-keystore.jks`; `key.properties` must say `storeFile=app/upload-keystore.jks` (resolved from `android/`) |
-| Play app signing | ✅ `09:AA:8B:…:63:AA` added 2026-11-22 (**not deployed yet** — `firebase deploy --only hosting`). Found under Play Console → Protected with Play → Play Store protection → Play app signing → *App signing key certificate* |
+| Upload key | ✅ added 2026-10-31, deployed 2026-11-22. Keystore lives at `android/app/upload-keystore.jks`; `key.properties` must say `storeFile=app/upload-keystore.jks` (resolved from `android/`) |
+| Play app signing | ✅ `09:AA:8B:…:63:AA` added and deployed 2026-11-22. Found under Play Console → Protected with Play → Play Store protection → Play app signing → *App signing key certificate* |
 
 After changing `assetlinks.json`: `flutter build web --release && firebase deploy --only hosting`, check `https://kortagel.com/.well-known/assetlinks.json` returns the JSON, then on a device `adb shell pm verify-app-links --re-verify com.kortagel.app` and `adb shell pm get-app-links com.kortagel.app` → `kortagel.com: verified`. Until then Android opens the links in the browser (the web app), not the app.
 
@@ -183,7 +183,7 @@ All events go through `lib/services/analytics_service.dart` (fire-and-forget, er
 
 Param values are canonical (Turkish data values, ADR-011), never localized labels. Add new events as a typed method on `AnalyticsService`, not as a raw `logEvent` call in a screen.
 
-## Microsoft Clarity (session recording, Android/iOS only) — ADR-016
+## Microsoft Clarity (session recording, Android/iOS only) — ADR-017
 
 - Release: Closed testing - Alpha got **1.0.0 (2)** (versionCode 2, first build with Clarity) and was sent for review on 2026-11-22. Privacy policy with the Clarity text was deployed before that. Every new upload needs a higher `+N` in `pubspec.yaml`; Play rejects a bundle whose code is already used, and a draft that still includes the previous bundle fails with a "shadowed by higher version code" error until the old one is removed from it. The Play upload field can't be driven from the in-app browser (the page blocks fetching local files), so the `.aab` is dragged in by hand.
 

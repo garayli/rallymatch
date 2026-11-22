@@ -1,7 +1,7 @@
 ---
 name: developer
 description: Use this agent to implement a validated solution plan in the RallyMatch Flutter codebase. Invoke after the plan has been reviewed and approved. The agent writes clean, production-ready code that follows existing project conventions.
-model: claude-sonnet-4-6
+model: sonnet
 tools:
   - Read
   - Edit
