@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../services/clarity_service.dart';
 import '../services/data_service.dart';
 import '../services/push_service.dart';
 import '../theme/app_theme.dart';
@@ -9,6 +10,7 @@ import '../theme/design_tokens.dart';
 import '../widgets/shared_widgets.dart';
 import '../widgets/onboarding_overlay.dart';
 import '../widgets/install_banner.dart';
+import '../widgets/clarity_consent_dialog.dart';
 import '../main.dart' show CourtThemeProvider;
 import 'match_screen.dart';
 import 'messages_screen.dart';
@@ -89,6 +91,15 @@ class _MainShellState extends State<MainShell> with WidgetsBindingObserver {
     // Signed in with a saved profile: ask for push permission here, not on
     // the landing page, and save this device's token.
     unawaited(pushService.register());
+    clarityService.start(context); // no-op unless the user opted in
+    _maybeAskClarityConsent();
+  }
+
+  /// Asks about session recording once, after the Match-tab tour (two
+  /// overlays at once would bury the question) and once the shell is ready.
+  void _maybeAskClarityConsent() {
+    if (!mounted || !_prefsLoaded || !_cacheLoaded || !_seen[0]) return;
+    askClarityConsentIfNeeded(context);
   }
 
   /// A tapped push asks for a tab (Messages / Bildirimler).
@@ -111,6 +122,7 @@ class _MainShellState extends State<MainShell> with WidgetsBindingObserver {
       _seen = List.generate(4, (i) => seenIndices.contains('$i'));
       _prefsLoaded = true;
     });
+    _maybeAskClarityConsent();
   }
 
   Future<void> _dismissOverlay(int tabIndex) async {
@@ -121,6 +133,7 @@ class _MainShellState extends State<MainShell> with WidgetsBindingObserver {
       seenIndices.add('$tabIndex');
       await prefs.setStringList(_prefsKey, seenIndices);
     }
+    if (tabIndex == 0) _maybeAskClarityConsent();
   }
 
   @override

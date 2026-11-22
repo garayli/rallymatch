@@ -135,8 +135,7 @@
   "notificationsSub": "Match requests, reminders",
   "courtThemeOptions": "Club / Clay / Hard court / Grass",
   "privacySecurity": "Privacy & Security",
-  "privacySecuritySub": "Profile visibility",
-  "privacySettingsSoon": "Privacy settings coming soon",
+  "privacySecuritySub": "Session recording, privacy policy",
   "sectionAbout": "ABOUT",
   "termsPrivacy": "Terms & Privacy",
   "termsPrivacySoon": "Terms & Privacy coming soon",
@@ -727,5 +726,12 @@
   "deleteAccountTypeHint": "Type {word} to confirm",
   "@deleteAccountTypeHint": { "placeholders": { "word": { "type": "String" } } },
   "deleteAccountConfirm": "Delete my account permanently",
-  "errorDeleteAccount": "Could not delete the account. Please try again; if it keeps failing, write to support@kortagel.com."
+  "errorDeleteAccount": "Could not delete the account. Please try again; if it keeps failing, write to support@kortagel.com.",
+  "clarityConsentTitle": "Help us improve the app?",
+  "clarityConsentBody": "If you allow it, Microsoft Clarity records how you tap and scroll in the app (screen recordings, no sound) so we can spot confusing screens. Messages, email and phone fields are hidden, and recordings are not linked to your account. The data is processed on Microsoft servers outside Turkey. You can change this any time under Profile → Privacy & Security.",
+  "clarityConsentAllow": "Allow",
+  "clarityConsentDecline": "No thanks",
+  "clarityToggleTitle": "Help improve the app",
+  "clarityToggleSub": "Share screen recordings with Microsoft Clarity",
+  "privacyPolicyLink": "Read the privacy policy"
 }

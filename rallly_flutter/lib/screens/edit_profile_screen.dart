@@ -1,3 +1,4 @@
+import '../services/clarity_sdk.dart' show ClarityMask;
 import 'package:flutter/material.dart';
 import '../config/profile_options.dart';
 import '../theme/app_theme.dart';
@@ -75,7 +76,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     final cp = CourtThemeProvider.of(context);
     final l = context.l10n;
-    return Scaffold(
+    return ClarityMask(child: Scaffold(
       backgroundColor: cp.bg,
       appBar: AppBar(
         backgroundColor: cp.bg,
@@ -155,7 +156,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           ),
         ),
       ),
-    );
+    ));
   }
 }
 

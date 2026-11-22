@@ -183,6 +183,16 @@ All events go through `lib/services/analytics_service.dart` (fire-and-forget, er
 
 Param values are canonical (Turkish data values, ADR-011), never localized labels. Add new events as a typed method on `AnalyticsService`, not as a raw `logEvent` call in a screen.
 
+## Microsoft Clarity (session recording, Android/iOS only) — ADR-016
+
+- Release: Closed testing - Alpha got **1.0.0 (2)** (versionCode 2, first build with Clarity) and was sent for review on 2026-11-22. Privacy policy with the Clarity text was deployed before that. Every new upload needs a higher `+N` in `pubspec.yaml`; Play rejects a bundle whose code is already used, and a draft that still includes the previous bundle fails with a "shadowed by higher version code" error until the old one is removed from it. The Play upload field can't be driven from the in-app browser (the page blocks fetching local files), so the `.aab` is dragged in by hand.
+
+- Code: `lib/services/clarity_service.dart`, `lib/config/clarity_config.dart` (`clarityProjectId`, empty = feature off), consent dialog `lib/widgets/clarity_consent_dialog.dart`, switch in `lib/screens/privacy_settings_screen.dart`. Pref key `clarity_consent`.
+- Project **Korta gel** (type Android app, created 2026-11-22), Project ID `zhrf8ym7ju`, Masking set to **Strict**. Dashboard: clarity.microsoft.com/projects/view/zhrf8ym7ju
+- Setup steps if the project ever has to be recreated: clarity.microsoft.com → New project → type **Android app** → Settings → copy the Project ID into `clarityProjectId` → set Masking to **Strict** → ship a build. Sessions appear 30 min – 2 h after capture. Check on a debug device: say "İzin ver", use the app, then look for the live session; filter logs on `[Clarity]`.
+- Data safety form: on 2026-11-22 *App activity → App interactions* was added (collected, required, purpose Analytics, not shared); *Approximate location* and *Device or other IDs* already had Analytics. Saved in Play Console; Publishing overview (2026-11-22) listed only the release as a pending change, so the form was not waiting for review. Original plan for Clarity, all marked **optional** and **not shared** (Microsoft acts as our processor): *App activity → App interactions*, *Device or other IDs*, *Approximate location* (derived from IP). Purpose: Analytics. Data is encrypted in transit. Re-check the wording in the console before submitting.
+- Privacy policy `web/privacy/index.html` mentions Clarity in the data list and the provider list (TR + EN). Keep it in sync if the masking or consent behaviour changes.
+
 ## External Resources
 
 | Resource | URL |

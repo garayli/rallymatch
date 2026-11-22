@@ -135,8 +135,7 @@
   "notificationsSub": "Maç istekleri, hatırlatmalar",
   "courtThemeOptions": "Kulüp / Toprak / Sert Kort / Çim",
   "privacySecurity": "Gizlilik ve Güvenlik",
-  "privacySecuritySub": "Profil görünürlüğü",
-  "privacySettingsSoon": "Gizlilik ayarları yakında",
+  "privacySecuritySub": "Ekran kaydı, gizlilik politikası",
   "sectionAbout": "HAKKINDA",
   "termsPrivacy": "Şartlar ve Gizlilik",
   "termsPrivacySoon": "Şartlar ve Gizlilik yakında",
@@ -727,5 +726,12 @@
   "deleteAccountTypeHint": "Onaylamak için {word} yaz",
   "@deleteAccountTypeHint": { "placeholders": { "word": { "type": "String" } } },
   "deleteAccountConfirm": "Hesabımı kalıcı olarak sil",
-  "errorDeleteAccount": "Hesap silinemedi. Lütfen tekrar dene; sorun sürerse support@kortagel.com adresine yaz."
+  "errorDeleteAccount": "Hesap silinemedi. Lütfen tekrar dene; sorun sürerse support@kortagel.com adresine yaz.",
+  "clarityConsentTitle": "Uygulamayı geliştirmemize yardım eder misiniz?",
+  "clarityConsentBody": "İzin verirseniz Microsoft Clarity, uygulamada nasıl dokunup kaydırdığınızı kaydeder (ekran kaydı, ses yok); böylece kafa karıştıran ekranları görürüz. Mesajlar, e-posta ve telefon alanları gizlenir; kayıtlar hesabınıza bağlanmaz. Veriler Türkiye dışındaki Microsoft sunucularında işlenir. Bunu istediğiniz zaman Profil → Gizlilik ve Güvenlik bölümünden değiştirebilirsiniz.",
+  "clarityConsentAllow": "İzin ver",
+  "clarityConsentDecline": "Hayır, teşekkürler",
+  "clarityToggleTitle": "Uygulamayı geliştirmeye yardım et",
+  "clarityToggleSub": "Ekran kayıtlarını Microsoft Clarity ile paylaş",
+  "privacyPolicyLink": "Gizlilik politikasını oku"
 }

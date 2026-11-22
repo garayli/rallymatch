@@ -286,3 +286,22 @@ Use `com.kortagel.app` (reverse domain of kortagel.com, which we own). Changed i
 ### Consequences
 - The old Firebase Android app and any API-key entries for `com.rallymatch.app` are obsolete and can be removed once the new build is verified.
 - Debug installs of the old package id stay on test phones as a separate app until uninstalled.
+
+## ADR-016: Microsoft Clarity session recording, mobile only, opt-in
+**Date:** 2026-11-22
+**Status:** Accepted
+
+### Context
+We want to see where players get stuck, beyond the GA4 funnel numbers. Clarity records screens, so it is personal data processed on Microsoft servers outside Turkey (KVKK m.5/m.9 → explicit consent) and must be declared in the privacy policy and the Play Data safety form. The web build is a Flutter canvas, so Clarity's DOM recorder would show nothing useful there; the `clarity_flutter` SDK supports Android and iOS only.
+
+### Decision
+- Mobile only: `ClarityService.available` is false on web and while `clarityProjectId` (`lib/config/clarity_config.dart`) is empty.
+- Opt-in, default off. A one-time dialog (`askClarityConsentIfNeeded`) appears in `MainShell` after the Match-tab tour; the answer is stored in prefs key `clarity_consent`. `Clarity.initialize` runs only after a yes. Profile → Privacy & Security has the switch to withdraw (`consent(false,false)` + `pause()`).
+- No custom user id or tags, so recordings are not linked to the Supabase account (unlike the GA4 user id).
+- `ClarityMask` wraps the auth, signup, edit-profile, messages (inbox + chat) screens and the guest name/phone fields in `log_result_screen.dart`. New screens with free text or personal data must be masked the same way. In the Clarity dashboard also set masking to Strict.
+
+### Consequences
+- Web has no session recording; GA4 remains the only web analytics.
+- The privacy policy (`web/privacy/index.html`, TR + EN, updated 2026-11-22) and the Play Data safety form must keep matching this.
+- iOS needs no extra code, but the SDK has not been run on an iOS build yet.
+

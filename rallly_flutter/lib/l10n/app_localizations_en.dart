@@ -291,10 +291,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get privacySecurity => 'Privacy & Security';
 
   @override
-  String get privacySecuritySub => 'Profile visibility';
-
-  @override
-  String get privacySettingsSoon => 'Privacy settings coming soon';
+  String get privacySecuritySub => 'Session recording, privacy policy';
 
   @override
   String get sectionAbout => 'ABOUT';
@@ -1573,4 +1570,27 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorDeleteAccount =>
       'Could not delete the account. Please try again; if it keeps failing, write to support@kortagel.com.';
+
+  @override
+  String get clarityConsentTitle => 'Help us improve the app?';
+
+  @override
+  String get clarityConsentBody =>
+      'If you allow it, Microsoft Clarity records how you tap and scroll in the app (screen recordings, no sound) so we can spot confusing screens. Messages, email and phone fields are hidden, and recordings are not linked to your account. The data is processed on Microsoft servers outside Turkey. You can change this any time under Profile → Privacy & Security.';
+
+  @override
+  String get clarityConsentAllow => 'Allow';
+
+  @override
+  String get clarityConsentDecline => 'No thanks';
+
+  @override
+  String get clarityToggleTitle => 'Help improve the app';
+
+  @override
+  String get clarityToggleSub =>
+      'Share screen recordings with Microsoft Clarity';
+
+  @override
+  String get privacyPolicyLink => 'Read the privacy policy';
 }

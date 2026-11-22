@@ -1,3 +1,4 @@
+import '../services/clarity_sdk.dart' show ClarityMask;
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -268,7 +269,7 @@ class _LogResultScreenState extends State<LogResultScreen> {
 
             if (_guestMode) ...[
               const SizedBox(height: 12),
-              TextField(
+              ClarityMask(child: TextField(
                 controller: _guestPhoneCtrl,
                 keyboardType: TextInputType.phone,
                 onChanged: (_) => setState(() {}),
@@ -280,16 +281,16 @@ class _LogResultScreenState extends State<LogResultScreen> {
                   hintText: l.logGuestPhoneHint,
                   prefixIcon: const Icon(Icons.phone_outlined),
                 ),
-              ),
+              )),
               const SizedBox(height: 10),
-              TextField(
+              ClarityMask(child: TextField(
                 controller: _guestNameCtrl,
                 onChanged: (_) => setState(() {}),
                 decoration: InputDecoration(
                   hintText: l.logGuestNameHint,
                   prefixIcon: const Icon(Icons.person_outline),
                 ),
-              ),
+              )),
             ],
 
             const SizedBox(height: 28),

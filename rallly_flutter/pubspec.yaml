@@ -1,7 +1,7 @@
 name: rallly
 description: Rallly — Tennis matchmaking app
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -47,6 +47,7 @@ dependencies:
   shared_preferences: ^2.2.0
   image_picker: ^1.1.2
   permission_handler: ^11.3.1
+  clarity_flutter: ^1.10.1
 
 dev_dependencies:
   flutter_test:
