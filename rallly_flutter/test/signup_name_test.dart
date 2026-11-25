@@ -7,6 +7,8 @@ import 'package:rallly/screens/signup_screen.dart';
 import 'package:rallly/theme/app_theme.dart';
 import 'package:rallly/widgets/shared_widgets.dart';
 
+import 'location_picker_helpers.dart';
+
 // RallyButton reads CourtThemeProvider.of(context), as in the real app.
 Widget _app() => CourtThemeProvider(
       child: MaterialApp(
@@ -55,8 +57,7 @@ void main() {
     // Still typing: no error yet.
     expect(find.text(surnameError), findsNothing);
 
-    await tester.enterText(fields.at(1), 'Kadıköy');
-    await tester.pumpAndSettle();
+    await pickLocation(tester, ilce: 'Kadıköy');
     // Leaving the name field with one word shows the hint.
     expect(find.text(surnameError), findsOneWidget);
 

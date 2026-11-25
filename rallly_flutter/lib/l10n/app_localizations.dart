@@ -1151,20 +1151,44 @@ abstract class AppLocalizations {
   /// No description provided for @signupNameHint.
   ///
   /// In tr, this message translates to:
-  /// **'örn. Leyla Garayli'**
+  /// **'örn. Ayşe Yılmaz'**
   String get signupNameHint;
 
   /// No description provided for @signupLocationLabel.
   ///
   /// In tr, this message translates to:
-  /// **'MAHALLE / ŞEHİR'**
+  /// **'İL / İLÇE'**
   String get signupLocationLabel;
 
-  /// No description provided for @signupLocationHint.
+  /// No description provided for @locationProvince.
   ///
   /// In tr, this message translates to:
-  /// **'örn. Beşiktaş, İstanbul'**
-  String get signupLocationHint;
+  /// **'İl'**
+  String get locationProvince;
+
+  /// No description provided for @locationDistrict.
+  ///
+  /// In tr, this message translates to:
+  /// **'İlçe'**
+  String get locationDistrict;
+
+  /// No description provided for @locationSelect.
+  ///
+  /// In tr, this message translates to:
+  /// **'Seç'**
+  String get locationSelect;
+
+  /// No description provided for @locationSearchHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ara…'**
+  String get locationSearchHint;
+
+  /// No description provided for @locationNoResultsHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Mahalle değil, ilçe seçin (örn. Kurtköy → Pendik)'**
+  String get locationNoResultsHint;
 
   /// No description provided for @signupStep2Title.
   ///

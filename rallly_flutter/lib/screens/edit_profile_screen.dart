@@ -4,6 +4,8 @@ import '../config/profile_options.dart';
 import '../theme/app_theme.dart';
 import '../theme/design_tokens.dart';
 import '../widgets/shared_widgets.dart';
+import '../widgets/location_picker.dart';
+import '../data/tr_locations.dart';
 import '../models/models.dart';
 import '../services/data_service.dart';
 import '../main.dart' show CourtThemeProvider;
@@ -23,7 +25,12 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   late final _nameCtrl = TextEditingController(text: widget.player.name);
-  late final _locationCtrl = TextEditingController(text: widget.player.location);
+  // Legacy free-text locations don't parse: start empty so saving needs a pick.
+  late final _locationCtrl = TextEditingController(
+      text: switch (parseTrLocation(widget.player.location)) {
+        final p? => formatTrLocation(p.il, p.ilce),
+        null => '',
+      });
   late final _aboutCtrl = TextEditingController(text: widget.player.about);
   late final _sports = {...widget.player.sports};
   late String? _skillLevel = widget.player.skillLevel;
@@ -103,12 +110,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               prefixIcon: Icon(Icons.person_outline, size: 18)),
           ),
           _Label(l.signupLocationLabel, cp),
-          TextField(
-            controller: _locationCtrl,
-            onChanged: (_) => setState(() {}),
-            decoration: InputDecoration(
-              hintText: l.signupLocationHint,
-              prefixIcon: const Icon(Icons.location_on_outlined, size: 18)),
+          LocationPicker(
+            initialValue: widget.player.location,
+            onChanged: (v) => setState(() => _locationCtrl.text = v ?? ''),
           ),
           _Label(l.editAboutLabel, cp),
           TextField(

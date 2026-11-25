@@ -24,6 +24,8 @@ import 'package:rallly/screens/games_screen.dart';
 import 'package:rallly/screens/notifications_screen.dart';
 import 'package:rallly/theme/app_theme.dart';
 
+import 'location_picker_helpers.dart';
+
 // ignore_for_file: unused_import
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -310,7 +312,7 @@ void main() {
       name: 'Leyla Garayli',
       initials: 'LG',
       ntrpRating: 3.5,
-      location: 'Beşiktaş',
+      location: 'Beşiktaş, İstanbul',
       about: 'Toprak kort sever',
       skillLevel: 'Orta Seviye',
       sports: ['Tenis'],
@@ -322,6 +324,7 @@ void main() {
 
       expect(find.text('Leyla Garayli'), findsOneWidget);
       expect(find.text('Beşiktaş'), findsOneWidget);
+      expect(find.text('İstanbul'), findsOneWidget);
       expect(find.text('Toprak kort sever'), findsOneWidget);
     });
 
@@ -335,6 +338,22 @@ void main() {
       await tester.enterText(find.text('Leyla Garayli'), '   ');
       await tester.pump();
       expect(saveButton().onPressed, isNull);
+    });
+
+    testWidgets('legacy free-text location needs an ilçe pick before save',
+        (tester) async {
+      const legacy = Player(id: 'me', name: 'Leyla Garayli', initials: 'LG',
+          ntrpRating: 3.5, location: 'Kurtköy');
+      await tester.pumpWidget(_wrap(const EditProfileScreen(player: legacy)));
+      await tester.pump();
+
+      FilledButton saveButton() => tester.widget<FilledButton>(find.byType(FilledButton));
+      expect(find.text('Kurtköy'), findsNothing);
+      expect(saveButton().onPressed, isNull);
+
+      await pickLocation(tester, ilce: 'Pendik');
+      expect(find.text('Pendik'), findsOneWidget);
+      expect(saveButton().onPressed, isNotNull);
     });
   });
 

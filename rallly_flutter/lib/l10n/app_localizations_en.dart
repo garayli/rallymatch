@@ -581,13 +581,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signupNameLabel => 'FULL NAME';
 
   @override
-  String get signupNameHint => 'e.g. Leyla Garayli';
+  String get signupNameHint => 'e.g. Alex Morgan';
 
   @override
-  String get signupLocationLabel => 'NEIGHBORHOOD / CITY';
+  String get signupLocationLabel => 'PROVINCE / DISTRICT';
 
   @override
-  String get signupLocationHint => 'e.g. Beşiktaş, Istanbul';
+  String get locationProvince => 'Province';
+
+  @override
+  String get locationDistrict => 'District';
+
+  @override
+  String get locationSelect => 'Select';
+
+  @override
+  String get locationSearchHint => 'Search…';
+
+  @override
+  String get locationNoResultsHint =>
+      'Pick the district, not the neighbourhood (e.g. Kurtköy → Pendik)';
 
   @override
   String get signupStep2Title => 'Which sports do you play?';
