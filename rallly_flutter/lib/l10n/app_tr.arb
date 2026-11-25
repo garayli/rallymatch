@@ -275,6 +275,7 @@
   "locationDistrict": "İlçe",
   "locationSelect": "Seç",
   "locationSearchHint": "Ara…",
+  "locationNoResultsHint": "Mahalle değil, ilçe seçin (örn. Kurtköy → Pendik)",
   "signupStep2Title": "Hangi sporları oynuyorsunuz?",
   "signupStep2Subtitle": "Uygun olanları seçin",
   "signupStep3Title": "Seviyeniz nedir?",

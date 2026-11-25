@@ -599,6 +599,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get locationSearchHint => 'Search…';
 
   @override
+  String get locationNoResultsHint =>
+      'Pick the district, not the neighbourhood (e.g. Kurtköy → Pendik)';
+
+  @override
   String get signupStep2Title => 'Which sports do you play?';
 
   @override

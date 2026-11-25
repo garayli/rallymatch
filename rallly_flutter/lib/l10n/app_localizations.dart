@@ -1184,6 +1184,12 @@ abstract class AppLocalizations {
   /// **'Ara…'**
   String get locationSearchHint;
 
+  /// No description provided for @locationNoResultsHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Mahalle değil, ilçe seçin (örn. Kurtköy → Pendik)'**
+  String get locationNoResultsHint;
+
   /// No description provided for @signupStep2Title.
   ///
   /// In tr, this message translates to:

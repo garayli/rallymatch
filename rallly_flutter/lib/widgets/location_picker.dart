@@ -32,6 +32,7 @@ class _LocationPickerState extends State<LocationPicker> {
   Future<void> _pickIl() async {
     final picked = await _showSearchSheet(
         context, context.l10n.locationProvince, trLocations.keys.toList(), _il);
+    if (!mounted) return;
     if (picked == null || picked == _il) return;
     setState(() {
       _il = picked;
@@ -42,7 +43,9 @@ class _LocationPickerState extends State<LocationPicker> {
 
   Future<void> _pickIlce() async {
     final picked = await _showSearchSheet(context, context.l10n.locationDistrict,
-        trLocations[_il] ?? const [], _ilce);
+        trLocations[_il] ?? const [], _ilce,
+        emptyHint: context.l10n.locationNoResultsHint);
+    if (!mounted) return;
     if (picked == null || picked == _ilce) return;
     setState(() => _ilce = picked);
     widget.onChanged(formatTrLocation(_il, picked));
@@ -102,23 +105,28 @@ class _PickerField extends StatelessWidget {
         child: Text(value ?? '',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(color: cp.text)),
+            style: Theme.of(context).textTheme.bodyLarge),
       ),
     );
   }
 }
 
 Future<String?> _showSearchSheet(BuildContext context, String title,
-    List<String> options, String? current) {
+    List<String> options, String? current, {String? emptyHint}) {
   final cp = CourtThemeProvider.of(context);
   return showModalBottomSheet<String>(
     context: context,
     isScrollControlled: true,
+    useSafeArea: true,
     backgroundColor: cp.bg,
     shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
     builder: (_) =>
-        _SearchSheet(title: title, options: options, current: current),
+        _SearchSheet(
+            title: title,
+            options: options,
+            current: current,
+            emptyHint: emptyHint),
   );
 }
 
@@ -126,9 +134,14 @@ class _SearchSheet extends StatefulWidget {
   final String title;
   final List<String> options;
   final String? current;
+  final String? emptyHint;
 
-  const _SearchSheet(
-      {required this.title, required this.options, required this.current});
+  const _SearchSheet({
+    required this.title,
+    required this.options,
+    required this.current,
+    this.emptyHint,
+  });
 
   @override
   State<_SearchSheet> createState() => _SearchSheetState();
@@ -175,8 +188,24 @@ class _SearchSheetState extends State<_SearchSheet> {
               Expanded(
                 child: items.isEmpty
                     ? Center(
-                        child: Text(context.l10n.noResults,
-                            style: TextStyle(color: cp.muted)))
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(context.l10n.noResults,
+                                  style: TextStyle(color: cp.muted)),
+                              if (widget.emptyHint case final hint?) ...[
+                                const SizedBox(height: 6),
+                                Text(hint,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: cp.muted, fontSize: 13)),
+                              ],
+                            ],
+                          ),
+                        ),
+                      )
                     : ListView.builder(
                         itemCount: items.length,
                         itemBuilder: (context, i) {

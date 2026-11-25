@@ -98,6 +98,8 @@ void main() {
       await tester.enterText(find.byType(TextField), 'kurt');
       await tester.pumpAndSettle();
       expect(find.text('Sonuç bulunamadı'), findsOneWidget);
+      expect(find.text('Mahalle değil, ilçe seçin (örn. Kurtköy → Pendik)'),
+          findsOneWidget);
       await tester.enterText(find.byType(TextField), 'PENDİK');
       await tester.pumpAndSettle();
       await tester.tap(find.widgetWithText(ListTile, 'Pendik'));

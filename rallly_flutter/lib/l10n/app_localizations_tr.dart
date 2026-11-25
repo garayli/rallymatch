@@ -598,6 +598,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get locationSearchHint => 'Ara…';
 
   @override
+  String get locationNoResultsHint =>
+      'Mahalle değil, ilçe seçin (örn. Kurtköy → Pendik)';
+
+  @override
   String get signupStep2Title => 'Hangi sporları oynuyorsunuz?';
 
   @override

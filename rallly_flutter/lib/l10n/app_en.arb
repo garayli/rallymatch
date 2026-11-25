@@ -275,6 +275,7 @@
   "locationDistrict": "District",
   "locationSelect": "Select",
   "locationSearchHint": "Search…",
+  "locationNoResultsHint": "Pick the district, not the neighbourhood (e.g. Kurtköy → Pendik)",
   "signupStep2Title": "Which sports do you play?",
   "signupStep2Subtitle": "Select all that apply",
   "signupStep3Title": "What's your level?",
