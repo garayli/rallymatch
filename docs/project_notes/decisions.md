@@ -289,21 +289,21 @@ Use `com.kortagel.app` (reverse domain of kortagel.com, which we own). Changed i
 
 ## ADR-016: Model routing — Fable orchestrates, Sonnet and Opus write code
 **Date:** 2026-11-22
-**Status:** Accepted
+**Status:** Accepted — amended 2026-11-25: the per-agent models below are now **defaults**; the orchestrator picks Opus or Sonnet for each delegated task (see Decision).
 
 ### Context
 Work is split across the agents in `.claude/agents/` (CLAUDE.md → Agent Execution Protocol). All of them were pinned to one old Sonnet version, and the main session's model was whatever each machine had selected.
 
 ### Decision
 - The main session is the **orchestrator** and runs on **Fable** — project default in `.claude/settings.json` (`"model": "fable"`). It plans, delegates, reviews and synthesizes; it does not write feature code itself (docs, config and one-line fixes are fine).
-- **Code is written by Sonnet and Opus** through the subagents:
-  - `developer` → Sonnet by default; the orchestrator overrides to Opus for complex or risky work (auth, `DataService` / data layer, Supabase migrations and RLS, routing, multi-file refactors, a bug Sonnet failed to fix).
-  - `code-reviewer` → Opus (correctness gate). `plan-reviewer` → Opus.
-  - `tester`, `researcher` → Sonnet.
+- **All other work is done by Sonnet and Opus** through the subagents, and **the orchestrator decides which model each task gets** (amended 2026-11-25). The agent files' `model:` lines are defaults only:
+  - `developer` → Sonnet; `code-reviewer`, `plan-reviewer` → Opus; `tester`, `researcher` → Sonnet.
+  - The orchestrator overrides per task: Opus for complex or risky work (auth, `DataService` / data layer, Supabase migrations and RLS, routing, multi-file refactors, a bug Sonnet failed to fix); Sonnet for routine, well-scoped work (small UI fixes, copy/l10n, single-file changes), including a review of a trivial diff.
+  - It states the model chosen for each agent, with a one-line reason.
 - Agent files use model **aliases** (`sonnet`, `opus`, `fable`), not version IDs.
 
 ### Consequences
-- Agent `model:` lines in `.claude/agents/*.md` must follow this table; changing it means updating this ADR and CLAUDE.md → "Model routing".
+- Agent `model:` lines in `.claude/agents/*.md` hold the defaults above; changing a default means updating this ADR and CLAUDE.md → "Model routing". Per-task overrides need no doc change.
 - A machine-level `/model` choice still overrides the project default for that session; switch back with `/model fable`.
 - Opus/Fable runs cost more than Sonnet — keep routine edits on Sonnet.
 

@@ -177,17 +177,20 @@ When a task is given, all agents run conceptually in parallel — each produces 
 
 ### Model routing (rule — ADR-016)
 
-- **Orchestrator = Fable.** The main session runs on Fable (`.claude/settings.json` → `"model": "fable"`). It plans, splits work, briefs subagents, reviews their reports and writes the Synthesis. It does **not** write feature code itself — only docs, config and one-line fixes.
-- **Coding = Sonnet and Opus**, via the subagents below. Sonnet is the default for implementation; the orchestrator passes `model: "opus"` to the **developer** agent for complex or risky work (auth, data layer / `DataService`, Supabase migrations + RLS, routing, anything touching many files, a bug Sonnet failed to fix).
-- The `model:` line in each `.claude/agents/*.md` is the source of truth; use aliases (`sonnet`, `opus`, `fable`), never pinned version IDs, so agents follow the latest model.
+- **Orchestrator = Fable.** The main session runs on Fable (`.claude/settings.json` → `"model": "fable"`). If a session opens on another model (e.g. a user-level default in `~/.claude/settings.json` or the app's model picker), say so up front and switch with `/model fable`. It plans, splits work, briefs subagents, reviews their reports and writes the Synthesis. It does **not** write feature code itself — only docs, config and one-line fixes.
+- **All other work = Opus or Sonnet, chosen by the orchestrator per task.** The `model:` line in each `.claude/agents/*.md` is only that agent's default. For every delegation the orchestrator decides Opus vs Sonnet and passes `model: "opus"` / `"sonnet"` when it differs from the default. Rule of thumb:
+  - **Opus** — complex or risky work: auth, data layer / `DataService`, Supabase migrations + RLS, routing, multi-file refactors, a bug Sonnet failed to fix, and reviews where correctness matters.
+  - **Sonnet** — routine, well-scoped work: small UI fixes, copy/l10n, single-file changes, research, writing and running tests.
+  - Say which model each agent got and why in one line of the response.
+- Use aliases (`sonnet`, `opus`, `fable`), never pinned version IDs, so agents follow the latest model.
 
 ### Agents
 
-| Agent | Model | Responsibility |
+| Agent | Default model (orchestrator may override) | Responsibility |
 |---|---|---|
 | **Research** | Sonnet | Best practices, similar patterns, library trade-offs, feasibility |
 | **Plan Reviewer** | Opus | Challenges complexity, enforces simplicity, flags over-engineering |
-| **Developer** | Sonnet (Opus for complex/risky work) | Implements the validated plan following project conventions |
+| **Developer** | Sonnet | Implements the validated plan following project conventions |
 | **Code Reviewer** | Opus | Reviews output for correctness, null safety, convention compliance |
 | **Tester** | Sonnet | Writes and runs `flutter analyze` + widget/unit tests |
 
