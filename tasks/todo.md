@@ -320,10 +320,12 @@ Why: Play requires apps with in-app sign-up to offer in-app deletion **and** a p
 
 Approved by user. The location was free text ("Kurtköy" vs "Kurtkoy, Istanbul"), so search missed spelling variants.
 
-- [ ] Static data `lib/data/tr_locations.dart`: 81 il → ilçe lists (official names, Turkish letters), no network
-- [ ] Reusable `LocationPicker` widget (il + searchable ilçe), default il İstanbul
-- [ ] Writes the existing `profiles.location` text as `"<İlçe>, <İl>"`. No schema change, display/search unchanged
-- [ ] Signup step 1 + Edit profile use the picker; legacy free-text values preselect if they parse, otherwise empty → must pick
-- [ ] l10n strings (TR + EN), `flutter gen-l10n`
-- [ ] Tests: parsing legacy values, required-field gating, picker selection
-- [ ] No mahalle level (privacy, list length)
+- [x] Static data `lib/data/tr_locations.dart`: 81 il → ilçe lists (official names, Turkish letters), no network
+- [x] Reusable `LocationPicker` widget (il + searchable ilçe), default il İstanbul
+- [x] Writes the existing `profiles.location` text as `"<İlçe>, <İl>"`. No schema change, display/search unchanged
+- [x] Signup step 1 + Edit profile use the picker; legacy free-text values preselect if they parse, otherwise empty → must pick
+- [x] l10n strings (TR + EN), `flutter gen-l10n`
+- [x] Tests: parsing legacy values, required-field gating, picker selection
+- [x] No mahalle level (privacy, list length)
+
+Review: Developer (Opus) + Code Reviewer (Opus). Reviewer found dark-mode value text near-invisible (`cp.text` on dark field) → fixed with theme text style; also added mounted checks, `useSafeArea`, and a "pick the district, not the neighbourhood" hint on empty ilçe search. `flutter test` 78/78; analyze only pre-existing-kind `deprecated_member_use` infos (Flutter 3.50). Data: snrylmz/il-ilce-json, 81 il / 973 ilçe verified. Non-metropolitan centres stored as "Merkez, <İl>". Legacy free-text values stay until the user edits the profile.
