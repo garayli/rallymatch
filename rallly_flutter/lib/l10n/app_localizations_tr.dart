@@ -580,7 +580,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get signupNameLabel => 'AD SOYAD';
 
   @override
-  String get signupNameHint => 'örn. Leyla Garayli';
+  String get signupNameHint => 'örn. Ayşe Yılmaz';
 
   @override
   String get signupLocationLabel => 'MAHALLE / ŞEHİR';

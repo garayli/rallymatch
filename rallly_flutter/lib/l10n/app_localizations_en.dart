@@ -581,7 +581,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signupNameLabel => 'FULL NAME';
 
   @override
-  String get signupNameHint => 'e.g. Leyla Garayli';
+  String get signupNameHint => 'e.g. Alex Morgan';
 
   @override
   String get signupLocationLabel => 'NEIGHBORHOOD / CITY';

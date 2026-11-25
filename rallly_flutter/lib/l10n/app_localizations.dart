@@ -1151,7 +1151,7 @@ abstract class AppLocalizations {
   /// No description provided for @signupNameHint.
   ///
   /// In tr, this message translates to:
-  /// **'örn. Leyla Garayli'**
+  /// **'örn. Ayşe Yılmaz'**
   String get signupNameHint;
 
   /// No description provided for @signupLocationLabel.
