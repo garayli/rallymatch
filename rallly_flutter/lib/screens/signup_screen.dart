@@ -9,6 +9,7 @@ import '../widgets/rally_primitives.dart';
 import '../main.dart' show supabase;
 import '../services/analytics_service.dart';
 import '../utils/initials.dart';
+import '../utils/name_input.dart';
 import '../l10n/l10n.dart';
 import '../l10n/option_labels.dart';
 
@@ -265,6 +266,7 @@ class _Step1 extends StatelessWidget {
             controller: nameCtrl,
             focusNode: nameFocus,
             onChanged: (_) => onChanged(),
+            inputFormatters: nameInputFormatters,
             textCapitalization: TextCapitalization.words,
             textInputAction: TextInputAction.next,
             decoration: InputDecoration(

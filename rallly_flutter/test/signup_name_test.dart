@@ -26,6 +26,24 @@ Widget _app() => CourtThemeProvider(
 void main() {
   const surnameError = 'Adını ve soyadını birlikte yaz';
 
+  testWidgets('name field drops invalid characters and keeps real names',
+      (tester) async {
+    await tester.pumpWidget(_app());
+    await tester.pumpAndSettle();
+
+    final name = find.byType(TextFormField).at(0);
+    String current() => tester.widget<TextFormField>(name).controller!.text;
+
+    await tester.enterText(name, 'Leyla!!! 123');
+    await tester.pump();
+    expect(current(), 'Leyla ');
+
+    const real = "Ağaoğlu Şükrü İlkay-Öz O'Neil";
+    await tester.enterText(name, real);
+    await tester.pump();
+    expect(current(), real);
+  });
+
   testWidgets('a first name alone explains the surname rule instead of a dead button',
       (tester) async {
     await tester.pumpWidget(_app());

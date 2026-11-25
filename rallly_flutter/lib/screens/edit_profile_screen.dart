@@ -7,6 +7,7 @@ import '../widgets/shared_widgets.dart';
 import '../models/models.dart';
 import '../services/data_service.dart';
 import '../main.dart' show CourtThemeProvider;
+import '../utils/name_input.dart';
 import '../l10n/l10n.dart';
 import '../l10n/option_labels.dart';
 
@@ -96,6 +97,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           TextField(
             controller: _nameCtrl,
             onChanged: (_) => setState(() {}),
+            inputFormatters: nameInputFormatters,
             textCapitalization: TextCapitalization.words,
             decoration: const InputDecoration(
               prefixIcon: Icon(Icons.person_outline, size: 18)),
