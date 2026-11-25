@@ -313,3 +313,17 @@ Why: Play requires apps with in-app sign-up to offer in-app deletion **and** a p
 - Changed vs plan: no `pushService.unregister()`; the RPC cascades `push_tokens`, and unregister would need the session the RPC just destroyed.
 - Not done: **user runs the migration**; two-account device test (checklist above); deploy hosting for the updated page; Data safety answer in Play Console.
 - 2026-10-31: migration run; two-device test (phone B deleted, emulator A watching) passed, re-signup OK.
+
+---
+
+## Location picker: il → ilçe dropdowns (2026-11-25)
+
+Approved by user. The location was free text ("Kurtköy" vs "Kurtkoy, Istanbul"), so search missed spelling variants.
+
+- [ ] Static data `lib/data/tr_locations.dart`: 81 il → ilçe lists (official names, Turkish letters), no network
+- [ ] Reusable `LocationPicker` widget (il + searchable ilçe), default il İstanbul
+- [ ] Writes the existing `profiles.location` text as `"<İlçe>, <İl>"`. No schema change, display/search unchanged
+- [ ] Signup step 1 + Edit profile use the picker; legacy free-text values preselect if they parse, otherwise empty → must pick
+- [ ] l10n strings (TR + EN), `flutter gen-l10n`
+- [ ] Tests: parsing legacy values, required-field gating, picker selection
+- [ ] No mahalle level (privacy, list length)
