@@ -5,6 +5,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../config/profile_options.dart';
 import '../theme/app_theme.dart';
 import '../widgets/shared_widgets.dart';
+import '../widgets/location_picker.dart';
 import '../widgets/rally_primitives.dart';
 import '../main.dart' show supabase;
 import '../services/analytics_service.dart';
@@ -277,14 +278,12 @@ class _Step1 extends StatelessWidget {
             ),
           ).animate().fadeIn(delay: 120.ms),
           const SizedBox(height: 16),
-          TextFormField(
-            controller: locationCtrl,
-            onChanged: (_) => onChanged(),
-            decoration: InputDecoration(
-              labelText: context.l10n.signupLocationLabel,
-              hintText: context.l10n.signupLocationHint,
-              prefixIcon: const Icon(Icons.location_on_outlined, size: 18),
-            ),
+          LocationPicker(
+            initialValue: locationCtrl.text,
+            onChanged: (v) {
+              locationCtrl.text = v ?? '';
+              onChanged();
+            },
           ).animate().fadeIn(delay: 160.ms),
         ],
       ),

@@ -583,10 +583,19 @@ class AppLocalizationsTr extends AppLocalizations {
   String get signupNameHint => 'örn. Ayşe Yılmaz';
 
   @override
-  String get signupLocationLabel => 'MAHALLE / ŞEHİR';
+  String get signupLocationLabel => 'İL / İLÇE';
 
   @override
-  String get signupLocationHint => 'örn. Beşiktaş, İstanbul';
+  String get locationProvince => 'İl';
+
+  @override
+  String get locationDistrict => 'İlçe';
+
+  @override
+  String get locationSelect => 'Seç';
+
+  @override
+  String get locationSearchHint => 'Ara…';
 
   @override
   String get signupStep2Title => 'Hangi sporları oynuyorsunuz?';
