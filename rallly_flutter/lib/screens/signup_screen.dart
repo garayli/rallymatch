@@ -9,6 +9,7 @@ import '../widgets/rally_primitives.dart';
 import '../main.dart' show supabase;
 import '../services/analytics_service.dart';
 import '../utils/initials.dart';
+import '../utils/name_input.dart';
 import '../l10n/l10n.dart';
 import '../l10n/option_labels.dart';
 
@@ -38,9 +39,17 @@ class _SignupScreenState extends State<SignupScreen> {
   final _selectedDays = <String>{};
   final _selectedTimes = <String>{};
 
+  final _nameFocus = FocusNode();
+  bool _showNameError = false;
+
   bool _loading = false;
 
   void _next() {
+    if (_step == 0 && !_hasFullName) {
+      setState(() => _showNameError = true);
+      _nameFocus.requestFocus();
+      return;
+    }
     if (_step < 3) {
       _pageCtrl.nextPage(
         duration: const Duration(milliseconds: 320),
@@ -69,7 +78,8 @@ class _SignupScreenState extends State<SignupScreen> {
 
   bool get _canProceed {
     switch (_step) {
-      case 0: return _hasFullName && _locationCtrl.text.trim().isNotEmpty;
+      // Single-word names stay tappable: _next() explains the surname rule.
+      case 0: return _nameCtrl.text.trim().isNotEmpty && _locationCtrl.text.trim().isNotEmpty;
       case 1: return _selectedSports.isNotEmpty;
       case 2: return _skillLevel != null;
       case 3: return _selectedDays.isNotEmpty;
@@ -112,7 +122,20 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _nameFocus.addListener(_onNameFocusChange);
+  }
+
+  void _onNameFocusChange() {
+    if (!_nameFocus.hasFocus && _nameCtrl.text.trim().isNotEmpty && !_hasFullName) {
+      setState(() => _showNameError = true);
+    }
+  }
+
+  @override
   void dispose() {
+    _nameFocus.dispose();
     _nameCtrl.dispose();
     _locationCtrl.dispose();
     _pageCtrl.dispose();
@@ -174,7 +197,13 @@ class _SignupScreenState extends State<SignupScreen> {
                 controller: _pageCtrl,
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
-                  _Step1(nameCtrl: _nameCtrl, locationCtrl: _locationCtrl, onChanged: () => setState(() {})),
+                  _Step1(
+                    nameCtrl: _nameCtrl,
+                    locationCtrl: _locationCtrl,
+                    nameFocus: _nameFocus,
+                    showNameError: _showNameError && !_hasFullName,
+                    onChanged: () => setState(() {}),
+                  ),
                   _Step2(selected: _selectedSports, onChanged: () => setState(() {})),
                   _Step3(selected: _skillLevel, onSelect: (v) => setState(() => _skillLevel = v)),
                   _Step4(selectedDays: _selectedDays, selectedTimes: _selectedTimes, onChanged: () => setState(() {})),
@@ -204,9 +233,17 @@ class _SignupScreenState extends State<SignupScreen> {
 class _Step1 extends StatelessWidget {
   final TextEditingController nameCtrl;
   final TextEditingController locationCtrl;
+  final FocusNode nameFocus;
+  final bool showNameError;
   final VoidCallback onChanged;
 
-  const _Step1({required this.nameCtrl, required this.locationCtrl, required this.onChanged});
+  const _Step1({
+    required this.nameCtrl,
+    required this.locationCtrl,
+    required this.nameFocus,
+    required this.showNameError,
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -227,9 +264,13 @@ class _Step1 extends StatelessWidget {
           const SizedBox(height: 32),
           TextFormField(
             controller: nameCtrl,
+            focusNode: nameFocus,
             onChanged: (_) => onChanged(),
+            inputFormatters: nameInputFormatters,
             textCapitalization: TextCapitalization.words,
+            textInputAction: TextInputAction.next,
             decoration: InputDecoration(
+              errorText: showNameError ? context.l10n.signupNameNeedsSurname : null,
               labelText: context.l10n.signupNameLabel,
               hintText: context.l10n.signupNameHint,
               prefixIcon: const Icon(Icons.person_outline, size: 18),
